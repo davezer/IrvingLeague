@@ -256,7 +256,9 @@
         </div>
     {/if}
     <!-- Rival -->
-    <button type="button" class="infoSlot infoRival" aria-label="View rival manager" on:click={() => changeManager(viewManager.rival.link)}>
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <div class="infoSlot infoRival" on:click={() => changeManager(viewManager.rival.link)} role="button"
+     tabindex="0">
         <div class="infoLabel">
             Rival
         </div>
@@ -266,5 +268,5 @@
         <div class="infoAnswer">
             {viewManager.rival.name}
         </div>
-    </button>
+    </div>
 </div>
