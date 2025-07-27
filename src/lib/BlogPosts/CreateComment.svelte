@@ -1,3 +1,4 @@
+
 <script>
     import Button, {Label} from "@smui/button";
     import Textfield from "@smui/textfield";
@@ -46,7 +47,7 @@
 
 {#if showWrite}
     <div class="textBoxHolder">
-        <textarea autofocus bind:value={comment} label="Leave a comment..." class="commentTextBox"/>
+        <textarea bind:value={comment} label="Leave a comment..." class="commentTextBox"/>
     </div>
 
     <div class="submitArea">

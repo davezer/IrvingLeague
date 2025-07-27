@@ -33,9 +33,7 @@
 		transition: box-shadow 0.4s;
     }
 
-    .playerIcon {
-        align-items:flex-end;
-    }
+  
 
     .infoLabel {
         font-size: 0.7em;
@@ -142,9 +140,14 @@
         background-color: #98c097;
     }
 
-    .favoritePlayer {
+    .draftMoneyCurrentYear  {
         height: 65px;
-        vertical-align: bottom;
+        vertical-align: middle;
+    }
+
+    .draftMoneyNextYear  {
+        height: 65px;
+        vertical-align: middle;
     }
 
     /* media queries */
@@ -208,17 +211,33 @@
             </div>
         </div>
     {/if}
-    <!-- Favorite player (optioonal) -->
-    {#if viewManager.favoritePlayer}
+     {#if viewManager.draftMoneyCurrentYear}
+        <!-- 2025 Draft Money -->
         <div class="infoSlot">
             <div class="infoLabel">
-                Favorite Player
+                2025 Draft Money
             </div>
-            <div class="infoIcon playerIcon">
-                <img class="favoritePlayer" src="https://sleepercdn.com/content/nfl/players/{viewManager.favoritePlayer}.jpg" alt="favorite player"/>
+            <div class="infoIcon">
+                <!-- svelte-ignore a11y_img_redundant_alt -->
+                <img class="draftMoneyCurrentYear" src="/dollar-sign.png" alt="Image of a dollar sign"/>
             </div>
             <div class="infoAnswer">
-                {players[viewManager.favoritePlayer].fn} {players[viewManager.favoritePlayer].ln}
+                {viewManager.draftMoneyCurrentYear}
+            </div>
+        </div>
+    {/if}
+	{#if viewManager.draftMoneyNextYear}
+        <!-- 2026 Draft Money -->
+        <div class="infoSlot">
+            <div class="infoLabel">
+                2026 Draft Money
+            </div>
+            <div class="infoIcon">
+               <!-- svelte-ignore a11y_missing_attribute -->
+               <img class="draftMoneyNextYear" src="/dollar-sign.png" />
+            </div>
+            <div class="infoAnswer">
+                {viewManager.draftMoneyNextYear}
             </div>
         </div>
     {/if}
@@ -237,7 +256,7 @@
         </div>
     {/if}
     <!-- Rival -->
-    <div class="infoSlot infoRival" onclick={() => changeManager(viewManager.rival.link)}>
+    <button type="button" class="infoSlot infoRival" aria-label="View rival manager" on:click={() => changeManager(viewManager.rival.link)}>
         <div class="infoLabel">
             Rival
         </div>
@@ -247,5 +266,5 @@
         <div class="infoAnswer">
             {viewManager.rival.name}
         </div>
-    </div>
+    </button>
 </div>
