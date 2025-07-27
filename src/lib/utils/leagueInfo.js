@@ -167,7 +167,7 @@ export const managers = [
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
       "bio": "Forged in group chats and fueled by spite, Amherst Union stands united against bad trades, bye weeks, and commissioner tyranny. Drafted with pride, managed with memes—solidarity has never been so scrappy.",
-      "photo": "/managers/DrewGodwin.png", // square ratio recommended (no larger than 500x500)
+      "photo": "/managers/DrewGoodwin.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
       "favoriteTeam": "ne", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
