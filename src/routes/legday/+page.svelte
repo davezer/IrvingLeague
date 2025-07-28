@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { loadScript } from '$lib/utils/loadScript.js';
+    import { getParlay } from '$lib/utils/helper.js';
 
   // this is exactly what +page.js returns
   export let data;
@@ -12,8 +12,8 @@
   onMount(async () => {
     try {
       // 1) load core dependencies
-      await loadScript('https://code.jquery.com/jquery-3.7.1.min.js');
-      await loadScript('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+      await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
+      await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
 
       // 2) init DataTable with your array
       window.$('#parlayStats').DataTable({
