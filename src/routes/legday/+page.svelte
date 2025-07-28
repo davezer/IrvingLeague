@@ -1,30 +1,16 @@
 <script>
   import { onMount } from 'svelte';
     import { getParlay } from '$lib/utils/helper.js';
-
-  // this is exactly what +page.js returns
   export let data;
   const { parlayData, columns } = data;
 
-  // debug: make sure parlayData actually has rows
-  console.log('parlayData:', parlayData);
-
   onMount(async () => {
-    try {
-      // 1) load core dependencies
-      await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
-      await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
-
-      // 2) init DataTable with your array
-      window.$('#parlayStats').DataTable({
-        data:    parlayData,
-        columns,
-        // turn off the “processing” overlay since we already have data
-        processing: false
-      });
-    } catch (err) {
-      console.error('Failed to load scripts or init DataTable:', err);
-    }
+    await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
+    await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+    window.$('#parlayStats').DataTable({
+      data:    parlayData,
+      columns
+    });
   });
 </script>
 
