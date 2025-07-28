@@ -1,7 +1,5 @@
 
-<head>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.css"/>
-</head>
+
 <script>
     import { onMount } from 'svelte';
 
