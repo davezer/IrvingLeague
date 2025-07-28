@@ -223,7 +223,7 @@ export const managers = [
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
       "bio": "Fueled by Duval spirit and Italian swagger, the Jacksonville Vincitori are here to conquer. Bold, relentless, and always hunting victory, this squad dominates Sundays with ruthless efficiency and unwavering confidence.",
-      "photo": "/managers/victintori.png", // square ratio recommended (no larger than 500x500)
+      "photo": "/managers/vincintori.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
       "favoriteTeam": "jax", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
@@ -302,7 +302,7 @@ export const managers = [
       // "rival": {
       //   name: "Romano", // Can be anything (usually your rival's name)
       //   link: 2, // manager array number within this array, or null to link back to all managers page
-      //   image: "/managers/victinori.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
+      //   image: "/managers/vincintori.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       // },
       // "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
       // "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
