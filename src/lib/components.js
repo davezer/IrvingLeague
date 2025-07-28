@@ -1,7 +1,6 @@
 import Nav from './Nav/index.svelte';
 import Footer from './Footer.svelte';
 import News from './News/index.svelte';
-import LegDay from './LegDay.svelte';
 import Awards from './Awards/Awards.svelte';
 import Rosters from './Rosters/Rosters.svelte';
 import Rivalry from './Rivalry/index.svelte';
