@@ -1,7 +1,7 @@
 
 <script>
   import { onMount } from 'svelte';
-  import { getParlay }    from '$lib/utils/getParlay.js';  // your helper
+  import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
 
   // `data` is whatever you returned in +page.js
   export let data;
