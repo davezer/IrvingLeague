@@ -80,8 +80,8 @@ export const tabs = [
     },
     {
         icon: 'lightbulb',
-        label: 'Resources',
-        dest: '/resources',
-        key: 'resources',
+        label: 'Leg Day',
+        dest: '/legday',
+        key: 'legday',
     },
 ];

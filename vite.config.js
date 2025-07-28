@@ -1,8 +1,14 @@
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { sveltekit } from '@sveltejs/kit/vite';
+import Icons from 'unplugin-icons/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [sveltekit()]
+	plugins: [sveltekit(),
+		 Icons({
+      		compiler: 'svelte',
+    }),
+	]
 };
 
 export default config;
