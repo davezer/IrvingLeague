@@ -1,37 +1,31 @@
 <script>
   import { onMount } from 'svelte';
-    import { getParlay } from './utils/helper';
+  import { getParlay } from '$lib/utils/helper.js';
 
-  // `data` comes from your +page.js load()
+  // from +page.js
   export let data;
   const { parlayData, columns } = data;
 
   onMount(async () => {
-    try {
-      // 1) Load jQuery
-      await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
-      // 2) Load DataTables core
-      await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+    await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
+    await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
 
-      // 3) Initialize your table with the pre‑fetched data
-      window.$('#parlayStats').DataTable({
-        data:    parlayData,
-        columns
-      });
-    } catch (err) {
-      console.error('Failed to load scripts or init DataTable:', err);
-    }
+    // Pass the JSON array directly—no AJAX, no CORS headaches
+    window.$('#parlayStats').DataTable({
+      data:    parlayData,
+      columns,
+      // optional: remove the “Processing…” overlay
+      processing: false
+    });
   });
 </script>
 
 <svelte:head>
-  <!-- DataTables core CSS -->
   <link
     rel="stylesheet"
     href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
   />
 </svelte:head>
-
 
 <style>
   .main {
@@ -74,4 +68,3 @@
     <!-- DataTables will inject <tbody> for you -->
   </table>
 </div>
-

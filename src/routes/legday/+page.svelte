@@ -1,75 +1,70 @@
 <script>
-  import { onMount }   from 'svelte';
-    import { getParlay } from '$lib/utils/helper.js';
+  import { onMount } from 'svelte';
+  import { getParlay } from '$lib/utils/helper.js';
 
-  export let data;                  // from +page.js
-  const { ajaxUrl, columns } = data;
+  // from +page.js
+  export let data;
+  const { parlayData, columns } = data;
 
   onMount(async () => {
-    try {
-      // 1) load jQuery
-      await getParlay('https://code.jquery.com/jquery-3.7.1.js');
-      // 2) load DataTables core (note 1.x, not 2.x)
-      await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
-      // 3) (optional) load Moment if you need it
-      await getParlay('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
+    await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
+    await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
 
-      // initialize
-      window.$('#parlayStats').DataTable({
-        ajax: {
-          url:     ajaxUrl,
-          dataSrc: 'data'
-        },
-        columns
-      });
-    } catch (err) {
-      console.error('Script load or DataTable init failed:', err);
-    }
+    // Pass the JSON array directly—no AJAX, no CORS headaches
+    window.$('#parlayStats').DataTable({
+      data:    parlayData,
+      columns,
+      // optional: remove the “Processing…” overlay
+      processing: false
+    });
   });
 </script>
 
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+  />
+</svelte:head>
+
 <style>
-      .main {
-        position: relative;
-        z-index: 1;
-    }
-    .display {
-        display: table;
-        text-align: center;
-        line-height: 1.1em;
-        font-size: 1.4em;
-        margin: 6px auto 10px;
-        cursor: pointer;
-    }
-    .banner {
-        text-align: center;
-        font-size: 1.8em;
-        margin: 10px;
-        font-style: italic;
-    }
+  .main {
+    position: relative;
+    z-index: 1;
+    padding: 1rem;
+  }
+  .banner h4 {
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 0.5em;
+    font-style: italic;
+  }
+  /* adjust as needed */
+  .display {
+    width: 100%;
+    margin: 0 auto;
+  }
 </style>
 
 <div class="main">
-    <div class="banner">
-        <h4>Leg Day Parlay</h4>
-    </div>
-    <table id="parlayStats" class="display">
-        <thead>
-            <tr>
-                <th>GM Name</th>
-                <th>GM Team</th>
-                <th>Date</th>
-                <th>Week</th>
-                <th>Group Parlay Bet</th>
-                <th>Odds</th>
-                <th>Group Parlay Win</th>
-                <th>Bet Category 1</th>
-                <th>Bet Category 2</th>
-            </tr>
-        </thead>
-    </table>
+  <div class="banner">
+    <h4>Leg Day Parlay</h4>
+  </div>
+
+  <table id="parlayStats" class="display">
+    <thead>
+      <tr>
+        <th>GM Name</th>
+        <th>GM Team</th>
+        <th>Date</th>
+        <th>Week</th>
+        <th>Group Parlay Bet</th>
+        <th>Odds</th>
+        <th>Group Parlay Win</th>
+        <th>Bet Category 1</th>
+        <th>Bet Category 2</th>
+      </tr>
+    </thead>
+    <!-- DataTables will inject <tbody> for you -->
+  </table>
 </div>
-
-
-
-
