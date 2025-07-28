@@ -1,6 +1,6 @@
 <script>
   import { onMount }   from 'svelte';
-  import { loadScript } from '$lib/utils/loadScript.js';
+  import { getParlay } from '$lib/utils/helper.js';
 
   export let data;                  // from +page.js
   const { ajaxUrl, columns } = data;
@@ -8,11 +8,11 @@
   onMount(async () => {
     try {
       // 1) load jQuery
-      await loadScript('https://code.jquery.com/jquery-3.7.1.js');
+      await getParlay('https://code.jquery.com/jquery-3.7.1.js');
       // 2) load DataTables core (note 1.x, not 2.x)
-      await loadScript('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+      await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
       // 3) (optional) load Moment if you need it
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
+      await getParlay('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
 
       // initialize
       window.$('#parlayStats').DataTable({
