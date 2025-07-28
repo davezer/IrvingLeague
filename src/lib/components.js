@@ -18,7 +18,7 @@ import HomePost from './BlogPosts/HomePost.svelte';
 import FullPost from './BlogPosts/FullPost.svelte';
 import Posts from './BlogPosts/Posts.svelte';
 import Standings from './Standings/index.svelte';
-import Resources from './Resources/index.svelte';
+import Resources from './Resources.svelte';
 
 export {
     Nav,
