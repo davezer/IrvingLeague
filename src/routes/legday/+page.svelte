@@ -1,32 +1,31 @@
 <script>
-    import { onMount } from 'svelte';
-    import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
+  import { onMount }   from 'svelte';
+  import { getParlay } from '$lib/utils/helper.js';
 
-    // `data` is whatever you returned in +page.js
-    export let data;
-    const { ajaxUrl, columns } = data;
+  export let data;                  // from +page.js
+  const { ajaxUrl, columns } = data;
 
-    onMount(async () => {
-        // load dependencies in sequence
-        await getParlay('https://code.jquery.com/jquery-3.7.1.js');
-        await getParlay(
-            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js'
-        );
-        await getParlay(
-            'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js'
-        );
+  onMount(async () => {
+    try {
+      // 1) load jQuery
+      await getParlay('https://code.jquery.com/jquery-3.7.1.js');
+      // 2) load DataTables core (note 1.x, not 2.x)
+      await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+      // 3) (optional) load Moment if you need it
+      await getParlay('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
 
-        // init the DataTable once everything’s ready
-        window.$('#parlayStats').DataTable({
-            ajax: {
-                url: ajaxUrl,
-                dataSrc: 'data', // <— make sure this matches your JSON key
-                error: (xhr, err, code) =>
-                    console.error('DT Ajax error', xhr.responseText),
-            },
-            columns,
-        });
-    });
+      // initialize
+      window.$('#parlayStats').DataTable({
+        ajax: {
+          url:     ajaxUrl,
+          dataSrc: 'data'
+        },
+        columns
+      });
+    } catch (err) {
+      console.error('Script load or DataTable init failed:', err);
+    }
+  });
 </script>
 
 <style>
@@ -38,7 +37,7 @@
         display: table;
         text-align: center;
         line-height: 1.1em;
-        font-size: 1.7em;
+        font-size: 1.4em;
         margin: 6px auto 10px;
         cursor: pointer;
     }
@@ -70,3 +69,6 @@
         </thead>
     </table>
 </div>
+
+
+
