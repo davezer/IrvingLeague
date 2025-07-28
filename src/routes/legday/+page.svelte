@@ -1,6 +1,6 @@
 <script>
   import { onMount }   from 'svelte';
-  import { getParlay } from '$lib/utils/helper.js';
+    import { getParlay } from '$lib/utils/helper.js';
 
   export let data;                  // from +page.js
   const { ajaxUrl, columns } = data;
