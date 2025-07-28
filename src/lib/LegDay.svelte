@@ -23,11 +23,11 @@
         font-size: 1.1em;
     }
 
-    a {
+    /* a {
         color: var(--g555);
         font-size: 1.1em;
         text-decoration: none;
-    }
+    } */
 
     h4 {
         text-align: center;
