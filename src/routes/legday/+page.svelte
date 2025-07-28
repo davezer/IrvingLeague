@@ -1,12 +1,12 @@
 <script>
   import { onMount } from 'svelte';
-  import { loadScript }    from '../utils/loadScript.js';  // adjust path as needed
+  import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
 
   onMount(async () => {
     try {
-      await loadScript('https://code.jquery.com/jquery-3.7.1.js');
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
-      await loadScript('https://cdn.datatables.net/2.3.2/js/dataTables.js');
+      await getParlay('https://code.jquery.com/jquery-3.7.1.js');
+      await getParlay('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
+      await getParlay('https://cdn.datatables.net/2.3.2/js/dataTables.js');
 
       // now DataTables is ready
       window.$('#parlayStats').DataTable({
