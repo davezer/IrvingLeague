@@ -1,7 +1,7 @@
 
 <script>
   import { onMount } from 'svelte';
-  import { loadScript }    from '$lib/utils/loadScript.js';  // your helper
+  import { getParlay }    from '$lib/utils/getParlay.js';  // your helper
 
   // `data` is whatever you returned in +page.js
   export let data;
@@ -9,9 +9,9 @@
 
   onMount(async () => {
     // load dependencies in sequence
-    await loadScript('https://code.jquery.com/jquery-3.7.1.js');
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
-    await loadScript('https://cdn.datatables.net/2.3.2/js/dataTables.js');
+    await getParlay('https://code.jquery.com/jquery-3.7.1.js');
+    await getParlay('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js');
+    await getParlay('https://cdn.datatables.net/2.3.2/js/dataTables.js');
 
     // init the DataTable once everything’s ready
     window.$('#parlayStats').DataTable({
@@ -23,9 +23,28 @@
 
 <style>
   /* your styles here */
+  
+	.main {
+		position: relative;
+		z-index: 1;
+	}
+    .display {
+         display: table;
+        text-align: center;
+        line-height: 1.1em;
+        font-size: 1.7em;
+        margin: 6px auto 10px;
+        cursor: pointer;
+    }
+     h4 {
+        text-align: center;
+        font-size: 1.8em;
+        margin: 10px;
+        font-style: italic;
+    }
 </style>
 
-<div class="pageBody">
+<div class="main">
   <div class="banner">
     <h4>Leg Day Parlay</h4>
   </div>
