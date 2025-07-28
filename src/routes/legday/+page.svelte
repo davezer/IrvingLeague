@@ -1,26 +1,35 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helper.js';
+  import { loadScript } from '$lib/utils/loadScript.js';
 
-  // from +page.js
+  // this is exactly what +page.js returns
   export let data;
   const { parlayData, columns } = data;
 
-  onMount(async () => {
-    await getParlay('https://code.jquery.com/jquery-3.7.1.min.js');
-    await getParlay('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+  // debug: make sure parlayData actually has rows
+  console.log('parlayData:', parlayData);
 
-    // Pass the JSON array directly—no AJAX, no CORS headaches
-    window.$('#parlayStats').DataTable({
-      data:    parlayData,
-      columns,
-      // optional: remove the “Processing…” overlay
-      processing: false
-    });
+  onMount(async () => {
+    try {
+      // 1) load core dependencies
+      await loadScript('https://code.jquery.com/jquery-3.7.1.min.js');
+      await loadScript('https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js');
+
+      // 2) init DataTable with your array
+      window.$('#parlayStats').DataTable({
+        data:    parlayData,
+        columns,
+        // turn off the “processing” overlay since we already have data
+        processing: false
+      });
+    } catch (err) {
+      console.error('Failed to load scripts or init DataTable:', err);
+    }
   });
 </script>
 
 <svelte:head>
+  <!-- DataTables core CSS -->
   <link
     rel="stylesheet"
     href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
@@ -44,14 +53,18 @@
     width: 100%;
     margin: 0 auto;
   }
+ 
+  .table-wrapper {
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+
 </style>
 
-<div class="main">
-  <div class="banner">
-    <h4>Leg Day Parlay</h4>
-  </div>
 
-  <table id="parlayStats" class="display">
+<div class="table-wrapper">
+  <h4 style="text-align:center; margin-bottom:1rem;">Leg Day Parlay</h4>
+  <table id="parlayStats" class="display" style="width:100%;">
     <thead>
       <tr>
         <th>GM Name</th>
@@ -65,6 +78,8 @@
         <th>Bet Category 2</th>
       </tr>
     </thead>
-    <!-- DataTables will inject <tbody> for you -->
+    <!-- DataTables will auto‑inject <tbody> for you -->
   </table>
 </div>
+
+
