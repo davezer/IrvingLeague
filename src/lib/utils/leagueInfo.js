@@ -240,78 +240,78 @@ export const managers = [
       "tradingScale": 7, // 1 - 10
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
-      {
-        // array number 9
-      "name": "Adam Lopiano",
-      "managerID": "",
-      "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
-      "location": "CT", // (optional)
-      "bio": "The Saskatchewan Mounties ride with pride, grit, and icy resolve. Patrolling the fantasy frontier with iron will and northern toughness, this squad enforces dominance with old-school grit and cold-blooded precision. Respect is earned — and the Mounties always get their win.",
-      "photo": "/managers/mounties.png", // square ratio recommended (no larger than 500x500)
-      "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "nyg", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
-      "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
-      "rival": {
-        name: "Jay", // Can be anything (usually your rival's name)
-        link: 7, // manager array number within this array, or null to link back to all managers page
-        image: "/managers/jayhawks.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
-      },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
-      "valuePosition": "RB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
-      "rookieOrVets": "rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
-      "philosophy": "Steady as the snow, fierce as the moose.",
-      "tradingScale": 4, // 1 - 10
-      "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
-      },
-        {
-        // array number 10
-      "name": "James Barmore",
-      "managerID": "",
-      "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
-      "location": "FL", // (optional)
-      "bio": "The Dunedin Homers run a tight ship built on discipline, data, and deep analytics. Every roster move is calculated, every matchup dissected. No flash, just fundamentals. Rooted in precision and powered by performance metrics, the Homers don’t chase hype — they chase wins.",
-      "photo": "/managers/homers.png", // square ratio recommended (no larger than 500x500)
-      "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
-      "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
-      "rival": {
-        name: "Jamie", // Can be anything (usually your rival's name)
-        link: 2, // manager array number within this array, or null to link back to all managers page
-        image: "/managers/lightsabres.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
-      },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
-      "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
-      "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
-      "philosophy": "Trust the data. Execute the plan. Win with precision.",
-      "tradingScale": 4, // 1 - 10
-      "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
-      },
-      {
-        // array number 11
-      "name": "Brian Chorney",
-      "managerID": "",
-      "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
-      "location": "FL", // (optional)
-      "bio": "The D.C. Rabid Dogs play with unhinged intensity and a hunger that never quits. Fueled by chaos and capital city grit, this squad attacks every matchup with snarling energy and no mercy. Once they’ve got a lead, they don’t let go — they bite down and finish the job.",
-      "photo": "/managers/rabid.png", // square ratio recommended (no larger than 500x500)
-      "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
-      "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
-      "rival": {
-        name: "Romano", // Can be anything (usually your rival's name)
-        link: 2, // manager array number within this array, or null to link back to all managers page
-        image: "/managers/victinori.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
-      },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
-      "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
-      "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
-      "philosophy": "Unleash chaos. Control the game.",
-      "tradingScale": 9, // 1 - 10
-      "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
-      },
+      // {
+      //   // array number 9
+      // "name": "Adam Lopiano",
+      // "managerID": "",
+      // "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
+      // "location": "CT", // (optional)
+      // "bio": "The Saskatchewan Mounties ride with pride, grit, and icy resolve. Patrolling the fantasy frontier with iron will and northern toughness, this squad enforces dominance with old-school grit and cold-blooded precision. Respect is earned — and the Mounties always get their win.",
+      // "photo": "/managers/mounties.png", // square ratio recommended (no larger than 500x500)
+      // "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
+      // "favoriteTeam": "nyg", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      // "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
+      // "rival": {
+      //   name: "Jay", // Can be anything (usually your rival's name)
+      //   link: 7, // manager array number within this array, or null to link back to all managers page
+      //   image: "/managers/jayhawks.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
+      // },
+      // "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
+      // "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
+      // "valuePosition": "RB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
+      // "rookieOrVets": "rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
+      // "philosophy": "Steady as the snow, fierce as the moose.",
+      // "tradingScale": 4, // 1 - 10
+      // "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
+      // },
+      //   {
+      //   // array number 10
+      // "name": "James Barmore",
+      // "managerID": "",
+      // "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
+      // "location": "FL", // (optional)
+      // "bio": "The Dunedin Homers run a tight ship built on discipline, data, and deep analytics. Every roster move is calculated, every matchup dissected. No flash, just fundamentals. Rooted in precision and powered by performance metrics, the Homers don’t chase hype — they chase wins.",
+      // "photo": "/managers/homers.png", // square ratio recommended (no larger than 500x500)
+      // "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
+      // "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      // "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
+      // "rival": {
+      //   name: "Jamie", // Can be anything (usually your rival's name)
+      //   link: 2, // manager array number within this array, or null to link back to all managers page
+      //   image: "/managers/lightsabres.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
+      // },
+      // "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
+      // "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
+      // "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
+      // "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
+      // "philosophy": "Trust the data. Execute the plan. Win with precision.",
+      // "tradingScale": 4, // 1 - 10
+      // "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
+      // },
+      // {
+      //   // array number 11
+      // "name": "Brian Chorney",
+      // "managerID": "",
+      // "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
+      // "location": "FL", // (optional)
+      // "bio": "The D.C. Rabid Dogs play with unhinged intensity and a hunger that never quits. Fueled by chaos and capital city grit, this squad attacks every matchup with snarling energy and no mercy. Once they’ve got a lead, they don’t let go — they bite down and finish the job.",
+      // "photo": "/managers/rabid.png", // square ratio recommended (no larger than 500x500)
+      // "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
+      // "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      // "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
+      // "rival": {
+      //   name: "Romano", // Can be anything (usually your rival's name)
+      //   link: 2, // manager array number within this array, or null to link back to all managers page
+      //   image: "/managers/victinori.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
+      // },
+      // "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
+      // "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
+      // "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
+      // "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
+      // "philosophy": "Unleash chaos. Control the game.",
+      // "tradingScale": 9, // 1 - 10
+      // "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
+      // },
   ]
   
 
