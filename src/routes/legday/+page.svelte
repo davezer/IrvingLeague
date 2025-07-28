@@ -29,6 +29,27 @@
     });
 </script>
 
+<style>
+      .main {
+        position: relative;
+        z-index: 1;
+    }
+    .display {
+        display: table;
+        text-align: center;
+        line-height: 1.1em;
+        font-size: 1.7em;
+        margin: 6px auto 10px;
+        cursor: pointer;
+    }
+    h4 {
+        text-align: center;
+        font-size: 1.8em;
+        margin: 10px;
+        font-style: italic;
+    }
+</style>
+
 <div class="main">
     <div class="banner">
         <h4>Leg Day Parlay</h4>
@@ -49,26 +70,3 @@
         </thead>
     </table>
 </div>
-
-<style>
-    /* your styles here */
-
-    .main {
-        position: relative;
-        z-index: 1;
-    }
-    .display {
-        display: table;
-        text-align: center;
-        line-height: 1.1em;
-        font-size: 1.7em;
-        margin: 6px auto 10px;
-        cursor: pointer;
-    }
-    h4 {
-        text-align: center;
-        font-size: 1.8em;
-        margin: 10px;
-        font-style: italic;
-    }
-</style>
