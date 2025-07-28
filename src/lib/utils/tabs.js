@@ -79,7 +79,7 @@ export const tabs = [
         ]
     },
     {
-        icon: 'lightbulb',
+        icon: 'weight',
         label: 'Leg Day',
         dest: '/legday',
         key: 'legday',
