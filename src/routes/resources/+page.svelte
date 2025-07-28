@@ -1,4 +1,4 @@
-<!-- <script>
+<script>
 	import LinearProgress from '@smui/linear-progress';
 	import { News, Resources } from '$lib/components';
 
@@ -25,11 +25,11 @@
 		<p>Retrieving fantasy news...</p>
 		<br />
 		<LinearProgress indeterminate />
-	<!-- </div>
+	</div>
 {:then news}
 	<!-- promise was fulfilled -->
-	<!-- <News {news}/>
+	<News {news}/>
 {:catch error}
 	<!-- promise was rejected -->
-	<!-- <p>Something went wrong: {error.message}</p>
-{/await} -->
+<p>Something went wrong: {error.message}</p>
+{/await}
