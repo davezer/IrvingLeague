@@ -13,6 +13,9 @@
   let sortCol = null;
   let sortDir = 'asc';
 
+  // Search state
+  let searchTerm = '';
+
   onMount(async () => {
     try {
       const res = await fetch(endpoint, { mode: 'cors' });
@@ -21,6 +24,7 @@
       if (!Array.isArray(json)) throw new Error('Parlay data is not an array');
       parlayData = json;
     } catch (e) {
+      console.warn('Fetch failed, JSONP fallback', e);
       const callbackName = `cb${Date.now()}`;
       window[callbackName] = (data) => {
         parlayData = data;
@@ -38,16 +42,25 @@
     }
   });
 
+  // Filter by search term
+  $: filteredData = parlayData.filter(row => {
+    const term = searchTerm.toLowerCase();
+    return columns.some(col => {
+      const val = row[col.data];
+      return val != null && String(val).toLowerCase().includes(term);
+    });
+  });
+
   // Sort and paginate data
   $: sortedData = sortCol
-    ? [...parlayData].sort((a, b) => {
+    ? [...filteredData].sort((a, b) => {
         const aVal = a[sortCol] ?? '';
         const bVal = b[sortCol] ?? '';
         if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
         if (aVal > bVal) return sortDir === 'asc' ? 1 : -1;
         return 0;
       })
-    : parlayData;
+    : filteredData;
 
   $: visibleData = sortedData.slice(0, perPage);
 
@@ -63,7 +76,7 @@
 
 <style>
   .table-container {
-    max-width: 1700px;
+    max-width: 800px;
     margin: 2rem auto;
     padding: 1rem;
     background: #000;
@@ -99,12 +112,27 @@
   }
   .controls {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
     color: #fff;
   }
+  .controls label {
+    margin: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+  .controls input {
+    margin-left: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: #222;
+    color: #fff;
+  }
   select {
+    margin-left: 0.5rem;
     padding: 0.25rem;
     border-radius: 4px;
     background: #222;
@@ -121,6 +149,10 @@
   <div class="table-container">
     <div class="controls">
       <label>
+        Search:
+        <input type="text" placeholder="Search..." bind:value={searchTerm} />
+      </label>
+      <label>
         Show
         <select bind:value={perPage}>
           {#each perPageOptions as opt}
@@ -129,7 +161,7 @@
         </select>
         entries
       </label>
-      <div>Showing {visibleData.length} of {parlayData.length} entries</div>
+      <div>Showing {visibleData.length} of {filteredData.length} entries</div>
     </div>
 
     <table>
