@@ -1,39 +1,31 @@
-// src/routes/legday/+page.js
-import { error } from '@sveltejs/kit';
+import { getParlay } from '$lib/getParlay';
 
-export async function load({ fetch }) {
-  const endpoint =
-    'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';
+// Google Apps Script endpoint for fetching parlay data
+const endpoint = 'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';
 
-  // 1) Server‑side fetch
-  const res = await fetch(endpoint, { cache: 'no-store' });
-  if (res.status === 401) {
-    throw error(401, 'Unauthorized: please re‑deploy your Apps Script as public.');
-  }
-  if (!res.ok) {
-    throw error(res.status, `Error fetching parlay data: ${res.statusText}`);
-  }
+// Define table columns for DataTable initialization
+const columns = [
+  { data: 'GM Name' },
+  { data: 'GM Team' },
+  { data: 'Date' },
+  { data: 'Week' },
+  { data: 'Group Parlay Bet' },
+  { data: 'Odds' },
+  { data: 'Group Parlay Win' },
+  { data: 'Bet Category 1' },
+  { data: 'Bet Category 2' }
+];
 
-  // 2) Parse JSON
-  const json = await res.json();
-  const parlayData = Array.isArray(json.data) ? json.data : [];
+// SvelteKit load function to inject the parlay script and pass config to the page
+export async function load() {
+  const src = '/scripts/parlay.js';
+  await getParlay(src);
 
-  // 3) Define your columns
-  const columns = [
-    { data: 'GM Name' },
-    { data: 'GM Team' },
-    { data: 'Date' },
-    { data: 'Week' },
-    { data: 'Group Parlay Bet' },
-    { data: 'Odds' },
-    { data: 'Group Parlay Win' },
-    { data: 'Bet Category 1' },
-    { data: 'Bet Category 2' }
-  ];
-
-  // 4) Return into +page.svelte
   return {
-    parlayData,
-    columns
+    props: {
+      src,
+      endpoint,
+      columns
+    }
   };
 }
