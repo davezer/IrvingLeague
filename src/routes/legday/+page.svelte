@@ -1,33 +1,37 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helper';  
+  import { getParlay } from '$lib/utils/helper';
   export let data;
 
-  const { scriptSrc, endpoint, columns } = data;
+  const { endpoint, columns } = data;
   let parlayData = [];
   let loading = true;
   let error = null;
 
   onMount(async () => {
     try {
-      if (scriptSrc) {
-        // Load any local wrapper script if provided
-        await getParlay(scriptSrc);
-      }
-
-      // Fetch JSON directly
-      const res = await fetch(endpoint, { cache: 'no-store' });
-      if (!res.ok) {
-        throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
-      }
+      // Attempt a standard CORS fetch
+      const res = await fetch(endpoint, { mode: 'cors' });
+      if (!res.ok) throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
       const json = await res.json();
-      if (!Array.isArray(json)) {
-        throw new Error('Invalid parlay data format');
-      }
+      if (!Array.isArray(json)) throw new Error('Parlay data is not an array');
       parlayData = json;
-    } catch (e) {
-      console.error(e);
-      error = e;
+    } catch (fetchError) {
+      console.warn('Standard fetch failed, JSONP fallback', fetchError);
+      // JSONP fallback
+      const callbackName = `cb${Date.now()}`;
+      window[callbackName] = (data) => {
+        parlayData = data;
+        delete window[callbackName];
+      };
+      const script = document.createElement('script');
+      script.src = `${endpoint}?callback=${callbackName}`;
+      script.onerror = (e) => {
+        console.error('JSONP request failed', e);
+        error = new Error('JSONP request failed');
+        delete window[callbackName];
+      };
+      document.body.appendChild(script);
     } finally {
       loading = false;
     }

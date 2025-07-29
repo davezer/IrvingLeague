@@ -1,7 +1,6 @@
 export function load() {
-  const scriptSrc = null; // no local wrapper script by default
   const endpoint =
-    'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';
+    'https://script.google.com/macros/s/AKfycbzYILyDhrFQpfaQx3crpwZ99tPx93aBMFqhxHZX-bCu4C7s4vf3ogUplN1lLHx_Iu8Q/exec';
 
   const columns = [
     { data: 'GM Name' },
@@ -15,5 +14,5 @@ export function load() {
     { data: 'Bet Category 2' }
   ];
 
-  return { scriptSrc, endpoint, columns };
+  return { endpoint, columns };
 }
