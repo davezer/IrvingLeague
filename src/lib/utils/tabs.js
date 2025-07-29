@@ -79,9 +79,9 @@ export const tabs = [
         ]
     },
     {
-        icon: 'finance',
-        label: 'Leg Day',
-        dest: '/legday',
-        key: 'legday',
+        icon: '/static/financeChip.svg',
+        label: 'Parlay'',
+        dest: '/parlay',
+        key: 'parlay',
     },
 ];
