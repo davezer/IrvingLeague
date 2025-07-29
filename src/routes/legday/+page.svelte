@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helper';
+  export let data;
 
   const { endpoint, columns } = data;
   let parlayData = [];
@@ -15,13 +15,15 @@
 
   onMount(async () => {
     try {
+      // Fetch JSON data via CORS
       const res = await fetch(endpoint, { mode: 'cors' });
       if (!res.ok) throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
       const json = await res.json();
       if (!Array.isArray(json)) throw new Error('Parlay data is not an array');
       parlayData = json;
-    } catch (fetchError) {
-      console.warn('Standard fetch failed, JSONP fallback', fetchError);
+    } catch (e) {
+      console.error('Fetch failed, JSONP fallback', e);
+      // JSONP fallback
       const callbackName = `cb${Date.now()}`;
       window[callbackName] = (data) => {
         parlayData = data;
@@ -29,8 +31,8 @@
       };
       const script = document.createElement('script');
       script.src = `${endpoint}?callback=${callbackName}`;
-      script.onerror = (e) => {
-        console.error('JSONP request failed', e);
+      script.onerror = (err) => {
+        console.error('JSONP request failed', err);
         error = new Error('JSONP request failed');
         delete window[callbackName];
       };
@@ -40,7 +42,7 @@
     }
   });
 
-  // Derived sorted and paginated data
+  // Sort and paginate data
   $: sortedData = sortCol
     ? [...parlayData].sort((a, b) => {
         const aVal = a[sortCol] ?? '';
