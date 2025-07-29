@@ -15,15 +15,12 @@
 
   onMount(async () => {
     try {
-      // Fetch JSON data via CORS
       const res = await fetch(endpoint, { mode: 'cors' });
       if (!res.ok) throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
       const json = await res.json();
       if (!Array.isArray(json)) throw new Error('Parlay data is not an array');
       parlayData = json;
     } catch (e) {
-      console.error('Fetch failed, JSONP fallback', e);
-      // JSONP fallback
       const callbackName = `cb${Date.now()}`;
       window[callbackName] = (data) => {
         parlayData = data;
@@ -32,7 +29,6 @@
       const script = document.createElement('script');
       script.src = `${endpoint}?callback=${callbackName}`;
       script.onerror = (err) => {
-        console.error('JSONP request failed', err);
         error = new Error('JSONP request failed');
         delete window[callbackName];
       };
@@ -70,18 +66,26 @@
     max-width: 800px;
     margin: 2rem auto;
     padding: 1rem;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
+    overflow-x: auto;
+    color: #fff;
   }
   table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
+    background: #000;
+    color: #fff;
   }
   th, td {
     padding: 0.5rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #333;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   th {
     cursor: pointer;
@@ -98,10 +102,14 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    color: #fff;
   }
   select {
     padding: 0.25rem;
     border-radius: 4px;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
   }
 </style>
 
