@@ -1,23 +1,21 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helper';
+  import { getParlay } from '$lib/utils/helper';  
   export let data;
 
-  // Destructure load() data
   const { scriptSrc, endpoint, columns } = data;
-
   let parlayData = [];
   let loading = true;
   let error = null;
 
   onMount(async () => {
     try {
-      // Optionally load a local script if you have one
       if (scriptSrc) {
+        // Load any local wrapper script if provided
         await getParlay(scriptSrc);
       }
 
-      // Fetch the JSON directly from the Apps Script endpoint
+      // Fetch JSON directly
       const res = await fetch(endpoint, { cache: 'no-store' });
       if (!res.ok) {
         throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
@@ -41,7 +39,7 @@
 {:else if error}
   <p class="error">Error loading parlay: {error.message}</p>
 {:else}
-  <table class="parlay-table" style="width:100%; border-collapse: collapse;">
+  <table style="width:100%; border-collapse: collapse;">
     <thead>
       <tr>
         {#each columns as col}

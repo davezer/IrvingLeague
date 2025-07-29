@@ -1,5 +1,5 @@
 export function load() {
-  const scriptSrc = '/scripts/parlay.js'; // local wrapper script if you have one
+  const scriptSrc = null; // no local wrapper script by default
   const endpoint =
     'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';
 
