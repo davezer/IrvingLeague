@@ -1,5 +1,5 @@
 export function load() {
-  const src = '/scripts/parlay.js';  // your external parlay script
+  const src = 'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';  // your external parlay script
   const columns = [
     { data: 'GM Name' },
     { data: 'GM Team' },
