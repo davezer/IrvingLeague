@@ -127,8 +127,8 @@
         <tr>
           {#each columns as col}
             <th
-              class:selected-asc={sortCol === col.data && sortDir === 'asc'}
-              class:selected-desc={sortCol === col.data && sortDir === 'desc'}
+              class:sorted-asc={sortCol === col.data && sortDir === 'asc'}
+              class:sorted-desc={sortCol === col.data && sortDir === 'desc'}
               on:click={() => toggleSort(col.data)}
             >
               {col.data}
