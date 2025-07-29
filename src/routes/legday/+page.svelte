@@ -1,10 +1,10 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
+  import { getParlay } from '$lib/utils/helper';  // Import the getParlay function from the helper module
+  export let data;
 
-  // Props from +page.js
-  export let src;
-  export let columns;
+  // Destructure values returned by load()
+  const { src, columns } = data;
 
   let parlayData = [];
   let error = null;
@@ -12,19 +12,18 @@
 
   onMount(async () => {
     try {
-      // Load the external script on the client
       await getParlay(src);
+      // Call the global function exposed by your script
+      const dataArr =
+        typeof window.fetchParlayData === 'function'
+          ? window.fetchParlayData()
+          : null;
 
-      // Assume the script exposes a global fetchParlayData()
-      const data = typeof window.fetchParlayData === 'function'
-        ? window.fetchParlayData()
-        : null;
-
-      if (!Array.isArray(data)) {
+      if (!Array.isArray(dataArr)) {
         throw new Error('fetchParlayData() did not return an array');
       }
 
-      parlayData = data;
+      parlayData = dataArr;
     } catch (e) {
       console.error(e);
       error = e;
@@ -43,7 +42,7 @@
     <thead>
       <tr>
         {#each columns as col}
-          <th style="padding: 8px; border-bottom: 2px solid #ddd; text-align: left;">
+          <th style="padding:8px; border-bottom:2px solid #ddd; text-align:left;">
             {col.data}
           </th>
         {/each}
@@ -53,7 +52,7 @@
       {#each parlayData as row}
         <tr>
           {#each columns as col}
-            <td style="padding: 8px; border-bottom: 1px solid #eee;">
+            <td style="padding:8px; border-bottom:1px solid #eee;">
               {row[col.data]}
             </td>
           {/each}

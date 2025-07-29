@@ -1,6 +1,5 @@
 export function getParlay(src) {
   return new Promise((resolve, reject) => {
-    // if it’s already loaded, just resolve immediately
     if (document.querySelector(`script[src="${src}"]`)) {
       resolve();
       return;
