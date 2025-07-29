@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/getParlay';
+  import { getParlay } from '$lib/utils/helper';
   export let data;
 
   // Destructure load() data
