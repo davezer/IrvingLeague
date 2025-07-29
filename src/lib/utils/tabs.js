@@ -79,7 +79,7 @@ export const tabs = [
         ]
     },
     {
-        icon: '/financeChip.png',
+        icon: '/static/financeChip.png',
         label: 'Parlay',
         dest: '/parlay',
         key: 'parlay',
