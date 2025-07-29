@@ -1,29 +1,32 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helper';  // Import the getParlay function from the helper module
+  import { getParlay } from '$lib/getParlay';
   export let data;
 
-  // Destructure values returned by load()
-  const { src, columns } = data;
+  // Destructure load() data
+  const { scriptSrc, endpoint, columns } = data;
 
   let parlayData = [];
-  let error = null;
   let loading = true;
+  let error = null;
 
   onMount(async () => {
     try {
-      await getParlay(src);
-      // Call the global function exposed by your script
-      const dataArr =
-        typeof window.fetchParlayData === 'function'
-          ? window.fetchParlayData()
-          : null;
-
-      if (!Array.isArray(dataArr)) {
-        throw new Error('fetchParlayData() did not return an array');
+      // Optionally load a local script if you have one
+      if (scriptSrc) {
+        await getParlay(scriptSrc);
       }
 
-      parlayData = dataArr;
+      // Fetch the JSON directly from the Apps Script endpoint
+      const res = await fetch(endpoint, { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
+      }
+      const json = await res.json();
+      if (!Array.isArray(json)) {
+        throw new Error('Invalid parlay data format');
+      }
+      parlayData = json;
     } catch (e) {
       console.error(e);
       error = e;
