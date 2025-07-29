@@ -1,22 +1,23 @@
 <script>
   import { onMount } from 'svelte';
+  import { page } from '$app/stores';
 
-  // Props passed from +page.js (server)
-  export let endpoint;
-  export let columns;
-
-  let error;
+  // Access data returned by load()
   let parlayData = [];
+  let error;
   let loading = true;
+
+  // Destructure endpoint and columns from page data
+  $: endpoint = $page.data.endpoint;
+  $: columns = $page.data.columns;
 
   onMount(async () => {
     try {
-      // Attempt a CORS-enabled fetch
+      // Fetch parlay JSON directly from the Apps Script endpoint
       const response = await fetch(endpoint, { mode: 'cors' });
       if (!response.ok) {
-        // Try to extract server message for debugging
-        const bodyText = await response.text().catch(() => '');
-        throw new Error(`Network response was not ok: ${response.status} ${response.statusText || ''}${bodyText ? ' - ' + bodyText : ''}`);
+        const body = await response.text().catch(() => '');
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}${body ? ' - ' + body : ''}`);
       }
       const data = await response.json();
 
@@ -28,10 +29,6 @@
     } catch (e) {
       console.error('Fetch error details:', e);
       error = e;
-      // Suggest enabling CORS on the Apps Script if status is 0 or 4xx/5xx
-      if (e instanceof Error && e.message.includes('0 ')) {
-        console.warn('If using Apps Script, ensure you have set Access-Control-Allow-Origin header to "*" in doGet.');
-      }
     } finally {
       loading = false;
     }
@@ -44,7 +41,7 @@
   <div class="error">
     <p>Error loading parlay:</p>
     <pre>{error.message}</pre>
-    <p>Check console for full details and CORS settings on your Apps Script.</p>
+    <p>Check console for details and ensure your Apps Script is deployed as a web app.</p>
   </div>
 {:else}
   <table class="parlay-table" style="width:100%; border-collapse: collapse;">
