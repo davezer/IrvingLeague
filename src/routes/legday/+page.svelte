@@ -4,17 +4,17 @@
   export let columns;
   import { onMount } from 'svelte';
   import { getParlay } from '$lib/getParlay';
-  import jQuery from 'jquery';
-  import 'datatables.net';
 
   let error;
+  let parlayData = [];
+  let loading = true;
 
   onMount(async () => {
     try {
       // Ensure the external script is loaded
       await getParlay(src);
 
-      // Optionally fetch data directly from the endpoint
+      // Fetch data directly from the endpoint
       const response = await fetch(endpoint);
       const data = await response.json();
 
@@ -22,37 +22,37 @@
         throw new Error('Invalid parlay data format');
       }
 
-      // Initialize DataTable with the fetched data and defined columns
-      jQuery('#parlay-table').DataTable({
-        data,
-        columns
-      });
+      parlayData = data;
     } catch (e) {
       console.error(e);
       error = e;
+    } finally {
+      loading = false;
     }
   });
 </script>
 
-<svelte:head>
-  <!-- DataTables core CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
-  />
-</svelte:head>
-
-{#if error}
+{#if loading}
+  <p>Loading parlay data...</p>
+{:else if error}
   <p class="error">Error loading parlay: {error.message}</p>
 {:else}
-  <table id="parlay-table" class="display" style="width:100%">
+  <table class="parlay-table" style="width:100%; border-collapse: collapse;">
     <thead>
       <tr>
         {#each columns as col}
-          <th>{col.data}</th>
+          <th style="padding: 8px; border-bottom: 2px solid #ddd; text-align: left;">{col.data}</th>
         {/each}
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+      {#each parlayData as row}
+        <tr>
+          {#each columns as col}
+            <td style="padding: 8px; border-bottom: 1px solid #eee;">{row[col.data]}</td>
+          {/each}
+        </tr>
+      {/each}
+    </tbody>
   </table>
 {/if}
