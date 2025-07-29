@@ -63,7 +63,7 @@
 
 <style>
   .table-container {
-    max-width: 1100px;
+    max-width: 1700px;
     margin: 2rem auto;
     padding: 1rem;
     background: #000;

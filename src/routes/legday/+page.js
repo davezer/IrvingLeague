@@ -9,7 +9,7 @@ export function load() {
     { data: 'Week' },
     { data: 'Group Parlay Bet' },
     { data: 'Odds' },
-    { data: 'Group Parlay Win' },
+    { data: 'Group Parlay Result' },
     { data: 'Bet Category 1' },
     { data: 'Bet Category 2' }
   ];
