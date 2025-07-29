@@ -13,7 +13,7 @@
   onMount(async () => {
     try {
       // Load external script only in browser
-      const src = '/src/lib/utils/helperFunctions/getParlay.js';
+      const src = 'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';
       await getParlay(src);
 
       // Fetch data directly from the endpoint
