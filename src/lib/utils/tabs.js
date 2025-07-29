@@ -80,7 +80,7 @@ export const tabs = [
     },
     {
         icon: '/financeChip.png',
-        label: 'Parlay'',
+        label: 'Parlay',
         dest: '/parlay',
         key: 'parlay',
     },
