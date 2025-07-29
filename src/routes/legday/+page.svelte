@@ -1,9 +1,10 @@
 <script>
-  export let src;
+  import { onMount } from 'svelte';
+  import { getParlay } from '$lib/utils/helper';  
+
+  // Props passed from +page.js (server)
   export let endpoint;
   export let columns;
-  import { onMount } from 'svelte';
-  import { getparlay } from '$lib/utils/helperFunctions/getParlay.js';
 
   let error;
   let parlayData = [];
@@ -11,7 +12,8 @@
 
   onMount(async () => {
     try {
-      // Ensure the external script is loaded
+      // Load external script only in browser
+      const src = '/scripts/parlay.js';
       await getParlay(src);
 
       // Fetch data directly from the endpoint
@@ -41,7 +43,9 @@
     <thead>
       <tr>
         {#each columns as col}
-          <th style="padding: 8px; border-bottom: 2px solid #ddd; text-align: left;">{col.data}</th>
+          <th style="padding: 8px; border-bottom: 2px solid #ddd; text-align: left;">
+            {col.data}
+          </th>
         {/each}
       </tr>
     </thead>
@@ -49,7 +53,9 @@
       {#each parlayData as row}
         <tr>
           {#each columns as col}
-            <td style="padding: 8px; border-bottom: 1px solid #eee;">{row[col.data]}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #eee;">
+              {row[col.data]}
+            </td>
           {/each}
         </tr>
       {/each}
