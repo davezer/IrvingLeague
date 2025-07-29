@@ -1,4 +1,4 @@
-import { getParlay } from '$lib/getParlay';
+import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
 
 // Google Apps Script endpoint for fetching parlay data
 const endpoint = 'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';

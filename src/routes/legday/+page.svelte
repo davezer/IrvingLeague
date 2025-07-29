@@ -3,7 +3,7 @@
   export let endpoint;
   export let columns;
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/getParlay';
+  import { getparlay } from '$lib/utils/helperFunctions/getParlay.js';
 
   let error;
   let parlayData = [];
