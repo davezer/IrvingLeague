@@ -1,20 +1,30 @@
 <script>
   import { onMount } from 'svelte';
+  import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
 
-  // Local columns definition (will be overwritten by server response)
-  let columns = [];
+  // Props from +page.js
+  export let src;
+  export let columns;
+
   let parlayData = [];
+  let error = null;
   let loading = true;
-  let error;
 
   onMount(async () => {
     try {
-      const res = await fetch('/api/parlay');
-      if (!res.ok) {
-        throw new Error(`Error fetching parlay: ${res.status} ${res.statusText}`);
+      // Load the external script on the client
+      await getParlay(src);
+
+      // Assume the script exposes a global fetchParlayData()
+      const data = typeof window.fetchParlayData === 'function'
+        ? window.fetchParlayData()
+        : null;
+
+      if (!Array.isArray(data)) {
+        throw new Error('fetchParlayData() did not return an array');
       }
-      const data = await res.json();
-      ({ parlayData, columns } = data);
+
+      parlayData = data;
     } catch (e) {
       console.error(e);
       error = e;
@@ -27,7 +37,7 @@
 {#if loading}
   <p>Loading parlay data...</p>
 {:else if error}
-  <p class="error">{error.message}</p>
+  <p class="error">Error loading parlay: {error.message}</p>
 {:else}
   <table class="parlay-table" style="width:100%; border-collapse: collapse;">
     <thead>
