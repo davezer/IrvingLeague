@@ -11,10 +11,12 @@
 
   onMount(async () => {
     try {
-      // Directly fetch data from the endpoint
-      const response = await fetch(endpoint);
+      // Attempt a CORS-enabled fetch
+      const response = await fetch(endpoint, { mode: 'cors' });
       if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
+        // Try to extract server message for debugging
+        const bodyText = await response.text().catch(() => '');
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText || ''}${bodyText ? ' - ' + bodyText : ''}`);
       }
       const data = await response.json();
 
@@ -24,8 +26,12 @@
 
       parlayData = data;
     } catch (e) {
-      console.error(e);
+      console.error('Fetch error details:', e);
       error = e;
+      // Suggest enabling CORS on the Apps Script if status is 0 or 4xx/5xx
+      if (e instanceof Error && e.message.includes('0 ')) {
+        console.warn('If using Apps Script, ensure you have set Access-Control-Allow-Origin header to "*" in doGet.');
+      }
     } finally {
       loading = false;
     }
@@ -35,7 +41,11 @@
 {#if loading}
   <p>Loading parlay data...</p>
 {:else if error}
-  <p class="error">Error loading parlay: {error.message}</p>
+  <div class="error">
+    <p>Error loading parlay:</p>
+    <pre>{error.message}</pre>
+    <p>Check console for full details and CORS settings on your Apps Script.</p>
+  </div>
 {:else}
   <table class="parlay-table" style="width:100%; border-collapse: collapse;">
     <thead>
