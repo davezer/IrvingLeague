@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte';
-  import { getParlay } from '$lib/utils/helper';  
 
   // Props passed from +page.js (server)
   export let endpoint;
@@ -12,12 +11,11 @@
 
   onMount(async () => {
     try {
-      // Load external script only in browser
-      const src = 'https://script.google.com/macros/s/AKfycbwlYoNVAM8u60WsP85yCb2SUb1wTBb-gltwXeyOLs5Ek5PINghBz3IDwQg4RxvnV2W9/exec';
-      await getParlay(src);
-
-      // Fetch data directly from the endpoint
+      // Directly fetch data from the endpoint
       const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
       const data = await response.json();
 
       if (!Array.isArray(data)) {

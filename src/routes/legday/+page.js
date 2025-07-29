@@ -1,5 +1,4 @@
-import { getParlay } from '$lib/utils/helperFunctions/getParlay.js';
-
+// +page.js - Load only static config (runs on server)
 export function load() {
   // Google Apps Script endpoint for fetching parlay data
   const endpoint =
