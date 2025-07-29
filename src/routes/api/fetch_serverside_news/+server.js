@@ -1,5 +1,4 @@
-<script>
-  import { onMount } from 'svelte';
+import { onMount } from 'svelte';
 
   // Local columns definition (will be overwritten by server response)
   let columns = [];
@@ -22,7 +21,6 @@
       loading = false;
     }
   });
-</script>
 
 {#if loading}
   <p>Loading parlay data...</p>
