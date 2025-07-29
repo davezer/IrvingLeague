@@ -1,16 +1,20 @@
 <script>
   import { onMount } from 'svelte';
   import { getParlay } from '$lib/utils/helper';
-  export let data;
 
   const { endpoint, columns } = data;
   let parlayData = [];
   let loading = true;
   let error = null;
 
+  // Pagination & Sorting state
+  const perPageOptions = [5, 10, 15];
+  let perPage = 10;
+  let sortCol = null;
+  let sortDir = 'asc';
+
   onMount(async () => {
     try {
-      // Attempt a standard CORS fetch
       const res = await fetch(endpoint, { mode: 'cors' });
       if (!res.ok) throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
       const json = await res.json();
@@ -18,7 +22,6 @@
       parlayData = json;
     } catch (fetchError) {
       console.warn('Standard fetch failed, JSONP fallback', fetchError);
-      // JSONP fallback
       const callbackName = `cb${Date.now()}`;
       window[callbackName] = (data) => {
         parlayData = data;
@@ -36,33 +39,112 @@
       loading = false;
     }
   });
+
+  // Derived sorted and paginated data
+  $: sortedData = sortCol
+    ? [...parlayData].sort((a, b) => {
+        const aVal = a[sortCol] ?? '';
+        const bVal = b[sortCol] ?? '';
+        if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortDir === 'asc' ? 1 : -1;
+        return 0;
+      })
+    : parlayData;
+
+  $: visibleData = sortedData.slice(0, perPage);
+
+  function toggleSort(col) {
+    if (sortCol === col) {
+      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortCol = col;
+      sortDir = 'asc';
+    }
+  }
 </script>
+
+<style>
+  .table-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+  }
+  th {
+    cursor: pointer;
+    user-select: none;
+  }
+  th.sorted-asc::after {
+    content: ' ▲';
+  }
+  th.sorted-desc::after {
+    content: ' ▼';
+  }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  select {
+    padding: 0.25rem;
+    border-radius: 4px;
+  }
+</style>
 
 {#if loading}
   <p>Loading parlay data...</p>
 {:else if error}
   <p class="error">Error loading parlay: {error.message}</p>
 {:else}
-  <table style="width:100%; border-collapse: collapse;">
-    <thead>
-      <tr>
-        {#each columns as col}
-          <th style="padding:8px; border-bottom:2px solid #ddd; text-align:left;">
-            {col.data}
-          </th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody>
-      {#each parlayData as row}
+  <div class="table-container">
+    <div class="controls">
+      <label>
+        Show
+        <select bind:value={perPage}>
+          {#each perPageOptions as opt}
+            <option value={opt}>{opt}</option>
+          {/each}
+        </select>
+        entries
+      </label>
+      <div>Showing {visibleData.length} of {parlayData.length} entries</div>
+    </div>
+
+    <table>
+      <thead>
         <tr>
           {#each columns as col}
-            <td style="padding:8px; border-bottom:1px solid #eee;">
-              {row[col.data]}
-            </td>
+            <th
+              class:selected-asc={sortCol === col.data && sortDir === 'asc'}
+              class:selected-desc={sortCol === col.data && sortDir === 'desc'}
+              on:click={() => toggleSort(col.data)}
+            >
+              {col.data}
+            </th>
           {/each}
         </tr>
-      {/each}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {#each visibleData as row}
+          <tr>
+            {#each columns as col}
+              <td>{row[col.data]}</td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
 {/if}
