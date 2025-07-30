@@ -1,4 +1,4 @@
-import { fetchPivotData, getMetricByYear } from '$lib/helper';
+import { fetchPivotData, getMetricByYear} from '$lib/utils/helperFunctions/fetchPivotData.js';
 
 /** @type {import('./$types').PageLoad} */
 export async function load() {
