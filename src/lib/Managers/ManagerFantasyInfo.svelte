@@ -1,5 +1,5 @@
 <script context="module">
-  import { fetchPivotData, getMetricByYear } from '$lib/helper.js';
+  import { fetchPivotData, getMetricByYear } from '$lib/utils/helperFunctions/fetchPivotData.js';
   /** @type {{ load: import('@sveltejs/kit').Load }} */
   export async function load() {
     const currentYear = new Date().getFullYear();
