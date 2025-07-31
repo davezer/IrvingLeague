@@ -1,14 +1,16 @@
-import { json, error } from '@sveltejs/kit';
-import { PUBLIC_PIVOT_WEBAPP_URL } from '$env/static/public';
-
 export async function GET({ fetch }) {
-  if (!PUBLIC_PIVOT_WEBAPP_URL) {
-    throw error(500, 'Missing PUBLIC_PIVOT_WEBAPP_URL');
+  const GOOGLE_WEBAPP_URL = import.meta.env.VITE_PIVOT_WEBAPP_URL;
+  if (!GOOGLE_WEBAPP_URL) {
+    return new Response('Missing VITE_PIVOT_WEBAPP_URL env var', { status: 500 });
   }
-  const res = await fetch(PUBLIC_PIVOT_WEBAPP_URL);
+
+  const res = await fetch(GOOGLE_WEBAPP_URL);
   if (!res.ok) {
-    throw error(res.status, `Pivot fetch failed: ${res.statusText}`);
+    return new Response('Pivot fetch failed: ' + res.statusText, { status: res.status });
   }
+
   const data = await res.json();
-  return json(data);
+  return new Response(JSON.stringify(data), {
+    headers: { 'Content-Type': 'application/json' }
+  });
 }
