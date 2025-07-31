@@ -1,31 +1,13 @@
-import {
-    waitForAll,
-    getLeagueRosters,
-    getLeagueTeamManagers,
-    getLeagueData,
-    getLeagueTransactions,
-    getAwards,
-    getLeagueRecords,
-    managers as managersObj
-} from '$lib/utils/helper';
-export async function load({ url }) {
-    if(!managersObj.length) return false;
-    const managersInfo = waitForAll(
-        getLeagueRosters(),    
-        getLeagueTeamManagers(),
-        getLeagueData(),
-        getLeagueTransactions(),
-        getAwards(),
-        getLeagueRecords(),
-    );
+import { redirect } from '@sveltejs/kit';
+import { managers as managersObj } from '$lib/utils/helper';
 
-    const manager = url?.searchParams?.get('manager');
+export function load({ url }) {
+  // read ?manager=N (default to 0)
+  const param = Number(url.searchParams.get('manager'));
+  const idx = Number.isInteger(param) && param >= 0 && param < managersObj.length
+    ? param
+    : 0;
 
-    const props = {
-        manager: manager && manager < managersObj.length ? manager : -1,
-        managers: managersObj,
-        managersInfo
-    }
-
-    return props;
+  // redirect to /managers/0, /managers/1, etc.
+  throw redirect(307, `/manager/${idx}`);
 }

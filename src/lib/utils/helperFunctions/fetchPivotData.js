@@ -1,29 +1,63 @@
-const PIVOT_WEBAPP_URL = import.meta.env.PUBLIC_PIVOT_WEBAPP_URL;
+// src/lib/utils/helperFunctions/fetchPivotData.js
 
-export async function fetchPivotData() {
-  if (!PIVOT_WEBAPP_URL) {
-    throw new Error('Missing environment variable: PUBLIC_PIVOT_WEBAPP_URL');
-  }
-  const res = await fetch(PIVOT_WEBAPP_URL);
+/**
+ * Fetch the raw pivot from /api/pivot using SvelteKit's fetch.
+ */
+export async function fetchPivotData(fetchFn) {
+  const res = await fetchFn('/api/pivot');
   if (!res.ok) {
-    throw new Error(`Failed to fetch pivot data: ${res.status} ${res.statusText}`);
+    throw new Error(`Pivot fetch failed: ${res.status} ${res.statusText}`);
   }
-  return await res.json();
+  return /** @type {string[][]} */(await res.json());
 }
 
 /**
- * Extracts a specific metric value for a given year from the pivot data.
- * @param {string[][]} pivot - 2D array of pivot values (first row = headers)
- * @param {string} metricName - The label in the first column to find
- * @param {number|string} year - The year header column
- * @returns {string|null} The matching cell value or null if not found
+ * Stateful lookup for a managerName + year + txnType in a flat pivot.
+ *
+ * @param {string[][]} pivot
+ * @param {string}     managerName  – e.g. "Dave Oliverio"
+ * @param {number}     year         – e.g. 2025
+ * @param {string}     txnType      – e.g. "Auction Budget Funded"
+ *                                    or "Auction Budget Spend"
+ *                                    or `${year} Total`
  */
-export function getMetricByYear(pivot, metricName, year) {
-  if (!Array.isArray(pivot) || pivot.length === 0) return null;
-  const headers = pivot[0];
-  const yearIdx = headers.indexOf(String(year));
-  if (yearIdx === -1) return null;
-  const row = pivot.find(r => r[0] === metricName);
-  return row ? row[yearIdx] : null;
+export function getPivotValue(pivot, managerName, year, txnType) {
+  const y       = String(year).trim();
+  const totalId = `${y} Total`;
+  // Skip first two rows (header + grand "Total" row)
+  const rows = pivot.slice(2);
+
+  let currentManager = null;
+  for (const rawRow of rows) {
+    const [gm, rYear, rType, amount] = rawRow.map(c => String(c).trim());
+    // If gm cell is non-empty, start a new group
+    if (gm) currentManager = gm;
+    // Only consider rows for the manager we care about
+    if (currentManager !== managerName) continue;
+
+    // Case A: matching the net‐total row
+    if (txnType === totalId && rYear === totalId) {
+      return amount;
+    }
+    // Case B: matching a funded/spend line
+    if (rYear === y && rType === txnType) {
+      return amount;
+    }
+  }
+
+  // not found
+  return null;
 }
 
+/**
+ * Turn "$123.45" or "-$10" into a properly formatted USD string.
+ */
+export function formatCurrency(value) {
+  const num = Number(String(value).replace(/[^0-9.-]+/g, ''));
+  if (isNaN(num)) return String(value);
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  }).format(num);
+}

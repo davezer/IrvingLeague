@@ -1,8 +1,20 @@
-<!-- <script>
-    export let viewManager, players, changeManager;
-</script> -->
+<script>
+  import { getPivotValue, formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
 
-<!-- <div class="fantasyInfos">
+  export let data; 
+  const { viewManager, pivot } = data;
+
+  const year  = new Date().getFullYear();
+  const nextY = year + 1;
+
+  // grab the "<year> Total" row for each manager
+  $: draftMoneyCurrent = getPivotValue(pivot, viewManager.name, year, `${year} Total`);
+  $: draftMoneyNext    = getPivotValue(pivot, viewManager.name, nextY,    `${nextY} Total`);
+</script>
+<!-- Render your full Manager profile -->
+
+
+<div class="fantasyInfos">
   {#if viewManager.rookieOrVets}
     <div class="infoSlot">
       <div class="infoLabel">Rookie or Vet Preference</div>
@@ -247,4 +259,4 @@
             margin: 2em 1em 0;
         }
     }
-</style>  -->
+</style>  
