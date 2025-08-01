@@ -8,8 +8,8 @@
   let error = null;
 
   // Pagination & Sorting state
-  const perPageOptions = [5, 10, 15];
-  let perPage = 10;
+  const perPageOptions = [20, 30, 40, 50, 100];
+  let perPage = 20;
   let sortCol = null;
   let sortDir = 'asc';
 
@@ -44,12 +44,22 @@
 
   // Filter by search term
   $: filteredData = parlayData.filter(row => {
-    const term = searchTerm.toLowerCase();
-    return columns.some(col => {
-      const val = row[col.data];
-      return val != null && String(val).toLowerCase().includes(term);
-    });
-  });
+   // split on whitespace or commas, drop empty tokens
+   const tokens = searchTerm
+     .toLowerCase()
+     .split(/[\s,]+/)
+     .filter(t => t);
+   // if no tokens, don’t filter anything out
+   if (tokens.length === 0) return true;
+
+   // for each token, row must have at least one column containing it
+   return tokens.every(token =>
+     columns.some(col => {
+       const cell = row[col.data];
+       return cell != null && String(cell).toLowerCase().includes(token);
+     })
+   );
+ });
 
   // Sort and paginate data
   $: sortedData = sortCol

@@ -1,7 +1,5 @@
 
 <script>
-  import { getPivotValue, formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
-  import { onMount } from 'svelte';
   import ManagerDraftMoney from './ManagerDraftMoney.svelte';
 
   // Props passed from parent Manager.svelte
@@ -11,38 +9,9 @@
   export let players;
   export let changeManager;
 
+</script>
 
-  // current and next year
-  const year = new Date().getFullYear();
-  const nextY = year + 1;
-
-  let fetchUrl = '';
-  let rawData = null;
-  let apiError = '';
-
-  onMount(async () => {
-    if (!pivot.length && managerIndex != null) {
-      try {
-        fetchUrl = `/api/pivot?manager=${managerIndex}`;
-        const newPivot = await fetchPivotData(window.fetch, managerIndex);
-        pivot = newPivot;
-        rawData = newPivot;
-      } catch (e) {
-        console.error('Failed to fetch pivot in ManagerDraftMoney:', e);
-        apiError = e.message;
-      }
-    } else {
-      rawData = pivot;
-    }
-});
-  // compute draft money values with safe defaults
-  $: draftMoneyCurrent = (pivot.length && viewManager.name)
-    ? getPivotValue(pivot, viewManager.name, year, `${year} Total`)
-    : null;
-  $: draftMoneyNext = (pivot.length && viewManager.name)
-    ? getPivotValue(pivot, viewManager.name, nextY, `${nextY} Total`)
-    : null;
-    </script>
+<ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
 
 <div class="fantasyInfos">
   {#if viewManager.rookieOrVets}
@@ -78,27 +47,9 @@
     </div>
   {/if}
 
-  {#if draftMoneyCurrent != null}
-    <div class="infoSlot">
-      <div class="infoLabel">{year} Draft Money</div>
-      <div class="infoIcon">
-        <img class="draftMoneyCurrentYear" src="/dollar-sign.png" alt="Dollar sign" />
-      </div>
-      <div class="infoAnswer">{formatCurrency(draftMoneyCurrent)}</div>
-    </div>
-  {/if}
 
-  {#if draftMoneyNext != null}
-    <div class="infoSlot">
-      <div class="infoLabel">{nextY} Draft Money</div>
-      <div class="infoIcon">
-        <img class="draftMoneyNextYear" src="/dollar-sign.png" alt="Dollar sign" />
-      </div>
-      <div class="infoAnswer">{formatCurrency(draftMoneyNext)}</div>
-    </div>
-  {/if}
   
-<ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
+
   {#if viewManager.mode}
     <div class="infoSlot">
       <div class="infoLabel">Win Now or Rebuild?</div>
@@ -266,13 +217,6 @@
     .LB {
         background-color: #98c097;
     }
-
-    .draftMoneyCurrentYear,
-    .draftMoneyNextYear {
-        height: 65px;
-        vertical-align: middle;
-    }
-
 
     /* media queries */
     @media (max-width: 731px) {
