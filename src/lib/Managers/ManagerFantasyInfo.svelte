@@ -1,8 +1,50 @@
-<!-- <script>
-    export let viewManager, players, changeManager;
-</script> -->
 
-<!-- <div class="fantasyInfos">
+<script>
+  import { getPivotValue, formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
+  import { onMount } from 'svelte';
+  import ManagerDraftMoney from './ManagerDraftMoney.svelte';
+
+  // Props passed from parent Manager.svelte
+  export let managerIndex = null;
+  export let viewManager = {};
+  export let pivot = [];
+  export let players;
+  export let changeManager;
+
+
+  // current and next year
+  const year = new Date().getFullYear();
+  const nextY = year + 1;
+
+  let fetchUrl = '';
+  let rawData = null;
+  let apiError = '';
+
+  onMount(async () => {
+    if (!pivot.length && managerIndex != null) {
+      try {
+        fetchUrl = `/api/pivot?manager=${managerIndex}`;
+        const newPivot = await fetchPivotData(window.fetch, managerIndex);
+        pivot = newPivot;
+        rawData = newPivot;
+      } catch (e) {
+        console.error('Failed to fetch pivot in ManagerDraftMoney:', e);
+        apiError = e.message;
+      }
+    } else {
+      rawData = pivot;
+    }
+});
+  // compute draft money values with safe defaults
+  $: draftMoneyCurrent = (pivot.length && viewManager.name)
+    ? getPivotValue(pivot, viewManager.name, year, `${year} Total`)
+    : null;
+  $: draftMoneyNext = (pivot.length && viewManager.name)
+    ? getPivotValue(pivot, viewManager.name, nextY, `${nextY} Total`)
+    : null;
+    </script>
+
+<div class="fantasyInfos">
   {#if viewManager.rookieOrVets}
     <div class="infoSlot">
       <div class="infoLabel">Rookie or Vet Preference</div>
@@ -55,7 +97,8 @@
       <div class="infoAnswer">{formatCurrency(draftMoneyNext)}</div>
     </div>
   {/if}
-
+  
+<ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
   {#if viewManager.mode}
     <div class="infoSlot">
       <div class="infoLabel">Win Now or Rebuild?</div>
@@ -247,4 +290,4 @@
             margin: 2em 1em 0;
         }
     }
-</style>  -->
+</style> 

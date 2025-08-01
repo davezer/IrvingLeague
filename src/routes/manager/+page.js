@@ -1,13 +1,32 @@
-import { redirect } from '@sveltejs/kit';
-import { managers as managersObj } from '$lib/utils/helper';
+import {
+    waitForAll,
+    getLeagueRosters,
+    getLeagueTeamManagers,
+    getLeagueData,
+    getLeagueTransactions,
+    getAwards,
+    getLeagueRecords,
+    managers as managersObj
+} from '$lib/utils/helper';
 
-export function load({ url }) {
-  // read ?manager=N (default to 0)
-  const param = Number(url.searchParams.get('manager'));
-  const idx = Number.isInteger(param) && param >= 0 && param < managersObj.length
-    ? param
-    : 0;
+export async function load({ url }) {
+    if(!managersObj.length) return false;
+    const managersInfo = waitForAll(
+        getLeagueRosters(),    
+        getLeagueTeamManagers(),
+        getLeagueData(),
+        getLeagueTransactions(),
+        getAwards(),
+        getLeagueRecords(),
+    );
 
-  // redirect to /managers/0, /managers/1, etc.
-  throw redirect(307, `/manager/${idx}`);
+    const manager = url?.searchParams?.get('manager');
+
+    const props = {
+        manager: manager && manager < managersObj.length ? manager : -1,
+        managers: managersObj,
+        managersInfo
+    }
+
+    return props;
 }

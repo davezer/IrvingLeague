@@ -9,8 +9,14 @@
     import ManagerAwards from './ManagerAwards.svelte';
     import { onMount } from 'svelte';
 	import { getDatesActive, getRosterIDFromManagerID, getTeamNameFromTeamManagers } from '$lib/utils/helperFunctions/universalFunctions';
+   
+    
 
     export let manager, managers, rostersData, leagueTeamManagers, rosterPositions, transactionsData, awards, records;
+    export let pivot;
+    export let viewManager;
+    export let managerIndex; 
+    
 
     let transactions = transactionsData.transactions;
 
@@ -129,12 +135,12 @@
 
     .bio {
         margin: 2em 1.5em 2em;
-        text-indent: 4em;
+        text-align: center;
     }
 
     .philosophy {
         margin: 2em 1.5em 2em;
-        text-indent: 4em;
+        text-align: center;
     }
 
     .loading {
@@ -298,10 +304,13 @@
         {/if}
     </div>
 
-    {#if !loading}
-        <!-- Favorite player -->
-        <ManagerFantasyInfo {viewManager} {players} {changeManager} />
-    {/if}
+     <ManagerFantasyInfo
+    {pivot}
+    {viewManager}
+    managerIndex={manager}  
+    {players}
+    {changeManager}
+  />
 
     <ManagerAwards {leagueTeamManagers} tookOver={viewManager.tookOver} {awards} {records} {rosterID} managerID={viewManager.managerID} />
 
