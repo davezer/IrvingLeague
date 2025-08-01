@@ -61,7 +61,7 @@
 	:global(.navBar .material-icons) {
 		font-size: 1.8em;
 		height: 25px;
-		width: 22px;
+		width: 32px;
 	}
 
 	.parent {
@@ -99,6 +99,7 @@
 	:global(.dontDisplay) {
 		display: none;
 	}
+
 </style>
 
 <div tabindex="0" role="button" class="overlay" style="display: {display ? "block" : "none"};" onclick={() => open(true)}></div>

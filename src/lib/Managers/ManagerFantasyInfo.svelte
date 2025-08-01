@@ -11,10 +11,9 @@
 
 </script>
 
-<ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
 
 <div class="fantasyInfos">
-  {#if viewManager.rookieOrVets}
+  <!-- {#if viewManager.rookieOrVets}
     <div class="infoSlot">
       <div class="infoLabel">Rookie or Vet Preference</div>
       <div class="infoIcon">
@@ -26,18 +25,20 @@
       </div>
       <div class="infoAnswer">{viewManager.rookieOrVets}</div>
     </div>
-  {/if}
+  {/if} -->
 
-  {#if viewManager.valuePosition}
+  <!-- {#if viewManager.valuePosition}
     <div class="infoSlot">
       <div class="infoLabel">Favorite Fantasy Asset</div>
       <div class="infoIcon {viewManager.valuePosition}">
         <span class="valuePosition">{viewManager.valuePosition}</span>
       </div>
     </div>
-  {/if}
+  {/if} -->
+  
+  
 
-  {#if viewManager.tradingScale !== undefined}
+  <!-- {#if viewManager.tradingScale !== undefined}
     <div class="infoSlot">
       <div class="infoLabel">Desire to Trade</div>
       <div class="infoIcon">
@@ -45,12 +46,12 @@
       </div>
       <div class="infoAnswer">{viewManager.tradingScale} out of 10</div>
     </div>
-  {/if}
+  {/if} -->
 
-
+<ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
   
 
-  {#if viewManager.mode}
+  <!-- {#if viewManager.mode}
     <div class="infoSlot">
       <div class="infoLabel">Win Now or Rebuild?</div>
       <div class="infoIcon">
@@ -62,7 +63,7 @@
       </div>
       <div class="infoAnswer">{viewManager.mode}</div>
     </div>
-  {/if}
+  {/if} -->
 
   <button
     type="button"

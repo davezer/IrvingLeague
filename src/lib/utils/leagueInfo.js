@@ -39,13 +39,12 @@ export const managers = [
         link: 1, // manager array number within this array, or null to link back to all managers page
         image: "/managers/warriors.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200" , // This is the amount of money available for the next draft year.
       "valuePosition": "RB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Spend it all on 4 players and hope for the best",
       "tradingScale": 7, // 1 - 10
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
+      
     },
     {
 
@@ -64,8 +63,6 @@ export const managers = [
         link: 0, // manager array number within this array, or null to link back to all managers page
         image: "/managers/crucible.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Analyze, Analyze, Analyze. ",
@@ -88,8 +85,6 @@ export const managers = [
         link: 1, // manager array number within this array, or null to link back to all managers page
         image: "/managers/warriors.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Playoffs? PLAYOFFS?!",
@@ -112,8 +107,6 @@ export const managers = [
         link: 1, // manager array number within this array, or null to link back to all managers page
         image: "/managers/warriors.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "If it's too loud, you're too old.",
@@ -136,8 +129,6 @@ export const managers = [
         link: 1, // manager array number within this array, or null to link back to all managers page
         image: "/managers/homers.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Unpredictable, unconventional, and unbothered",
@@ -160,8 +151,6 @@ export const managers = [
         link: 0, // manager array number within this array, or null to link back to all managers page
         image: "/managers/crucible.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Every week’s a hostage situation, and I’m the negotiator",
@@ -184,8 +173,6 @@ export const managers = [
         link: 3, // manager array number within this array, or null to link back to all managers page
         image: "/managers/loneRangers.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Solidarity over strategy, chaos with a cause.",
@@ -208,8 +195,6 @@ export const managers = [
         link: 2, // manager array number within this array, or null to link back to all managers page
         image: "/managers/lightsabres.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "WR", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Fly straight, hit hard, never back down",
@@ -232,8 +217,6 @@ export const managers = [
         link: 4, // manager array number within this array, or null to link back to all managers page
         image: "/managers/hipsterJacks.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "RB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "Rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Victory is earned through preparation, discipline, and fearless ambition.",
@@ -256,8 +239,6 @@ export const managers = [
       //   link: 7, // manager array number within this array, or null to link back to all managers page
       //   image: "/managers/jayhawks.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       // },
-      // "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      // "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       // "valuePosition": "RB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       // "rookieOrVets": "rookies", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       // "philosophy": "Steady as the snow, fierce as the moose.",
@@ -280,8 +261,6 @@ export const managers = [
         link: 2, // manager array number within this array, or null to link back to all managers page
         image: "/managers/lightsabres.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Trust the data. Execute the plan. Win with precision.",
@@ -304,8 +283,6 @@ export const managers = [
         link: 2, // manager array number within this array, or null to link back to all managers page
         image: "/managers/vincitori.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Unleash chaos. Control the game.",
@@ -328,14 +305,35 @@ export const managers = [
         link: 11, // manager array number within this array, or null to link back to all managers page
         image: "/managers/rabid.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
-      "draftMoneyCurrentYear": "$200", // This is the amount of money the team has available to draft with in the current draft year
-      "draftMoneyNextYear": "$200", // This is the amount of money available for the next draft year.
       "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
       "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Draft bold. Trust instincts. Play smart. Chase color. Win with style.",
       "tradingScale": 9, // 1 - 10
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
+      {
+           // array number 12
+      "name": "Brian Marx",
+      "managerID": "857309838424809472",
+      "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
+      "location": "FL", // (optional)
+      "bio": "",
+      "photo": "/managers/tribe.png", // square ratio recommended (no larger than 500x500)
+      "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
+      "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
+      "rival": {
+        name: "Drew Goodwin", // Can be anything (usually your rival's name)
+        link: 6, // manager array number within this array, or null to link back to all managers page
+        image: "/managers/union.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
+      },
+      "valuePosition": "QB", // (optional) Favorite position (QB, WR, RB, TE, etc.)
+      "rookieOrVets": "vets", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
+      "philosophy": "",
+      "tradingScale": 9, // 1 - 10
+      "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
+      },
+      
   ]
   
 
