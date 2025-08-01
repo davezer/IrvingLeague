@@ -2,39 +2,85 @@
 <script>
   import ManagerDraftMoney from './ManagerDraftMoney.svelte';
 
+
   // Props passed from parent Manager.svelte
   export let managerIndex = null;
   export let viewManager = {};
   export let pivot = [];
   export let players;
   export let changeManager;
+  
 
 </script>
 
 
+
+
 <div class="fantasyInfos">
-  <!-- {#if viewManager.rookieOrVets}
+  {#if viewManager.persona}
     <div class="infoSlot">
-      <div class="infoLabel">Rookie or Vet Preference</div>
+      <div class="infoLabel">Persona</div>
       <div class="infoIcon">
         <img
-          class="rookiesOrVets"
-          src="/{viewManager.rookieOrVets}.png"
-          alt="rookie or vet preference"
+          class="persona"
+          src="/{viewManager.persona}.png"
+          alt="persona"
         />
       </div>
-      <div class="infoAnswer">{viewManager.rookieOrVets}</div>
+      <div class="infoAnswer">{viewManager.persona}</div>
     </div>
-  {/if} -->
+  {/if}
 
-  <!-- {#if viewManager.valuePosition}
+  <ManagerDraftMoney
+    class="fancy-money"
+    {managerIndex}
+    {viewManager}
+    {pivot}
+  />
+
+   {#if viewManager.yearsOfService}
     <div class="infoSlot">
-      <div class="infoLabel">Favorite Fantasy Asset</div>
-      <div class="infoIcon {viewManager.valuePosition}">
-        <span class="valuePosition">{viewManager.valuePosition}</span>
+      <div class="infoLabel">Years of Service</div>
+      <div class="infoIcon">
+        <img
+          class="persona"
+          src="/{viewManager.yearsOfService}.png"
+          alt="years of service"
+        />
       </div>
+      <div class="infoAnswer">{viewManager.yearsOfService}</div>
     </div>
-  {/if} -->
+  {/if}
+
+    {#if viewManager.championship}
+    <div class="infoSlot">
+      <div class="infoLabel">Championship</div>
+      <div class="infoIcon">
+        <img
+          class="persona"
+          src="/{viewManager.championship}.png"
+          alt="championship"
+        />
+      </div>
+      <div class="infoAnswer">2004</div>
+    </div>
+  {/if}
+  
+  
+  <button
+    type="button"
+    class="infoSlot infoRival"
+    on:click={() => changeManager(viewManager.rival.link)}
+  >
+    <div class="infoLabel">Rival</div>
+    <div class="infoIcon">
+      <img class="rival" src={viewManager.rival.image} alt="rival" />
+    </div>
+    <div class="infoAnswer">{viewManager.rival.name}</div>
+  </button>
+</div>
+
+
   
   
 
@@ -48,7 +94,7 @@
     </div>
   {/if} -->
 
-<ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
+
   
 
   <!-- {#if viewManager.mode}
@@ -65,20 +111,23 @@
     </div>
   {/if} -->
 
-  <button
-    type="button"
-    class="infoSlot infoRival"
-    on:click={() => changeManager(viewManager.rival.link)}
-  >
-    <div class="infoLabel">Rival</div>
-    <div class="infoIcon">
-      <img class="rival" src={viewManager.rival.image} alt="rival" />
-    </div>
-    <div class="infoAnswer">{viewManager.rival.name}</div>
-  </button>
-</div>
+
 
 <style>
+ .fantasyInfos {
+    display: flex;
+    justify-content: space-evenly; /* or space-between */
+    align-items: center;           /* vertical center all children */
+    gap: 2rem;                     /* space between each “column” */
+  }
+
+  /* both your infoSlot buttons and the money component */
+  .fantasyInfos .infoSlot, .fancy-money {
+    display: flex;
+    flex-direction: column;  /* stack label/icon/answer */
+    align-items: center;     /* center items in column */
+    text-align: center;
+  }
 	.main {
 		position: relative;
 		z-index: 1;
@@ -100,13 +149,12 @@
         border-top: 1px solid var(--aaa);
         box-shadow: 0 0 8px 4px var(--ccc);
     }
-
     .infoSlot {
         text-align: center;
         margin: 2em 1em 0;
-    }
+    } 
 
-    .infoIcon {
+    .infoIcon{
         display: inline-flex;
         height: 70px;
         width: 70px;
@@ -119,8 +167,8 @@
         transition: box-shadow 0.4s;
     }
 
-    .infoLabel {
-        font-size: 0.7em;
+    .infoLabel{
+        font-size: 15px;
         color: var(--blueOne);
         font-weight: 700;
         margin-bottom: 1em;
@@ -131,23 +179,27 @@
     }
 
     .infoAnswer {
-        font-size: 0.8em;
+        font-size: 15;
         color: var(--g555);
         margin-top: 1em;
         width: 90px;
         text-align: center;
         line-height: 1.2em;
     }
-
+/* 
     .tradingScale {
         line-height: 70px;
         font-size: 55px;
         color: var(--blueOne);
-    }
+    } */
 
-    .rookiesOrVets {
-        height: 65px;
-        vertical-align: middle;
+    .persona {
+         height: 70px;               /* force the height */
+    width: 70px;                /* make it square */
+    object-fit: cover;          /* crop/scale to fill */
+    border-radius: 50%;         /* turn square into circle */
+    display: inline-block;      /* allow vertical-align */
+    vertical-align: middle;     /* align with surrounding text */
     }
 
     .infoRival {
@@ -168,7 +220,7 @@
         height: 100%;
     }
 
-    .rebuildOrWin {
+    /* .rebuildOrWin {
         height: 70px;
     }
 
@@ -176,10 +228,10 @@
         line-height: 70px;
         font-size: 25px;
         color: var(--fff);
-    }
+    } */
 
     /* Position colors... */
-    .QB {
+    /* .QB {
         background-color: var(--QB);
     }
     .WR {
@@ -217,7 +269,7 @@
     }
     .LB {
         background-color: #98c097;
-    }
+    } */
 
     /* media queries */
     @media (max-width: 731px) {

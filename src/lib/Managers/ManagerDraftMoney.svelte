@@ -6,6 +6,7 @@
   // props from parent
   export let managerIndex;
   export let viewManager;
+  
 
   // holds the raw pivot from the API
   let pivot = [];
@@ -54,8 +55,9 @@
 </script>
 
 {#if apiError}
-  <p class="error">Error loading draft-money data: {apiError}</p>
-{:else}
+      <p class="error">Error loading draft-money data: {apiError}</p>
+    {:else}
+<div class="money-component" {...$$restProps}>
   <div class="fantasyInfos">
     <div class="infoSlot">
       <div class="infoLabel">{year} Draft Money</div>
@@ -81,65 +83,52 @@
           ? formatCurrency(draftMoneyNext)
           : '–'}
       </div>
-    </div>
   </div>
+</div>
+</div>  
 {/if}
+ 
 
 <style>
-  .fantasyInfos {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    padding: 0 0 2em;
-    margin: 0 0 4em;
-  }
+.fantasyInfos {
+  display: flex;            
+  flex-direction: row;        
+  justify-content: space-evenly; 
+  align-items: center;         
+     gap: 15.5rem;
+    margin-top: 38px;
+    margin-bottom: -35px;         
+}
 
-  .infoSlot {
-    text-align: center;
-    margin: 2em 1em 0;
-  }
+.fantasyInfos .infoSlot {
+  display: flex;              
+  flex-direction: column;     
+  align-items: center;        
+  text-align: center;
+  
+}
 
-  .infoIcon {
-    display: block;
-    height: 80px;
-    width: 80px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%;
-    border: 1px solid var(--ccc);
-    overflow: hidden;
-    background-color: var(--fff);
-    transition: box-shadow 0.4s;
-  }
+ .infoLabel{
+        font-size: 15px;
+        color: var(--blueOne);
+        font-weight: 700;
+        margin-bottom: 1em;
+        height: 30px;
+        width: 90px;
+        text-align: center;
+        line-height: 1.2em;
+    }
 
-  .infoIcon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .infoLabel {
-    font-size: 18px;
-    color: var(--blueOne);
-    font-weight: 700;
-    margin-bottom: 0.5em;
-    width: 90px;
-    text-align: center;
-    line-height: 1.2;
-  }
-
-  .infoAnswer {
-    font-size: 25px;
-    margin-top: 1em;
-    width: 90px;
-    text-align: center;
-    line-height: 1.2;
-    /* color is now set dynamically via inline style */
-  }
-
-  .error {
-    color: red;
-    font-size: 0.9em;
-  }
+img {
+  
+        height: 70px;
+        width: 70px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        border: 1px solid var(--ccc);
+        overflow: hidden;
+        background-color: darkgreen;
+        transition: box-shadow 0.4s;
+}
 </style>
