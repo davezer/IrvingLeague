@@ -6,35 +6,28 @@
   // props from parent
   export let managerIndex;
   export let viewManager;
-  
-
-  // holds the raw pivot from the API
-  let pivot = [];
+  export let pivot = [];
+  let apiError = '';
 
   // current/next year
   const year  = new Date().getFullYear();
   const nextY = year + 1;
 
   // fetch state
-  let apiError = '';
-  onMount(async () => {
-    if (!pivot.length && managerIndex != null) {
-      try {
-        await fetchPivotData(window.fetch, managerIndex)
-          .then(newPivot => {
-            pivot = newPivot;
-          });
-      } catch (e) {
-        console.error('Failed to fetch pivot in ManagerDraftMoney:', e);
-        apiError = e.message;
-      }
-    }
-  });
+ onMount(async () => {
+  console.log('🔍 ManagerDraftMoney mount, managerIndex =', managerIndex);
+
+  try {
+    const newPivot = await fetchPivotData(window.fetch, managerIndex);
+    console.log('✅ fetched pivot →', newPivot);
+    pivot = newPivot;
+  } catch (e) {
+    console.error('❌ fetchPivotData failed:', e);
+    apiError = e.message;
+  }
+});
 
   // reactive lookups
-  $: draftMoneyCurrent = pivot.length && viewManager.name
-    ? getPivotValue(pivot, viewManager.name, year,  `${year} Total`)
-    : null;
 
   $: draftMoneyNext = pivot.length && viewManager.name
     ? getPivotValue(pivot, viewManager.name, nextY, `${nextY} Total`)
@@ -49,7 +42,6 @@
   }
 
   // pre-compute for easy binding
-  $: currentColor = moneyColor(draftMoneyCurrent);
   $: nextColor    = moneyColor(draftMoneyNext);
 
 </script>
@@ -57,58 +49,44 @@
 {#if apiError}
       <p class="error">Error loading draft-money data: {apiError}</p>
     {:else}
-<div class="money-component" {...$$restProps}>
-  <div class="fantasyInfos">
-    <div class="infoSlot">
-      <div class="infoLabel">{year} Draft Money</div>
-      <div class="infoIcon">
-         <img src="/dollarbill.png" alt="Dollar sign" />
-      </div>
-      
-      <div class="infoAnswer" style="color: {currentColor}">
-        {draftMoneyCurrent != null
-          ? formatCurrency(draftMoneyCurrent)
-          : '–'}
-      </div>
-    </div>
 
-    <div class="infoSlot">
-      <div class="infoLabel">{nextY} Draft Money</div>
-      <div class="infoIcon">
-         <img src="/dollarbill.png" alt="Dollar sign" />
-      </div>
-      
-      <div class="infoAnswer" style="color: {nextColor}">
+  <div class="draftMoneyInfo">
+    <div class="draftMoneySlot">
+      <div class="draftMoneyLabel">{nextY} Draft Money</div>
+      <div class="draftMoneyAnswer" style="color: {nextColor}">
         {draftMoneyNext != null
           ? formatCurrency(draftMoneyNext)
           : '–'}
       </div>
   </div>
 </div>
-</div>  
+ 
 {/if}
  
 
 <style>
-.fantasyInfos {
+
+
+
+.draftMoneyInfo {
   display: flex;            
   flex-direction: row;        
   justify-content: space-evenly; 
-  align-items: center;         
-     gap: 15.5rem;
-    margin-top: 38px;
-    margin-bottom: -35px;         
+  align-items: center;       
 }
 
-.fantasyInfos .infoSlot {
-  display: flex;              
-  flex-direction: column;     
-  align-items: center;        
-  text-align: center;
+.draftMoneySlot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
   
 }
 
- .infoLabel{
+ .draftMoneyLabel{
         font-size: 15px;
         color: var(--blueOne);
         font-weight: 700;
@@ -117,18 +95,15 @@
         width: 90px;
         text-align: center;
         line-height: 1.2em;
+        
+    } 
+
+    .draftMoneyAnswer{ 
+      font-size: 18px;
+      color: var(--blueTwo);
+      font-weight: 700;
+      margin-top: 0.5em;
+     
     }
 
-img {
-  
-        height: 70px;
-        width: 70px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 100%;
-        border: 1px solid var(--ccc);
-        overflow: hidden;
-        background-color: darkgreen;
-        transition: box-shadow 0.4s;
-}
 </style>

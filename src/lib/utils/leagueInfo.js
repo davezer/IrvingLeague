@@ -28,7 +28,7 @@ export const managers = [
       "managerID": "1253772062900621312",
       "name": "Dave Oliverio",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
-      "location": "Bethlehem, PA", // (optional)
+      "location": "PA", // (optional)
       "bio": "Drafted on vibes, fueled by snacks. Fantasy genius? Nope. Lucky? Absolutely. Trash talker? Always.",
       "photo": "/managers/crucible.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
@@ -42,7 +42,10 @@ export const managers = [
       "yearsOfService": "Twenty", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Wolf", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Spend it all on 4 players and hope for the best",
-      "championship": 'Irving', // 'Irving', 'DTSP', or 'ICL' Won championship
+      "championship": {
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2004'    // years(s) the manager won the championship, separated by commas
+      },
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       
     },
@@ -52,7 +55,7 @@ export const managers = [
       "name": "Jeff Cohn",
       "managerID": "76521957268799488",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
-      "location": "Palm Harbor, FL", // (optional)
+      "location": "FL", // (optional)
       "bio": "Heat, hustle, and havoc — Westlake Warriors bring the smack talk",
       "photo": "/managers/warriors.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
@@ -66,7 +69,10 @@ export const managers = [
       "yearsOfService": "Twenty", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Littlefinger", // (optional) 'Rookies' or 'Vets' (anything else and you will need to add a new png to /static/ similar to the 'Rookies.png' and 'Vets.png' currently in there)
       "philosophy": "Analyze, Analyze, Analyze. ",
-      "tradingScale": 8, // 1 - 10
+      "championship": {     
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2009, 2011, 2019, 2021'    // years(s) the manager won the championship, separated by commas
+      },
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
     },
   {
@@ -74,8 +80,8 @@ export const managers = [
     "name": "Jamie Cohn",
       "managerID": "1253515645044133888",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
-      "location": "Palm Harbor, FL", // (optional)
-      "bio": "Guns n' Sabres",
+      "location": "FL", // (optional)
+      "bio": "The Dagobah Lightsabres blend Jedi focus with fantasy football firepower. Guided by the Force and fearless strategy, they strike down opponents with precision, turning every matchup into an intergalactic battle for league dominance.",
       "photo": "/managers/lightsabres.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2004, // (optional) when did the manager start playing fantasy football
       "favoriteTeam": "pit", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
@@ -87,8 +93,11 @@ export const managers = [
       },
       "yearsOfService": "Twenty", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Kornacki", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
-      "philosophy": "Playoffs? PLAYOFFS?!",
-      "tradingScale": 8, // 1 - 10
+      "philosophy": "Trust the Force. Draft wisely. Strike fast. Dominate every matchup.",
+      "championship": {     
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2008, 2018'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       {
@@ -100,7 +109,7 @@ export const managers = [
       "bio": "The Lone Rangers? That's original. How can you pluralize 'Lone Ranger'?",
       "photo": "/managers/loneRangers.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2011, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "mia", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "favoriteTeam": "ne", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
       "rival": {
         name: "James Barmore", // Can be anything (usually your rival's name)
@@ -110,7 +119,10 @@ export const managers = [
       "yearsOfService": "Ten", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Flacco", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "If it's too loud, you're too old.",
-      "tradingScale": 5, // 1 - 10
+      "championship": {     
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2013, 2017'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       }, 
       {
@@ -122,7 +134,7 @@ export const managers = [
       "bio": "Fueled by cold brew and fourth-down boldness, the Salem Hipsterjacks bring arcane instincts and vintage swagger to the gridiron. They draft like it’s vinyl-only and call plays like it’s always a foggy Sunday in October.",
       "photo": "/managers/hipsterJacks.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2015, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "sea", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "favoriteTeam": "gb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
       "rival": {
         name: "Brian James", // Can be anything (usually your rival's name)
@@ -132,7 +144,10 @@ export const managers = [
       "yearsOfService": "Ten", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Wolf", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Unpredictable, unconventional, and unbothered",
-      "tradingScale": 2, // 1 - 10
+      "championship": {     
+        league: 'DTSP',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2023'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       {
@@ -154,7 +169,10 @@ export const managers = [
       "yearsOfService": "Twenty", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Littlefinger", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Every week’s a hostage situation, and I’m the negotiator",
-      "tradingScale": 7, // 1 - 10
+      "championship": {     
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2016, 2023, 2024'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
        {
@@ -166,7 +184,7 @@ export const managers = [
       "bio": "Forged in group chats and fueled by spite, Amherst Union stands united against bad trades, bye weeks, and commissioner tyranny. Drafted with pride, managed with memes—solidarity has never been so scrappy.",
       "photo": "/managers/union.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2022, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "ne", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "favoriteTeam": "cle", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
       "rival": {
         name: "Brian Chorney", // Can be anything (usually your rival's name)
@@ -176,7 +194,10 @@ export const managers = [
       "yearsOfService": null, // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Flacco", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Solidarity over strategy, chaos with a cause.",
-      "tradingScale": 7, // 1 - 10
+      "championship": {     
+        league: 'DTSP',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2024'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
         {
@@ -196,9 +217,12 @@ export const managers = [
         image: "/managers/mounties.png", // either a specific manager photo or '/managers/everyone.png' or '/managers/question.png'
       },
       "yearsOfService": "Twenty", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
-      "persona": "The Flacco ", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
+      "persona": "The Flacco", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Fly straight, hit hard, never back down",
-      "tradingScale": 7, // 1 - 10
+      "championship": {     
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2005'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       {
@@ -210,7 +234,7 @@ export const managers = [
       "bio": "Fueled by Duval spirit and Italian swagger, the Jacksonville Vincitori are here to conquer. Bold, relentless, and always hunting victory, this squad dominates Sundays with ruthless efficiency and unwavering confidence.",
       "photo": "/managers/vincitori.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2015, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "jax", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "favoriteTeam": "ne", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
       "rival": {
         name: "Brian Marx", // Can be anything (usually your rival's name)
@@ -220,7 +244,10 @@ export const managers = [
       "yearsOfService": "Ten", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Flacco", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Victory is earned through preparation, discipline, and fearless ambition.",
-      "tradingScale": 7, // 1 - 10
+      "championship": {     
+        league: 'DTSP',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2016, 2017, 2018'    // years(s) the manager won the championship, separated by commas
+      },
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       // {
@@ -242,7 +269,10 @@ export const managers = [
       // "yearsOfService": "Twenty", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty')
       // "persona": "The Flacco", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       // "philosophy": "Steady as the snow, fierce as the moose.",
-      // "tradingScale": 4, // 1 - 10
+      // "championship": {     
+      //  league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+      //  years: '2006'    // years(s) the manager won the championship, separated by commas
+      // },  
       // "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       // },
         {
@@ -264,7 +294,10 @@ export const managers = [
       "yearsOfService": "Ten", // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Kornacki", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Trust the data. Execute the plan. Win with precision.",
-      "tradingScale": 4, // 1 - 10
+      "championship": {     
+        league: 'Irving',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2020'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       {
@@ -276,7 +309,7 @@ export const managers = [
       "bio": "The D.C. Rabid Dogs play with unhinged intensity and a hunger that never quits. Fueled by chaos and capital city grit, this squad attacks every matchup with snarling energy and no mercy. Once they’ve got a lead, they don’t let go — they bite down and finish the job.",
       "photo": "/managers/rabid.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2018, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "favoriteTeam": "phi", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
       "rival": {
         name: "Drew Goodwin", // Can be anything (usually your rival's name)
@@ -286,7 +319,10 @@ export const managers = [
       "yearsOfService": null, // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Kornacki", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Unleash chaos. Control the game.",
-      "tradingScale": 9, // 1 - 10
+      "championship": {     
+        league: null,  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: null    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
         {
@@ -298,7 +334,7 @@ export const managers = [
       "bio": "The Kansas City Kodachromes play fantasy football with vintage flair and bold precision. Inspired by classic film, they thrive on vivid matchups, boom-or-bust drama, and highlight-worthy moments. Every week is a reel in the making—colorful, unpredictable, and unforgettable. This team doesn’t just win—they develop greatness in full color.",
       "photo": "/managers/kodachromes.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2018, // (optional) when did the manager start playing fantasy football
-      "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
+      "favoriteTeam": "kc", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
       "mode": "Rebuild", // (optional) 'Win Now', 'Dynasty', or 'Rebuild' (anything else and you will need to add a new png to /static/ similar to the 'Rebuild.png' and 'Win Now.png' currently in there)
       "rival": {
         name: "Biran Chorney", // Can be anything (usually your rival's name)
@@ -308,7 +344,10 @@ export const managers = [
       "yearsOfService": null, // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Wolf", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
       "philosophy": "Draft bold. Trust instincts. Play smart. Chase color. Win with style.",
-      "tradingScale": 9, // 1 - 10
+      "championship": {     
+        league: null,  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: null,   // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       {
@@ -317,7 +356,7 @@ export const managers = [
       "managerID": "857309838424809472",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
-      "bio": "",
+      "bio": "The Tallahassee Tribe brings unity, grit, and Southern swagger to the fantasy gridiron. Built on loyalty, bold picks, and relentless hustle, this team plays with heart and hunts for victory every single week.",
       "photo": "/managers/tribe.png", // square ratio recommended (no larger than 500x500)
       "fantasyStart": 2023, // (optional) when did the manager start playing fantasy football
       "favoriteTeam": "tb", // (optional) favorite NFL team, (follows convention: nyj, sea, mia, etc.) MUST BE LOWERCASE
@@ -329,8 +368,11 @@ export const managers = [
       },
       "yearsOfService": null, // (optional) How Many Years has the manager been in the league? 'Ten' 'Twenty'
       "persona": "The Littlefinger", // (optional) 'The Wolf', 'The Kornacki', 'The Littlefinger', 'The Flacco'
-      "philosophy": "",
-      "tradingScale": 9, // 1 - 10
+      "philosophy": "Loyal to the core. Draft tough. Compete harder. Win together.",
+      "championship": {     
+        league: 'DTSP',  //'Irving', 'DTSP', or 'ICL' Won championship
+        years: '2022'    // years(s) the manager won the championship, separated by commas
+      },  
       "preferredContact": "Text", // 'Text', 'WhatsApp', 'Sleeper', 'Email', 'Phone', 'Discord', and 'Carrier Pigeon' are currently supplied in the template
       },
       

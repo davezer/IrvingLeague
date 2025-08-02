@@ -1,18 +1,13 @@
 
 <script>
-  import ManagerDraftMoney from './ManagerDraftMoney.svelte';
-
-
-  // Props passed from parent Manager.svelte
-  export let managerIndex = null;
   export let viewManager = {};
-  export let pivot = [];
-  export let players;
   export let changeManager;
+  export let pivot = [];       
+  export let managerIndex;     
+  export let players = [];
   
 
 </script>
-
 
 
 
@@ -31,12 +26,7 @@
     </div>
   {/if}
 
-  <ManagerDraftMoney
-    class="fancy-money"
-    {managerIndex}
-    {viewManager}
-    {pivot}
-  />
+
 
    {#if viewManager.yearsOfService}
     <div class="infoSlot">
@@ -58,11 +48,11 @@
       <div class="infoIcon">
         <img
           class="persona"
-          src="/{viewManager.championship}.png"
+          src="/{viewManager.championship.league}.png"
           alt="championship"
         />
       </div>
-      <div class="infoAnswer">2004</div>
+      <div class="infoAnswer">{viewManager.championship.years}</div>
     </div>
   {/if}
   
@@ -114,30 +104,7 @@
 
 
 <style>
- .fantasyInfos {
-    display: flex;
-    justify-content: space-evenly; /* or space-between */
-    align-items: center;           /* vertical center all children */
-    gap: 2rem;                     /* space between each “column” */
-  }
 
-  /* both your infoSlot buttons and the money component */
-  .fantasyInfos .infoSlot, .fancy-money {
-    display: flex;
-    flex-direction: column;  /* stack label/icon/answer */
-    align-items: center;     /* center items in column */
-    text-align: center;
-  }
-	.main {
-		position: relative;
-		z-index: 1;
-	}
-    .loading {
-        display: block;
-        width: 85%;
-        max-width: 500px;
-        margin: 80px auto;
-    }
     .fantasyInfos {
         display: flex;
         justify-content: space-around;
@@ -179,7 +146,7 @@
     }
 
     .infoAnswer {
-        font-size: 15;
+        font-size: 15px;
         color: var(--g555);
         margin-top: 1em;
         width: 90px;
@@ -194,7 +161,7 @@
     } */
 
     .persona {
-         height: 70px;               /* force the height */
+    height: 70px;               /* force the height */
     width: 70px;                /* make it square */
     object-fit: cover;          /* crop/scale to fill */
     border-radius: 50%;         /* turn square into circle */
@@ -219,57 +186,6 @@
     .rival {
         height: 100%;
     }
-
-    /* .rebuildOrWin {
-        height: 70px;
-    }
-
-    .valuePosition {
-        line-height: 70px;
-        font-size: 25px;
-        color: var(--fff);
-    } */
-
-    /* Position colors... */
-    /* .QB {
-        background-color: var(--QB);
-    }
-    .WR {
-        background-color: var(--WR);
-    }
-    .RB {
-        background-color: var(--RB);
-    }
-    .TE {
-        background-color: var(--TE);
-    }
-    .Picks {
-        background: #73b647;
-    }
-    .K {
-        background-color: var(--K);
-    }
-    .DEF {
-        background-color: var(--DEF);
-    }
-    .CB {
-        background-color: #ffcc7a;
-    }
-    .SS {
-        background-color: #b7a1db;
-    }
-    .FS {
-        background-color: #ebe7b3;
-    }
-    .DE {
-        background-color: #b1d0e9;
-    }
-    .DL {
-        background-color: #c392d3;
-    }
-    .LB {
-        background-color: #98c097;
-    } */
 
     /* media queries */
     @media (max-width: 731px) {
