@@ -102,7 +102,6 @@
       font-size: 18px;
       color: var(--blueTwo);
       font-weight: 700;
-      margin-top: 0.5em;
      
     }
 

@@ -97,6 +97,9 @@
             pivotError = e.message;
         }
     });
+
+      // return a CSS color based on the value
+  
 </script>
 
 <div class="managerContainer">
@@ -497,6 +500,19 @@
     }
 
     /* media queries */
+    @media (max-width:935px) {
+        :global(.selectionButtons span) {
+            font-size: 0.8em;
+        }
+
+        .basicInfo {
+            height: 30px;
+            flex-direction: column;
+            align-items: center;
+            margin: 31px 29px -21px 41px;
+            gap: 0rem;
+        }
+    }
 
     @media (max-width: 505px) {
         :global(.selectionButtons span) {
