@@ -1,39 +1,14 @@
-
 <script>
   import { onMount } from 'svelte';
-  import { fetchPivotData, getPivotValue, formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
+  import { formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
 
-  // props from parent
-  export let managerIndex;
+  // Passed in from parent:
   export let viewManager;
-  export let pivot = [];
+
+  let pivotData = [];
   let apiError = '';
+  let myDraftMoney = null;
 
-  // current/next year
-  const year  = new Date().getFullYear();
-  const nextY = year + 1;
-
-  // fetch state
- onMount(async () => {
-  console.log('🔍 ManagerDraftMoney mount, managerIndex =', managerIndex);
-
-  try {
-    const newPivot = await fetchPivotData(window.fetch, managerIndex);
-    console.log('✅ fetched pivot →', newPivot);
-    pivot = newPivot;
-  } catch (e) {
-    console.error('❌ fetchPivotData failed:', e);
-    apiError = e.message;
-  }
-});
-
-  // reactive lookups
-
-  $: draftMoneyNext = pivot.length && viewManager.name
-    ? getPivotValue(pivot, viewManager.name, nextY, `${nextY} Total`)
-    : null;
-
-  // return a CSS color based on the value
   function moneyColor(val) {
     if (val === null || isNaN(val)) return 'inherit';
     if (val < 100)    return 'red';
@@ -41,32 +16,49 @@
     return 'gold';
   }
 
-  // pre-compute for easy binding
-  $: nextColor    = moneyColor(draftMoneyNext);
+  onMount(async () => {
+    try {
+      const res = await fetch('/api/pivot');
+      if (!res.ok) throw new Error(res.statusText);
+      pivotData = await res.json();
 
+      // match on teamName (or name)
+      const label = (viewManager.teamName || viewManager.name)
+        .trim()
+        .toLowerCase();
+
+      const entry = pivotData.find(r =>
+        String(r.key || '').trim().toLowerCase() === label
+      );
+
+      myDraftMoney = entry ? Number(entry.value) : null;
+    } catch (e) {
+      console.error('❌ fetch pivotData failed:', e);
+      apiError = e.message;
+    }
+  });
 </script>
 
-{#if apiError}
-      <p class="error">Error loading draft-money data: {apiError}</p>
-    {:else}
-
-  <div class="draftMoneyInfo">
-    <div class="draftMoneySlot">
-      <div class="draftMoneyLabel">{nextY} Draft Money</div>
-      <div class="draftMoneyAnswer" style="color: {nextColor}">
-        {draftMoneyNext != null
-          ? formatCurrency(draftMoneyNext)
-          : '–'}
-      </div>
+<div class="draftMoneyInfo">
+  <div class="draftMoneySlot">
+    <div class="draftMoneyLabel">
+      Future Draft Money
+    </div>
+    <div
+      class="draftMoneyAnswer"
+      style="color: {moneyColor(myDraftMoney)}"
+    >
+      {#if myDraftMoney != null && !isNaN(myDraftMoney)}
+        {formatCurrency(myDraftMoney)}
+      {:else}
+        –
+      {/if}
+    </div>
   </div>
 </div>
- 
-{/if}
- 
+
 
 <style>
-
-
 
 .draftMoneyInfo {
   display: flex;            

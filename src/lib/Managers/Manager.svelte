@@ -24,8 +24,10 @@
         transactionsData,
         awards,
         records;
+    // these two will be populated below onMount
     export let pivot = [];
     export let pivotError = '';
+
     export let viewManager;
     export let managerIndex;
 
@@ -66,6 +68,7 @@
         transactions = newTransactions.transactions;
     };
 
+    // existing onMount for players & transactions
     onMount(async () => {
         if (transactionsData.stale) {
             refreshTransactions();
@@ -82,6 +85,18 @@
         }
     });
 
+    // NEW: fetch the pivot data on mount
+    onMount(async () => {
+      try {
+        // use your helper; pass the SvelteKit-injected fetch
+        const newPivot = await fetchPivotData(fetch, manager);
+        pivot = newPivot;
+      } catch (e) {
+        console.error('❌ fetchPivotData failed:', e);
+        pivotError = e.message;
+      }
+    });
+
     const changeManager = (newManager, noscroll = false) => {
         if (!newManager) {
             goto(`/managers`);
@@ -89,28 +104,14 @@
         manager = newManager;
         goto(`/manager?manager=${newManager}`, { noscroll });
     };
-
-    onMount(async () => {
-        try {
-            pivot = await fetchPivotData(window.fetch, managerIndex);
-        } catch (e) {
-            pivotError = e.message;
-        }
-    });
-
-      // return a CSS color based on the value
-  
 </script>
 
 <div class="managerContainer">
     <div class="managerConstrained">
         <img class="managerPhoto" src={viewManager.photo} alt="manager" />
-        
-        
-        
         <h2>
             {viewManager.name}
-             
+    
             <div class="teamSub">
                 {coOwners ? 'Co-' : ''}Manager of
                 <i

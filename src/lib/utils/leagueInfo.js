@@ -27,6 +27,7 @@ export const managers = [
         // array number 0
       "managerID": "1253772062900621312",
       "name": "Dave Oliverio",
+      "teamName": "Lehigh Crucible", // (optional) team name, if not provided, will default to manager's name
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "PA", // (optional)
       "bio": "Drafted on vibes, fueled by snacks. Fantasy genius? Nope. Lucky? Absolutely. Trash talker? Always.",
@@ -53,6 +54,7 @@ export const managers = [
 
     // array number 1
       "name": "Jeff Cohn",
+      "teamName": "Ultimate City Warriors", // (optional) team name, if not provided, will default to manager's name
       "managerID": "76521957268799488",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -78,6 +80,7 @@ export const managers = [
   {
     // array number 2
     "name": "Jamie Cohn",
+    "teamName": "Dagobah Lightsabres", // (optional) team name, if not provided, will default to manager's name
       "managerID": "1253515645044133888",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -103,6 +106,7 @@ export const managers = [
       {
         // array number 3
       "name": "Kenny Case",
+      "teamName": "Rebel Radio Lone Rangers", // (optional) team name, if not provided, will default to manager's name
       "managerID": "1005329348477419520",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -128,6 +132,7 @@ export const managers = [
       {
         // array number 4
       "name": "Clifton McVay",
+      "teamName": "Salem Hipsterjacks", // (optional) team name, if not provided, will default to manager's name
       "managerID": "1254577682394386432",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -153,6 +158,7 @@ export const managers = [
       {
         //array number 5
       "name": "Kevin Flanagan",
+      "teamName": "Nakatomi Custodial Crew", // (optional) team name, if not provided, will default to manager's name 
       "managerID": "1254577895943192576",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "CT", // (optional)
@@ -178,6 +184,7 @@ export const managers = [
        {
         //array number 6
       "name": "Drew Goodwin",
+      "teamName": "Amherst Union", // (optional) team name, if not provided, will default to manager's name 
       "managerID": "1254578120531390464",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -202,7 +209,8 @@ export const managers = [
       },
         {
           //array number 7
-      "name": "Jason Gray",
+      "name": "Jason Gray", 
+      "teamName": "Milford Jayhawks", 
       "managerID": "1254584226238447616",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "CT", // (optional)
@@ -228,6 +236,7 @@ export const managers = [
       {
         // array number 8
       "name": "Romano DeSimone",
+      "teamName": "Jacksonville Vincitori", // (optional) team name, if not provided, will default to manager's name
       "managerID": "792114259365597184",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -253,6 +262,7 @@ export const managers = [
       // {
       //   // array number 9
       // "name": "Adam Lopiano",
+      // "teamName": "Saskatchewan Mounties", // (optional) team name, if not provided, will default to manager's name
       // "managerID": "",
       // "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       // "location": "CT", // (optional)
@@ -278,6 +288,7 @@ export const managers = [
         {
         // array number 10
       "name": "James Barmore",
+      "teamName": "Dunedin Homers", // (optional) team name, if not provided, will default to manager's name
       "managerID": "1256695342544453632",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -303,6 +314,7 @@ export const managers = [
       {
         // array number 11
       "name": "Brian Chorney",
+      "teamName": "D.C. Rabid Dogs", // (optional) team name, if not provided, will default to manager's name 
       "managerID": "733869885704261632",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -328,6 +340,7 @@ export const managers = [
         {
         // array number 12
       "name": "Brian James",
+      "teamName": "Kansas City Kodachromes", // (optional) team name, if not provided, will default to manager's name
       "managerID": "1256320322135674880",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)
@@ -353,6 +366,7 @@ export const managers = [
       {
            // array number 13
       "name": "Brian Marx",
+      "teamName": "Tallahassee Tribe", // (optional) team name, if not provided, will default to manager's name
       "managerID": "857309838424809472",
       "tookOver": null, // (optional) used if a manager took over a team, delete this line or change to null otherwise
       "location": "FL", // (optional)

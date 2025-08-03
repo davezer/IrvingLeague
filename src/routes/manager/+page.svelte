@@ -1,4 +1,3 @@
-
 <script>
 	import LinearProgress from '@smui/linear-progress';
     import {Manager} from '$lib/components';
@@ -13,6 +12,7 @@
         if(manager < 0) goto("/managers");
     })
 </script>
+
 
 <style>
 	.main {
