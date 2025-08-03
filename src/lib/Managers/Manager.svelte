@@ -7,7 +7,7 @@
     import { goto } from '$app/navigation';
     import ManagerFantasyInfo from './ManagerFantasyInfo.svelte';
     import ManagerAwards from './ManagerAwards.svelte';
-    import { onMount } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import {
         getDatesActive,
         getRosterIDFromManagerID,
@@ -15,6 +15,7 @@
     } from '$lib/utils/helperFunctions/universalFunctions';
     import { fetchPivotData } from '$lib/utils/helperFunctions/fetchPivotData';
     import ManagerDraftMoney from './ManagerDraftMoney.svelte';
+    import { pivotStore } from '$lib/pivotStore.js';
 
     export let manager,
         managers,
@@ -27,6 +28,14 @@
     // these two will be populated below onMount
     export let pivot = [];
     export let pivotError = '';
+    export let pivotLoading = true;
+
+    const unsubscribe = pivotStore.subscribe(({ data, error, loading }) => {
+        pivot = data || [];
+        pivotError = error;
+        pivotLoading = loading;
+    });
+     onDestroy(unsubscribe);
 
     export let viewManager;
     export let managerIndex;
@@ -86,24 +95,15 @@
     });
 
     // NEW: fetch the pivot data on mount
-    onMount(async () => {
-      try {
-        // use your helper; pass the SvelteKit-injected fetch
-        const newPivot = await fetchPivotData(fetch, manager);
-        pivot = newPivot;
-      } catch (e) {
-        console.error('❌ fetchPivotData failed:', e);
-        pivotError = e.message;
-      }
-    });
-
+ 
     const changeManager = (newManager, noscroll = false) => {
-        if (!newManager) {
-            goto(`/managers`);
-        }
-        manager = newManager;
-        goto(`/manager?manager=${newManager}`, { noscroll });
-    };
+    if (!newManager) {
+      goto(`/managers`);
+    }
+    manager = newManager;
+    goto(`/manager?manager=${newManager}`, { noscroll });
+  };
+
 </script>
 
 <div class="managerContainer">
@@ -159,11 +159,19 @@
                 >
             {/if}
             <span class="seperator">|</span>
-            {#if pivotError}
-                <p class="error">Pivot error: {pivotError}</p>
-            {:else}
-                <ManagerDraftMoney {managerIndex} {viewManager} {pivot} />
-            {/if}
+             {#if pivotLoading}
+      <!-- show a spinner or placeholder while loading -->
+      <span>Loading draft money…</span>
+    {:else if pivotError}
+      <p class="error">Pivot error: {pivotError}</p>
+    {:else}
+      <!-- now pivot is available immediately -->
+      <ManagerDraftMoney
+        managerIndex={manager}
+        {viewManager}
+        pivot={pivot}
+      />
+    {/if}
             {#if viewManager.preferredContact}
                 <!-- preferredContact is an optional field -->
                 <span class="seperator">|</span>

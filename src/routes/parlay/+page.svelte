@@ -2,19 +2,51 @@
   import { onMount } from 'svelte';
   export let data;
 
-  const { endpoint, columns } = data;
+  const { endpoint, columns, parlayPivot } = data;
   let parlayData = [];
   let loading = true;
   let error = null;
 
-  // Pagination & Sorting state
+  // --- Small table sorting state ---
+  let smallSortCol = null;
+  let smallSortDir = 'asc';
+
+  // compute small table data
+  $: smallSortedData = smallSortCol
+    ? [...parlayPivot].sort((a, b) => {
+        const aVal = a[smallSortCol] ?? '';
+        const bVal = b[smallSortCol] ?? '';
+        if (aVal < bVal) return smallSortDir === 'asc' ? -1 : 1;
+        if (aVal > bVal) return smallSortDir === 'asc' ? 1 : -1;
+        return 0;
+      })
+    : parlayPivot;
+
+  function toggleSmallSort(col) {
+    if (smallSortCol === col) {
+      smallSortDir = smallSortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      smallSortCol = col;
+      smallSortDir = 'asc';
+    }
+  }
+
+  // --- Bottom table logic left unchanged ---
   const perPageOptions = [20, 30, 40, 50, 100];
   let perPage = 20;
   let sortCol = null;
   let sortDir = 'asc';
-
-  // Search state
   let searchTerm = '';
+  let filteredData, sortedData, visibleData;
+
+  function toggleSort(col) {
+    if (sortCol === col) {
+      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortCol = col;
+      sortDir = 'asc';
+    }
+  }
 
   onMount(async () => {
     try {
@@ -42,26 +74,20 @@
     }
   });
 
-  // Filter by search term
   $: filteredData = parlayData.filter(row => {
-   // split on whitespace or commas, drop empty tokens
-   const tokens = searchTerm
-     .toLowerCase()
-     .split(/[\s,]+/)
-     .filter(t => t);
-   // if no tokens, don’t filter anything out
-   if (tokens.length === 0) return true;
+    const tokens = searchTerm
+      .toLowerCase()
+      .split(/[\s,]+/)
+      .filter(t => t);
+    if (tokens.length === 0) return true;
+    return tokens.every(token =>
+      columns.some(col => {
+        const cell = row[col.data];
+        return cell != null && String(cell).toLowerCase().includes(token);
+      })
+    );
+  });
 
-   // for each token, row must have at least one column containing it
-   return tokens.every(token =>
-     columns.some(col => {
-       const cell = row[col.data];
-       return cell != null && String(cell).toLowerCase().includes(token);
-     })
-   );
- });
-
-  // Sort and paginate data
   $: sortedData = sortCol
     ? [...filteredData].sort((a, b) => {
         const aVal = a[sortCol] ?? '';
@@ -73,18 +99,48 @@
     : filteredData;
 
   $: visibleData = sortedData.slice(0, perPage);
-
-  function toggleSort(col) {
-    if (sortCol === col) {
-      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      sortCol = col;
-      sortDir = 'asc';
-    }
-  }
 </script>
 
 <style>
+  /* === Small Table === */
+  :global(.small-table-container) {
+    max-width: 300px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow-x: auto;
+    color: #fff;
+  }
+  :global(.small-table) {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #000;
+    color: #fff;
+  }
+  :global(.small-table th),
+  :global(.small-table td) {
+    padding: 0.5rem;
+    border-bottom: 1px solid #333;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  :global(.small-table th.sorted-asc::after) {
+    content: ' ▲';
+  }
+  :global(.small-table th.sorted-desc::after) {
+    content: ' ▼';
+  }
+  :global(.small-table th) {
+    background: #222;
+    user-select: none;
+  }
+
+  /* === Bottom Table & Controls (unchanged) === */
   .table-container {
     max-width: 1700px;
     margin: 2rem auto;
@@ -151,6 +207,39 @@
   }
 </style>
 
+<!-- Top small table with sorting -->
+{#if parlayPivot && parlayPivot.length}
+  <div class="small-table-container">
+    <table class="small-table">
+      <thead>
+        <tr>
+          {#each Object.keys(parlayPivot[0]) as header}
+            <th
+              class:sorted-asc={smallSortCol === header && smallSortDir === 'asc'}
+              class:sorted-desc={smallSortCol === header && smallSortDir === 'desc'}
+              on:click={() => toggleSmallSort(header)}
+            >
+              {header}
+            </th>
+          {/each}
+        </tr>
+      </thead>
+      <tbody>
+        {#each smallSortedData as row}
+          <tr>
+            {#each Object.values(row) as cell}
+              <td>{cell}</td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+{:else}
+  <p>No parlay pivot data found.</p>
+{/if}
+
+<!-- Bottom interactive table unchanged -->
 {#if loading}
   <p>Loading parlay data...</p>
 {:else if error}

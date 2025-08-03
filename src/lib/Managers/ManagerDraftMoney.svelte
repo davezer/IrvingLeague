@@ -1,42 +1,30 @@
 <script>
-  import { onMount } from 'svelte';
   import { formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
 
-  // Passed in from parent:
-  export let viewManager;
+  // give viewManager a safe default so .teamName never throws
+  export let viewManager = {};
+  export let pivot = [];
 
-  let pivotData = [];
-  let apiError = '';
   let myDraftMoney = null;
 
-  function moneyColor(val) {
-    if (val === null || isNaN(val)) return 'inherit';
-    if (val < 100)    return 'red';
-    if (val <= 200)   return 'green';
+  function moneyColor(v) {
+    if (v == null || isNaN(v)) return 'inherit';
+    if (v < 100)   return 'red';
+    if (v <= 200)  return 'green';
     return 'gold';
   }
 
-  onMount(async () => {
-    try {
-      const res = await fetch('/api/pivot');
-      if (!res.ok) throw new Error(res.statusText);
-      pivotData = await res.json();
-
-      // match on teamName (or name)
-      const label = (viewManager.teamName || viewManager.name)
-        .trim()
-        .toLowerCase();
-
-      const entry = pivotData.find(r =>
+  // whenever pivot or viewManager change, recompute if we have both
+  $: {
+    const name = viewManager.teamName ?? viewManager.name;
+    if (name && pivot.length) {
+      const label = name.trim().toLowerCase();
+      const entry = pivot.find(r =>
         String(r.key || '').trim().toLowerCase() === label
       );
-
       myDraftMoney = entry ? Number(entry.value) : null;
-    } catch (e) {
-      console.error('❌ fetch pivotData failed:', e);
-      apiError = e.message;
     }
-  });
+  }
 </script>
 
 <div class="draftMoneyInfo">

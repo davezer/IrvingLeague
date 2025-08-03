@@ -7,10 +7,10 @@ export const enableBlog = true; // requires VITE_CONTENTFUL_ACCESS_TOKEN and VIT
 
 /*   STEP 2   */
 export const homepageText = `
-  <p>Welcome to the future.</p>
-  <p>Introducing the Irving Champions League.</p>
-  <p>The Irving Champions League is more than fantasy football—it’s a legacy reborn. Born from the grit and glory of the original Irving League, this rebooted battleground celebrates fierce dedication, unmatched determination, and weekly engagement that borders on obsession. Owners obsess over waiver wires, analyze matchups like coaches, and rally with renewed energy each season. Every point scored and trade debated fuels rivalries and friendships alike. It’s where underdogs rise, champions grind, and every Sunday feels like destiny. Rejuvenated and relentless, the Irving Champions League isn’t just about football—it’s about proving who truly rules the gridiron. Welcome back to greatness.</p>
   
+  <p>Introducing the Irving Champions League.</p>
+  <p>Born from the ashes of two legendary leagues—The Irving League and DTSP—the <strong>Irving Champions League</strong> unites the fiercest competitors into one ultimate arena. This is no ordinary fantasy football league; it’s a clash of titans, where the best of the best now battle for a single crown. Rivalries are reborn, egos are on the line, and every decision matters. With new alliances, elevated stakes, and unmatched intensity, the <strong>Irving Champions League</strong> marks a new era of dominance. Two leagues may have ended—but from their legacy, a champion’s league rises. Only one will emerge victorious.</p>
+  <p><strong>Welcome to the next chapter.</strong></p>
 `;
 
 /*   STEP 3   */

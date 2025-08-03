@@ -1,48 +1,15 @@
+
 <script>
-  import LinearProgress from '@smui/linear-progress';
-  import {
-    getNflState,
-    leagueName,
-    getAwards,
-    getLeagueTeamManagers,
-    homepageText,
-    gotoManager,
-    enableBlog,
-    waitForAll
-  } from '$lib/utils/helper';
-  import { Transactions, PowerRankings, HomePost } from '$lib/components';
-  import {
-    getAvatarFromTeamManagers,
-    getTeamFromTeamManagers
-  } from '$lib/utils/helperFunctions/universalFunctions';
-  import { formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
+	import LinearProgress from '@smui/linear-progress';
+	import { getNflState, leagueName, getAwards, getLeagueTeamManagers, homepageText, managers, gotoManager, enableBlog, waitForAll } from '$lib/utils/helper';
+	import { Transactions, PowerRankings, HomePost} from '$lib/components';
+	import { getAvatarFromTeamManagers, getTeamFromTeamManagers } from '$lib/utils/helperFunctions/universalFunctions';
 
-  // ← these come from +page.server.js
-  export let data;
-  const { pivotData, viewManager } = data;
-  export { load } from './+page.server.js';
-
-  // Pre-compute the matched value
-  const label = (viewManager.teamName || viewManager.name)
-    .trim()
-    .toLowerCase();
-  const entry = pivotData.find(r =>
-    String(r.key || '').trim().toLowerCase() === label
-  );
-  const myDraftMoney = entry ? Number(entry.value) : null;
-
-  function moneyColor(val) {
-    if (val == null || isNaN(val)) return 'inherit';
-    if (val < 100)   return 'red';
-    if (val <= 200)  return 'green';
-    return 'gold';
-  }
-
-  // your existing data hooks
-  const nflState                = getNflState();
-  const podiumsData             = getAwards();
-  const leagueTeamManagersData  = getLeagueTeamManagers();
+    const nflState = getNflState();
+    const podiumsData = getAwards();
+    const leagueTeamManagersData = getLeagueTeamManagers();
 </script>
+
 <style>
     #home {
         display: flex;
@@ -59,10 +26,14 @@
         padding: 60px 0;
     }
 
+
+
     .text {
+        text-align: center;
         padding: 0 30px;
         max-width: 620px;
         margin: 0 auto;
+        font-weight: 200;
     }
 
     .leagueData {
@@ -99,7 +70,7 @@
         text-align: center;
     }
 
-    h6 {
+    h3 {
         text-align: center;
     }
 
@@ -173,7 +144,7 @@
 <div id="home">
     <div id="main">
         <div class="text">
-            <h6>{leagueName}</h6>
+            <h3>{leagueName}</h3>
             <!-- homepageText contains the intro text for your league, this gets edited in /src/lib/utils/leagueInfo.js -->
             {@html homepageText }
             <!-- Most recent Blog Post (if enabled) -->
@@ -223,24 +194,7 @@
                 <p class="center">Something went wrong: {error.message}</p>
             {/await}
         </div>
-          <!-- DRAFT MONEY (now SSR-rendered) -->
-  <!-- <div class="draftMoneyInfo" style="margin:1.5em 0; text-align:center;">
-    <div class="draftMoneySlot">
-      <div class="draftMoneyLabel">
-        {viewManager.teamName || viewManager.name} Draft Money
-      </div>
-      <div
-        class="draftMoneyAnswer"
-        style="color: {moneyColor(myDraftMoney)}"
-      >
-        {#if myDraftMoney != null && !isNaN(myDraftMoney)}
-          {formatCurrency(myDraftMoney)}
-        {:else}
-          –
-        {/if}
-      </div>
-    </div>
-  </div> -->
+
         <div class="transactions" >
             <Transactions />
         </div>
