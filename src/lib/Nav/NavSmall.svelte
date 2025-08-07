@@ -10,7 +10,7 @@
 	import { goto, preloadData } from '$app/navigation';
     import { page } from '$app/state';
 	import { leagueName } from '$lib/utils/helper';
-	import { enableBlog, managers } from '$lib/utils/leagueInfo';
+	import { enableBlog, managers } from '$lib/utils/leagueInfo.js';
 
 	let active = $state(page.url.pathname);
 

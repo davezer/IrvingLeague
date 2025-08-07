@@ -7,7 +7,7 @@
     import { goto } from '$app/navigation';
     import ManagerFantasyInfo from './ManagerFantasyInfo.svelte';
     import ManagerAwards from './ManagerAwards.svelte';
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount } from 'svelte';
     import {
         getDatesActive,
         getRosterIDFromManagerID,
@@ -15,7 +15,6 @@
     } from '$lib/utils/helperFunctions/universalFunctions';
     import { fetchPivotData } from '$lib/utils/helperFunctions/fetchPivotData';
     import ManagerDraftMoney from './ManagerDraftMoney.svelte';
-    import { pivotStore } from '$lib/pivotStore.js';
 
     export let manager,
         managers,
@@ -30,12 +29,19 @@
     export let pivotError = '';
     export let pivotLoading = true;
 
-    const unsubscribe = pivotStore.subscribe(({ data, error, loading }) => {
-        pivot = data || [];
-        pivotError = error;
-        pivotLoading = loading;
-    });
-     onDestroy(unsubscribe);
+  onMount(async () => {
+    pivotLoading = true;
+    try {
+      // pass the injected fetch in so SSR + client both work
+      pivot = await fetchPivotData(fetch, 'draftMoney');
+      console.log('🚀 pivot raw slice:', pivot);
+    } catch (err) {
+      pivotError = err.message;
+    } finally {
+      pivotLoading = false;
+    }
+  });
+
 
     export let viewManager;
     export let managerIndex;
@@ -46,12 +52,18 @@
 
     $: datesActive = getDatesActive(leagueTeamManagers, viewManager.managerID);
 
+     $: commissioner = viewManager.managerID
+        ? leagueTeamManagers.users[viewManager.managerID].is_owner
+        : false;
+
     const startersAndReserve = rostersData.startersAndReserve;
     let rosters = rostersData.rosters;
 
     $: ({ rosterID, year } = viewManager.managerID
         ? getRosterIDFromManagerID(leagueTeamManagers, viewManager.managerID)
         : { rosterID: viewManager.roster, year: null });
+
+    $: teamName = getTeamNameFromTeamManagers(leagueTeamManagers, rosterID, year);
 
     $: teamTransactions = transactions.filter((t) =>
         t.rosters.includes(parseInt(rosterID))
@@ -65,9 +77,7 @@
                   .length > 1
             : roster.co_owners;
 
-    $: commissioner = viewManager.managerID
-        ? leagueTeamManagers.users[viewManager.managerID].is_owner
-        : false;
+   
 
     let players, playersInfo;
     let loading = true;
@@ -159,19 +169,18 @@
                 >
             {/if}
             <span class="seperator">|</span>
-             {#if pivotLoading}
-      <!-- show a spinner or placeholder while loading -->
-      <span>Loading draft money…</span>
-    {:else if pivotError}
-      <p class="error">Pivot error: {pivotError}</p>
-    {:else}
-      <!-- now pivot is available immediately -->
-      <ManagerDraftMoney
-        managerIndex={manager}
-        {viewManager}
-        pivot={pivot}
-      />
-    {/if}
+            {#if pivotLoading}
+                <span>Loading draft money…</span>
+            {:else if pivotError}
+                <p class="error">Pivot error: {pivotError}</p>
+            {:else}
+                <ManagerDraftMoney
+                {viewManager}
+                {pivot}
+                {teamName}
+                />
+            {/if}
+
             {#if viewManager.preferredContact}
                 <!-- preferredContact is an optional field -->
                 <span class="seperator">|</span>

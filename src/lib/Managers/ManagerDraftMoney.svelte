@@ -4,6 +4,7 @@
   // give viewManager a safe default so .teamName never throws
   export let viewManager = {};
   export let pivot = [];
+  export let teamName = ''
 
   let myDraftMoney = null;
 
@@ -17,12 +18,16 @@
   // whenever pivot or viewManager change, recompute if we have both
   $: {
     const name = viewManager.teamName ?? viewManager.name;
+    const raw = teamName || viewManager.teamName || viewManager.name;
     if (name && pivot.length) {
       const label = name.trim().toLowerCase();
+      console.log('🔍 looking for pivot key matching:', label);
+      console.log('   available keys:', pivot.map(r => r.key));
       const entry = pivot.find(r =>
         String(r.key || '').trim().toLowerCase() === label
       );
       myDraftMoney = entry ? Number(entry.value) : null;
+      console.log('   found:', entry, '->', myDraftMoney);
     }
   }
 </script>

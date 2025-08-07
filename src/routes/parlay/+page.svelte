@@ -1,43 +1,51 @@
 <script>
-  import { onMount } from 'svelte';
   export let data;
+  const { columns, detailRows } = data;
 
-  const { endpoint, columns, parlayPivot } = data;
-  let parlayData = [];
-  let loading = true;
-  let error = null;
+  // normalize into a real array
+  $: _rows = Array.isArray(detailRows)
+    ? detailRows
+    : detailRows && typeof detailRows === 'object'
+    ? Object.values(detailRows)
+    : [];
 
-  // --- Small table sorting state ---
-  let smallSortCol = null;
-  let smallSortDir = 'asc';
-
-  // compute small table data
-  $: smallSortedData = smallSortCol
-    ? [...parlayPivot].sort((a, b) => {
-        const aVal = a[smallSortCol] ?? '';
-        const bVal = b[smallSortCol] ?? '';
-        if (aVal < bVal) return smallSortDir === 'asc' ? -1 : 1;
-        if (aVal > bVal) return smallSortDir === 'asc' ? 1 : -1;
-        return 0;
-      })
-    : parlayPivot;
-
-  function toggleSmallSort(col) {
-    if (smallSortCol === col) {
-      smallSortDir = smallSortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      smallSortCol = col;
-      smallSortDir = 'asc';
-    }
-  }
-
-  // --- Bottom table logic left unchanged ---
-  const perPageOptions = [20, 30, 40, 50, 100];
+  // table state
+  let search = '';
   let perPage = 20;
   let sortCol = null;
   let sortDir = 'asc';
-  let searchTerm = '';
-  let filteredData, sortedData, visibleData;
+
+  // split search into tokens
+  $: tokens = search
+    .toLowerCase()
+    .split(/[\s,]+/)
+    .filter(Boolean);
+
+  // filter
+  $: filtered = _rows.filter((row) => {
+    if (tokens.length === 0) return true;
+    return tokens.every((tok) =>
+      Object.values(row).some((cell) =>
+        String(cell).toLowerCase().includes(tok)
+      )
+    );
+  });
+
+  // sort
+  $: sorted = sortCol
+    ? [...filtered].sort((a, b) => {
+        const aV = String(a[sortCol] ?? '');
+        const bV = String(b[sortCol] ?? '');
+        if (aV < bV) return sortDir === 'asc' ? -1 : 1;
+        if (aV > bV) return sortDir === 'asc' ? 1 : -1;
+        return 0;
+      })
+    : filtered;
+
+  // paginate
+  $: visible = perPage === 'ALL'
+    ? sorted
+    : sorted.slice(0, +perPage);
 
   function toggleSort(col) {
     if (sortCol === col) {
@@ -48,244 +56,140 @@
     }
   }
 
-  onMount(async () => {
-    try {
-      const res = await fetch(endpoint, { mode: 'cors' });
-      if (!res.ok) throw new Error(`Fetch error: ${res.status} ${res.statusText}`);
-      const json = await res.json();
-      if (!Array.isArray(json)) throw new Error('Parlay data is not an array');
-      parlayData = json;
-    } catch (e) {
-      console.warn('Fetch failed, JSONP fallback', e);
-      const callbackName = `cb${Date.now()}`;
-      window[callbackName] = (data) => {
-        parlayData = data;
-        delete window[callbackName];
-      };
-      const script = document.createElement('script');
-      script.src = `${endpoint}?callback=${callbackName}`;
-      script.onerror = (err) => {
-        error = new Error('JSONP request failed');
-        delete window[callbackName];
-      };
-      document.body.appendChild(script);
-    } finally {
-      loading = false;
-    }
-  });
-
-  $: filteredData = parlayData.filter(row => {
-    const tokens = searchTerm
-      .toLowerCase()
-      .split(/[\s,]+/)
-      .filter(t => t);
-    if (tokens.length === 0) return true;
-    return tokens.every(token =>
-      columns.some(col => {
-        const cell = row[col.data];
-        return cell != null && String(cell).toLowerCase().includes(token);
-      })
-    );
-  });
-
-  $: sortedData = sortCol
-    ? [...filteredData].sort((a, b) => {
-        const aVal = a[sortCol] ?? '';
-        const bVal = b[sortCol] ?? '';
-        if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
-        if (aVal > bVal) return sortDir === 'asc' ? 1 : -1;
-        return 0;
-      })
-    : filteredData;
-
-  $: visibleData = sortedData.slice(0, perPage);
+  console.log({ columns, detailRows });
 </script>
 
 <style>
-  /* === Small Table === */
-  :global(.small-table-container) {
-    max-width: 300px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    overflow-x: auto;
-    color: #fff;
-  }
-  :global(.small-table) {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-    background: #000;
-    color: #fff;
-  }
-  :global(.small-table th),
-  :global(.small-table td) {
-    padding: 0.5rem;
-    border-bottom: 1px solid #333;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  :global(.small-table th.sorted-asc::after) {
-    content: ' ▲';
-  }
-  :global(.small-table th.sorted-desc::after) {
-    content: ' ▼';
-  }
-  :global(.small-table th) {
-    background: #222;
-    user-select: none;
+  :global(body) {
+    background: #111;
+    margin: 0;
+    font-family: sans-serif;
   }
 
-  /* === Bottom Table & Controls (unchanged) === */
-  .table-container {
-    max-width: 1700px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    overflow-x: auto;
+  h4 {
+    text-align: center;
     color: #fff;
+    margin-top: 2rem;
   }
-  table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-    background: #000;
-    color: #fff;
-  }
-  th, td {
-    padding: 0.5rem;
-    border-bottom: 1px solid #333;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  th {
-    cursor: pointer;
-    user-select: none;
-  }
-  th.sorted-asc::after {
-    content: ' ▲';
-  }
-  th.sorted-desc::after {
-    content: ' ▼';
-  }
+
   .controls {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+    justify-content: center;
+    gap: 15rem;
+    margin: 1.5rem 0;
     color: #fff;
   }
-  .controls label {
-    margin: 0.5rem;
-    display: flex;
-    align-items: center;
-  }
-  .controls input {
-    margin-left: 0.5rem;
-    padding: 0.25rem;
-    border-radius: 4px;
-    border: 1px solid #555;
+
+  .controls input,
+  .controls select {
     background: #222;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .table-wrapper {
+    max-width: 1500px;
+    margin: 0 auto 3rem;
+    padding: 1rem;
+    background: #000;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
     color: #fff;
   }
-  select {
-    margin-left: 0.5rem;
-    padding: 0.25rem;
-    border-radius: 4px;
-    background: #222;
-    color: #fff;
-    border: 1px solid #555;
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #333;
+    text-align: left;
+  }
+
+  th {
+    background: #111;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  th.sorted-asc::after {
+    content: ' ▲';
+  }
+
+  th.sorted-desc::after {
+    content: ' ▼';
+  }
+
+  tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* “no results” row styling */
+  .no-results {
+    text-align: center;
+    color: #888;
   }
 </style>
 
-<!-- Top small table with sorting -->
-{#if parlayPivot && parlayPivot.length}
-  <div class="small-table-container">
-    <table class="small-table">
-      <thead>
+<h4>Parlay Detail</h4>
+
+<div class="controls">
+  <label>
+    Search:
+    <input type="text" bind:value={search} placeholder="Search…" />
+  </label>
+
+  <label>
+    Show
+    <select bind:value={perPage}>
+      {#each [10, 20, 50, 100, 'ALL'] as n}
+        <option value={n}>{n}</option>
+      {/each}
+    </select>
+    entries
+  </label>
+
+  <div>Showing {visible.length} of {filtered.length}</div>
+</div>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        {#each columns as { data }}
+          <th
+            class:sorted-asc={sortCol === data && sortDir === 'asc'}
+            class:sorted-desc={sortCol === data && sortDir === 'desc'}
+            on:click={() => toggleSort(data)}
+          >
+            {data}
+          </th>
+        {/each}
+      </tr>
+    </thead>
+    <tbody>
+      {#if visible.length === 0}
         <tr>
-          {#each Object.keys(parlayPivot[0]) as header}
-            <th
-              class:sorted-asc={smallSortCol === header && smallSortDir === 'asc'}
-              class:sorted-desc={smallSortCol === header && smallSortDir === 'desc'}
-              on:click={() => toggleSmallSort(header)}
-            >
-              {header}
-            </th>
-          {/each}
+          <td class="no-results" colspan={columns.length}>
+            No rows match “{search}”
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {#each smallSortedData as row}
+      {:else}
+        {#each visible as row}
           <tr>
-            {#each Object.values(row) as cell}
-              <td>{cell}</td>
+            {#each columns as { data }}
+              <td>{row[data]}</td>
             {/each}
           </tr>
         {/each}
-      </tbody>
-    </table>
-  </div>
-{:else}
-  <p>No parlay pivot data found.</p>
-{/if}
-
-<!-- Bottom interactive table unchanged -->
-{#if loading}
-  <p>Loading parlay data...</p>
-{:else if error}
-  <p class="error">Error loading parlay: {error.message}</p>
-{:else}
-  <div class="table-container">
-    <div class="controls">
-      <label>
-        Search:
-        <input type="text" placeholder="Search..." bind:value={searchTerm} />
-      </label>
-      <label>
-        Show
-        <select bind:value={perPage}>
-          {#each perPageOptions as opt}
-            <option value={opt}>{opt}</option>
-          {/each}
-        </select>
-        entries
-      </label>
-      <div>Showing {visibleData.length} of {filteredData.length} entries</div>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          {#each columns as col}
-            <th
-              class:sorted-asc={sortCol === col.data && sortDir === 'asc'}
-              class:sorted-desc={sortCol === col.data && sortDir === 'desc'}
-              on:click={() => toggleSort(col.data)}
-            >
-              {col.data}
-            </th>
-          {/each}
-        </tr>
-      </thead>
-      <tbody>
-        {#each visibleData as row}
-          <tr>
-            {#each columns as col}
-              <td>{row[col.data]}</td>
-            {/each}
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  </div>
-{/if}
+      {/if}
+    </tbody>
+  </table>
+</div>
