@@ -1,8 +1,4 @@
-// src/lib/utils/helperFunctions/fetchPivotData.js
 
-/**
- * Fetches a pivot slice from your /api/pivot?type=… endpoint
- */
 export async function fetchPivotData(fetchFn, type) {
   const res = await fetchFn(`/api/pivot?type=${type}`);
   if (!res.ok) {

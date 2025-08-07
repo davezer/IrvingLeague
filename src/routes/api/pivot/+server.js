@@ -1,16 +1,20 @@
-import { json, error } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 
-// read directly from Vite’s import.meta.env
-const PIVOT_WEBAPP_URL = import.meta.env.VITE_PIVOT_WEBAPP_URL;
+// 🔥 this must point at your Apps Script URL that serves the PIVOT table,
+//    _not_ the detail sheet!
+const UPSTREAM_URL =
+  'https://script.google.com/macros/s/AKfycby5H8hQmlCoiDl6WOdoEcTxEddym__VtMFuqzotiewfNX0uGv2dEfErERAwp5KPShXO/exec?type=pivot';
 
 export async function GET({ fetch }) {
-  if (!PIVOT_WEBAPP_URL) {
-    console.error('[api/pivot] missing VITE_PIVOT_WEBAPP_URL');
-    throw error(500, 'Server misconfiguration');
+  // cache‐bust so we always get fresh pivot
+  const res = await fetch(`${UPSTREAM_URL}&cacheBust=${Date.now()}`);
+  if (!res.ok) {
+    return json(
+      { error: `Upstream error ${res.status}: ${res.statusText}` },
+      { status: 502 }
+    );
   }
-
-  const res = await fetch(PIVOT_WEBAPP_URL);
-  if (!res.ok) throw error(res.status, res.statusText);
-  const data = await res.json();
-  return json(data);
+  // your Apps Script pivot endpoint _must_ return an array of objects
+  const pivot = await res.json();
+  return json(pivot);
 }

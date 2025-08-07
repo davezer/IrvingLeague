@@ -1,10 +1,21 @@
 <script>
+   import { pivotStore } from '$lib/pivotStore.js';
   import { formatCurrency } from '$lib/utils/helperFunctions/fetchPivotData';
+  import { onDestroy } from 'svelte';
 
   // give viewManager a safe default so .teamName never throws
   export let viewManager = {};
   export let pivot = [];
+  let pivotLoading = true;
+  let pivotError = null;
   export let teamName = ''
+
+  const unsubscribe = pivotStore.subscribe(({ data, error, loading }) => {
+    pivot        = data || [];
+    pivotError   = error;
+    pivotLoading = loading;
+  });
+  onDestroy(unsubscribe);
 
   let myDraftMoney = null;
 
@@ -16,19 +27,14 @@
   }
 
   // whenever pivot or viewManager change, recompute if we have both
-  $: {
-    const name = viewManager.teamName ?? viewManager.name;
-    const raw = teamName || viewManager.teamName || viewManager.name;
-    if (name && pivot.length) {
-      const label = name.trim().toLowerCase();
-      console.log('🔍 looking for pivot key matching:', label);
-      console.log('   available keys:', pivot.map(r => r.key));
-      const entry = pivot.find(r =>
-        String(r.key || '').trim().toLowerCase() === label
-      );
-      myDraftMoney = entry ? Number(entry.value) : null;
-      console.log('   found:', entry, '->', myDraftMoney);
-    }
+   $: {
+    const label = (viewManager.teamName ?? viewManager.name)
+      .toLowerCase()
+      .trim();
+    const entry = pivot.find(
+      (r) => String(r.key).toLowerCase().trim() === label
+    );
+    myDraftMoney = entry ? Number(entry.value) : null;
   }
 </script>
 
@@ -37,16 +43,19 @@
     <div class="draftMoneyLabel">
       Future Draft Money
     </div>
-    <div
-      class="draftMoneyAnswer"
-      style="color: {moneyColor(myDraftMoney)}"
-    >
-      {#if myDraftMoney != null && !isNaN(myDraftMoney)}
-        {formatCurrency(myDraftMoney)}
-      {:else}
-        –
-      {/if}
-    </div>
+    {#if pivotLoading}
+  <span>Loading draft money…</span>
+{:else if pivotError}
+  <p class="error">Pivot error: {pivotError}</p>
+{:else}
+  <div class="draftMoneyAnswer" style="color: {moneyColor(myDraftMoney)}">
+    {#if myDraftMoney != null && !isNaN(myDraftMoney)}
+      {formatCurrency(myDraftMoney)}
+    {:else}
+      –
+    {/if}
+  </div>
+{/if}
   </div>
 </div>
 
