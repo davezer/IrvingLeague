@@ -43,14 +43,13 @@
     <div class="draftMoneyLabel">
       Future Draft Money
     </div>
-    {#if pivotLoading}
-  <span>Loading draft money…</span>
-{:else if pivotError}
-  <p class="error">Pivot error: {pivotError}</p>
-{:else}
-  <div class="draftMoneyAnswer" style="color: {moneyColor(myDraftMoney)}">
-    {#if myDraftMoney != null && !isNaN(myDraftMoney)}
-      {formatCurrency(myDraftMoney)}
+  
+  {#if pivotError}
+    <p class="error">Pivot error: {pivotError}</p>
+  {:else}
+    <div class="draftMoneyAnswer" style="color: {moneyColor(myDraftMoney)}">
+      {#if myDraftMoney != null && !isNaN(myDraftMoney)}
+        {formatCurrency(myDraftMoney)}
     {:else}
       –
     {/if}

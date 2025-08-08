@@ -70,7 +70,7 @@ export const managers = [
   { // array 3
     managerID: "1005329348477419520",
     name: "Kenny Case",
-    teamName: "Rebel City Lone Rangers",
+    teamName: "Rebel Radio Lone Rangers",
     location: "FL",
     bio: "The Lone Rangers? That's original. How can you pluralize 'Lone Ranger'?",
     photo: "/managers/loneRangers.png",
@@ -104,7 +104,7 @@ export const managers = [
   { // array 5
     managerID: "1254577895943192576",
     name: "Kevin Flanagan",
-    teamName: "Nakatomi Custodial Crew",
+    teamName: "Nakatomi Plaza CC",
     location: "CT",
     bio: "When fantasy turns Die Hard, the Nakatomi Custodial Crew cleans up.",
     photo: "/managers/nakatomi.png",
@@ -128,7 +128,7 @@ export const managers = [
     fantasyStart: 2022,
     favoriteTeam: "cle",
     mode: "Rebuild",
-    rival: { name: "Brian Chorney", link: 11, image: "/managers/rabid.png" },
+    rival: { name: "Romano DeSimone", link: 11, image: "/managers/vincitori.png" },
     yearsOfService: null,
     persona: "The Flacco",
     philosophy: "Solidarity over strategy, chaos with a cause.",
@@ -186,10 +186,10 @@ export const managers = [
     championship: { league: "Irving", years: "2020" },
     preferredContact: "Text"
   },
-  { // array 9
+  { // array 10
     managerID: "1256320322135674880",
     name: "Brian James",
-    teamName: "Kansas City Kodachromes",
+    teamName: "Kodachromes",
     location: "FL",
     bio: "The Kansas City Kodachromes play fantasy with vintage flair and bold precision.",
     photo: "/managers/kodachromes.png",
@@ -203,7 +203,7 @@ export const managers = [
     championship: { league: null, years: null },
     preferredContact: "Text"
   },
-  { // array 10
+  { // array 11
     managerID: "857309838424809472",
     name: "Brian Marx",
     teamName: "Tallahassee Tribe",
@@ -213,11 +213,28 @@ export const managers = [
     fantasyStart: 2023,
     favoriteTeam: "tb",
     mode: "Rebuild",
-    rival: { name: "Drew Goodwin", link: 6, image: "/managers/union.png" },
+    rival: { name: "Drew Goodwin", link: 5, image: "/managers/jayhawks.png" },
     yearsOfService: null,
     persona: "The Littlefinger",
     philosophy: "Loyal to the core. Draft tough. Compete harder. Win together.",
     championship: { league: "DTSP", years: "2022" },
+    preferredContact: "Text"
+  },
+   { // array 12
+    managerID: "1258962574360182785",
+    name: "Adam Lopiano",
+    teamName: "Skeskatchew Mounties",
+    location: "CT",
+    bio: "The Skeskatchew Mounties embody resilience and determination, ready to conquer the fantasy landscape.",
+    photo: "/managers/mounties.png",
+    fantasyStart: 2023,
+    favoriteTeam: "nyg",
+    mode: "Rebuild",
+    rival: { name: "Drew Goodwin", link: 7, image: "/managers/union.png" },
+    yearsOfService: null,
+    persona: "The Flacco",
+    philosophy: "Ride tall, charge hard, guard victory like a charging moose.",
+    championship: { league: "Irving", years: "2006" },
     preferredContact: "Text"
   }
 ];

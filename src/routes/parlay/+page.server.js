@@ -1,3 +1,5 @@
+import { error } from '@sveltejs/kit';
+
 export async function load({ fetch }) {
   const res = await fetch('/api/parlay', { cache: 'no-store' });
   if (!res.ok) throw error(res.status, await res.text());
