@@ -40,8 +40,8 @@
 
 <div class="draftMoneyInfo">
   <div class="draftMoneySlot">
-    <div class="draftMoneyLabel">
-      Future Draft Money
+    <div class="draftMoneyLabel" data-text="Future Draft Money">
+     Future Draft Money
     </div>
   
   {#if pivotError}
@@ -80,14 +80,17 @@
 }
 
  .draftMoneyLabel{
+        display:inline-block;
         font-size: 15px;
         color: var(--blueOne);
         font-weight: 700;
-        margin-bottom: 1em;
+        margin-top: 5px;
+        margin-bottom: 15px;
         height: 30px;
-        width: 90px;
+        width: 110px;
         text-align: center;
-        line-height: 1.2em;
+        line-height: 1.05em;
+        
         
     } 
 
@@ -97,5 +100,4 @@
       font-weight: 700;
      
     }
-
 </style>
