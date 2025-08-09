@@ -45,6 +45,10 @@
 
     export let viewManager;
     export let managerIndex;
+    export let byManager = {};
+    const emptyBadges = { personas: [], weekly: [], yearly: [], legacy: [] };
+
+
 
     let transactions = transactionsData.transactions;
 
@@ -76,8 +80,11 @@
             ? leagueTeamManagers.teamManagersMap[year][rosterID].managers
                   .length > 1
             : roster.co_owners;
-
-   
+    
+   $: badgesForManager =
+  viewManager?.managerID && byManager
+    ? (byManager[viewManager.managerID] || emptyBadges)
+    : emptyBadges;
 
     let players, playersInfo;
     let loading = true;
@@ -279,6 +286,7 @@
     managerIndex={manager}  
     {players}
     {changeManager}
+    badges={badgesForManager}
   />
 
 <ManagerAwards

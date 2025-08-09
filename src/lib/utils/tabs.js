@@ -84,4 +84,10 @@ export const tabs = [
         dest: '/parlay',
         key: 'parlay',
     },
+    {
+        icon: 'stars',
+        label: 'The Badges',
+        dest: '/badges',
+        key: 'badges',
+    }
 ];
