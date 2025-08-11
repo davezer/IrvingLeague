@@ -1,42 +1,17 @@
 {
   "name": "league-page",
   "version": "2.5.1",
-  "homepage": "https://github.com/nmelhado/league-page",
+  "homepage": "https://github.com/davezer/irvingLeague",
   "repository": {
     "type": "git",
-    "url": "git://github.com/nmelhado/league-page.git"
+    "url": "git://github.com/davezer/irvingLeague.git"
   },
   "author": {
-    "name": "Nicholas Melhado",
-    "email": "n.melhado@gmail.com",
-    "url": "http://www.nmelhado.com/"
+    "name": "Dave Oliverio",
+    "email": "daveoliverio@gmail.com",
+    "url": "http://www.daveoliverio.dev/"
   },
-  "contributors": [
-    {
-      "name": "Shane Tjong-Akiet",
-      "url": "https://github.com/shanetj"
-    },
-    {
-      "name": "Scottie Garcia",
-      "url": "https://github.com/scottiegarcia"
-    },
-    {
-      "name": "DOLO",
-      "url": "https://github.com/1600dolo"
-    },
-    {
-      "name": "OldNewsBlues-2",
-      "url": "https://github.com/OldNewsBlues-2"
-    }
-  ],
-  "funding": {
-    "type": "buy_me_a_coffee",
-    "url": "https://www.buymeacoffee.com/nmelhado"
-  },
-  "bugs": {
-    "url": "https://github.com/nmelhado/league-page/issues",
-    "email": "n.melhado@gmail.com"
-  },
+  
   "license": "MIT",
   "engines": {
     "node": ">=v20.0.0",

@@ -125,6 +125,8 @@ const tenureFromStart = (start, now = THIS_YEAR) =>
   awardWeekly({ badgeId: 'doyle', managerId: '857309838424809472', season: 2025, week: 9, points: null });
   awardWeekly({ badgeId: 'ides', managerId: '1253515645044133888', season: 2025, week: 9, points: 142 });
   awardWeekly({ badgeId: 'doyle', managerId: '1253772062900621312', season: 2025, week: 9, points: null });
+  awardWeekly({ badgeId: 'ides', managerId: '1253515645044133888', season: 2025, week: 20, points: 5 });
+
 
   // -------- Championships → Legacy
   const byLeague = new Map();
