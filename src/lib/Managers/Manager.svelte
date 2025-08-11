@@ -404,6 +404,7 @@
 </div>
 
 <style>
+    :global(html, body){ overflow-x: hidden; }
     .managerContainer {
         width: 100%;
         margin: 2em 0 5em;
@@ -464,11 +465,10 @@
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
-  align-items:center;
-  gap:.35rem 1.1rem;        /* tighter rows/cols */
+  align-items:center;      /* tighter rows/cols */
   margin: 10px auto 0;      /* remove big side offsets */
   padding-top: 10px;
-  max-width: 900px;         /* keeps line from stretching forever */
+  max-width: 600px;         /* keeps line from stretching forever */
   line-height: 1.2;       /* slightly smaller text */
 }
 .basicInfo > * + *{
@@ -584,7 +584,7 @@
   .basicInfo{ gap:.25rem .75rem; font-size:.88em; }
   .basicInfo > * + *{ padding-left:.7rem; }
   .basicInfo > * + *::before{ left:.35rem; height:.9em; }
-}
+        }
 
         .basicInfo {
             height: 30px;
@@ -601,12 +601,23 @@
         }
     }
 
-    @media (max-width: 435px) {
+    @media (max-width: 430px) {
         :global(.selectionButtons span) {
             line-height: 1.2em;
             font-size: 0.8em;
         }
-    }
+          .basicInfo{
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            align-items:center;      /* tighter rows/cols */
+            margin: 15px auto 0;      /* remove big side offsets */
+            padding-top: 10px;
+            max-width: 450px;         /* keeps line from stretching forever */
+            line-height: 1.2;       /* slightly smaller text */
+            }
+        }
+           
 
     @media (max-width: 450px) {
         .basicInfo {
@@ -621,20 +632,27 @@
             height: 30px;
         }
     }
-@media (max-width:480px){
-  .comm-badge{ right:-6px; bottom:-6px; transform:scale(.9); }
+/* Mobile: 2-up and truly centered */
+@media (max-width: 480px){
+  .managerConstrained .fantasyInfos{
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(140px, 1fr)) !important;
+    gap: 14px 12px;
+    justify-content: center !important;   /* center the tracks */
+    justify-items: center !important;     /* center the cards */
+    width: fit-content;                   /* shrink-wrap to columns */
+    margin-inline: auto;                  /* center the grid block */
+    padding-left: 0;                      /* avoid extra left padding */
+    padding-right: 0;
+  }
+
+  /* let each card shrink; removes the fixed 110px width */
+  .managerConstrained .badgesRow .badge-card{
+    width: auto !important;
+  }
+
+  /* labels shouldn’t cap the cell width */
+  .managerConstrained .infoSlot{ max-width: none !important; }
 }
-    @media (max-width: 370px) {
-        .basicInfo {
-            height: 18px;
-        }
 
-        .basicInfo span {
-            font-size: 0.6em;
-        }
-
-        .infoTeam {
-            height: 24px;
-        }
-    }
 </style>

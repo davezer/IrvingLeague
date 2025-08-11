@@ -261,7 +261,8 @@ const openFromWeeklyGroup = (g) => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 2.5rem;
-  align-items: start;
+  align-items: start; 
+  justify-content: center;       /* centers the grid as a block */
   justify-items: center;
   padding: 1.5rem 0 2rem;
   margin: 3em 0 4em;
@@ -359,4 +360,65 @@ const openFromWeeklyGroup = (g) => {
 @media (max-width: 1100px){ .fantasyInfos{ grid-template-columns: repeat(3, minmax(140px, 1fr)); } }
 @media (max-width: 780px){  .fantasyInfos{ grid-template-columns: repeat(2, minmax(140px, 1fr)); } }
 @media (max-width: 480px){  .fantasyInfos{ grid-template-columns: 1fr; } }
+@media (max-width: 480px){
+  .fantasyInfos{
+    display: grid;
+    /* use fixed columns instead of fr so the grid can shrink */
+    grid-template-columns: repeat(2, 160px);   /* tweak 150–170px as you like */
+    gap: 14px 12px;
+
+    /* center the whole grid block */
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* tidy alignment */
+    justify-items: center;
+    align-items: start;
+  }
+
+  /* let slots/cards size to their cell */
+  .infoSlot{ max-width: none; }
+  .badgesRow .badge-card{ width: auto; }
+
+   .fantasyInfos {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important; /* optional, removes any bg color */
+  }
+}
+
+@media (max-width: 430px){
+.fantasyInfos{
+    display: grid;
+    /* use fixed columns instead of fr so the grid can shrink */
+    grid-template-columns: repeat(2, 160px);   /* tweak 150–170px as you like */
+    gap: 14px 12px;
+
+    /* center the whole grid block */
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* tidy alignment */
+    justify-items: center;
+    align-items: start;
+  }
+
+  /* let slots/cards size to their cell */
+  .infoSlot{ max-width: none; }
+  .badgesRow .badge-card{ width: auto; }
+
+   .fantasyInfos {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important; /* optional, removes any bg color */
+  }
+}
+
+@media (max-width: 360px) {
+  .fantasyInfos {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
