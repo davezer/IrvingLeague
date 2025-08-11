@@ -97,7 +97,7 @@ const tenureFromStart = (start, now = THIS_YEAR) =>
 
 
 
-  // ⬇️ Add your weekly winners here (one call per week)
+  //  Add weekly winners here
   awardWeekly({ badgeId: 'bde', managerId: '857309838424809472', season: 2024, week: 3, points: 172 });
   awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
   awardWeekly({ badgeId: 'ides', managerId: '1256320322135674880', season: 2025, week: 7, points: 142 });
