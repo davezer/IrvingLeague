@@ -7,7 +7,6 @@ import {getLeagueTeamManagers} from './helperFunctions/leagueTeamManagers';
 import {getLeagueMatchups} from './helperFunctions/leagueMatchups'
 import {getRivalryMatchups} from './helperFunctions/rivalryMatchups'
 import {getNews, stringDate} from './helperFunctions/news';
-import { stringDate } from '$lib/utils/date';
 import {loadPlayers} from './helperFunctions/players';
 import { waitForAll } from './helperFunctions/multiPromise';
 import { getUpcomingDraft, getPreviousDrafts } from './helperFunctions/leagueDrafts'
