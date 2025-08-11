@@ -24,19 +24,26 @@ export async function load({ fetch, url }) {
 
   const manager = url?.searchParams?.get('manager');
 
-  // NEW: fetch the badges index (managerId -> {personas, weekly, yearly, legacy})
+  // ✅ make sure both are declared before the fetch
   let byManager = {};
+  let sections = { personas: [], weekly: [], yearly: [], legacy: [] };
+
   try {
-    const res = await fetch('/api/badges-index', { cache: 'no-store' });
-    if (res.ok) byManager = await res.json();
+    const r = await fetch('/api/badges-index', { cache: 'no-store' });
+    if (r.ok) {
+      const api = await r.json();
+      byManager = api?.byManager ?? {};
+      sections  = api?.sections  ?? sections;
+    }
   } catch {
-    // leave as {}
+    // keep defaults
   }
 
   return {
     manager: manager && manager < managersObj.length ? manager : -1,
     managers: managersObj,
     managersInfo,
-    byManager                 // <- pass down
+    byManager,
+    sections          // ✅ return sections for definitions
   };
 }

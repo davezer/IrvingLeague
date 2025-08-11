@@ -49,9 +49,11 @@
       const parts = [];
       if (e.season) parts.push(`${e.season}`);
       if (e.week != null) parts.push(`Week ${e.week}`);
+      if (e.points != null) parts.push(`${Number(e.points).toFixed(2)} pts`);
       return parts.join(' • ');
     }
-    return ''; // personas/yearly default
+    // Add more types as needed
+    return '';
   };
 </script>
 <div class="page-wrapper">     <!-- ✅ ADD THIS WRAPPER -->
@@ -292,8 +294,8 @@
             <div class="row-main">
               <div class="row-title">{e.teamName} <span class="muted">— {e.managerName}</span></div>
               {#if detailLabel(activeBadge, e)}
-                <div class="row-sub muted">{detailLabel(activeBadge, e)}</div>
-              {/if}
+  <div class="row-sub muted">{detailLabel(activeBadge, e)}</div>
+{/if}
             </div>
           </div>
         {/each}
@@ -322,14 +324,24 @@
 
 /* ===== Page layout ===== */
 .page-wrapper{
-  display:flex; flex-direction:column; align-items:center;
-  max-width:1100px; margin:0 auto; padding:0 1rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:min(1200px, 100% - 48px);   /* 1200px max, nice margins on small screens */
+  margin-inline:auto;
 }
+
 
 /* ===== Controls: centered small search + inline filters ===== */
 .controls{
   display:flex; flex-direction:column; align-items:center;
   gap:.5rem; margin:1rem 0 1.25rem; width:100%;
+}
+
+.controls,
+.section-title {
+  width:100%;
+  margin-inline:auto;
 }
 .search-wrap{ position:relative; width:260px; }
 .search{
@@ -389,8 +401,12 @@
 /* ===== Grid & cards ===== */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-  gap:1rem; width:100%; justify-content:center;
+  gap:1rem;
+  /* fixed-ish column width so the grid can center cleanly */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+  justify-content: center;                 /* ← centers the columns */
+  width:100%;
+  margin: 0 auto 2rem;                     /* center the grid block */
 }
 .card{
   background:var(--panel-2); border:1px solid var(--border); border-radius:1rem;
@@ -463,6 +479,8 @@
 .mini-logo{ width:36px; height:36px; border-radius:50%; border:1px solid var(--border); object-fit:cover; background:#0d1016; }
 .row-title{ font-weight:600; }
 .row-sub{ font-size:.9rem; }
+
+.search-wrap{ width:260px; margin-inline:auto; }
 
 /* ===== Small screens ===== */
 @media (max-width:700px){

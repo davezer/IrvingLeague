@@ -15,7 +15,7 @@
     } from '$lib/utils/helperFunctions/universalFunctions';
     import { fetchPivotData } from '$lib/utils/helperFunctions/fetchPivotData';
     import ManagerDraftMoney from './ManagerDraftMoney.svelte';
-
+      export let champYears = [];   
     export let manager,
         managers,
         rostersData,
@@ -28,6 +28,7 @@
     export let pivot = [];
     export let pivotError = '';
     export let pivotLoading = true;
+    export let sections = { personas: [], weekly: [], yearly: [], legacy: [] };
 
   onMount(async () => {
     pivotLoading = true;
@@ -45,8 +46,7 @@
 
     export let viewManager;
     export let managerIndex;
-    export let byManager = {};
-    const emptyBadges = { personas: [], weekly: [], yearly: [], legacy: [] };
+    
 
 
 
@@ -80,11 +80,24 @@
             ? leagueTeamManagers.teamManagersMap[year][rosterID].managers
                   .length > 1
             : roster.co_owners;
+
+    export let byManager = {};
+    const emptyBadges = { personas: [], weekly: [], yearly: [], legacy: [] };
     
    $: badgesForManager =
   viewManager?.managerID && byManager
     ? (byManager[viewManager.managerID] || emptyBadges)
     : emptyBadges;
+
+    $: console.debug('[badges] managerID', viewManager?.managerID, {
+  fromApi: !!byManager && !!byManager[viewManager?.managerID],
+  counts: {
+    personas: badgesForManager.personas?.length ?? 0,
+    weekly:   badgesForManager.weekly?.length ?? 0,
+    yearly:   badgesForManager.yearly?.length ?? 0,
+    legacy:   badgesForManager.legacy?.length ?? 0
+  }
+});
 
     let players, playersInfo;
     let loading = true;
@@ -286,7 +299,10 @@
     managerIndex={manager}  
     {players}
     {changeManager}
-    badges={badgesForManager}
+     badges={badgesForManager}
+    byManager={byManager} 
+    champYears={champYears}
+    sections={sections}  
   />
 
 <ManagerAwards

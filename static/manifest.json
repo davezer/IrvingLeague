@@ -1,6 +1,6 @@
 {
-  "short_name": "League Page",
-  "name": "League Page",
+  "short_name": "Irving Champions League",
+  "name": "Irving Champions League",
   "icons": [
     {
       "src": "/favicons/android-chrome-192x192.png",
@@ -52,10 +52,16 @@
       "url": "/awards"
     },
     {
-      "name": "Resources & News",
-      "short_name": "Resources",
-      "description": "View fantasy football resources and news",
-      "url": "/resources"
+      "name": "Parlay",
+      "short_name": "Parlay",
+      "description": "View the weeks latest parlay bets and their outcomes. Also shows historical performance.",
+      "url": "/parlay"
+    },
+    {
+      "name": "The Badges",
+      "short_name": "Badges",
+      "description": "View the weeks latest badge achievements and their outcomes. Also shows historical performance.",
+      "url": "/badges"
     }
   ],
   "description": "Information about the League"
