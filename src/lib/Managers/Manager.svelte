@@ -137,8 +137,14 @@
 </script>
 
 <div class="managerContainer">
-    <div class="managerConstrained">
-        <img class="managerPhoto" src={viewManager.photo} alt="manager" />
+    <div class="logo-wrap">
+        <div class="logo-frame">
+            <img src={viewManager.photo} alt="manager" />
+        </div>
+        {#if commissioner}
+            <span class="comm-badge">C</span>
+        {/if}
+    </div>
         <h2>
             {viewManager.name}
     
@@ -154,11 +160,7 @@
             </div>
             
         </h2>
-        {#if commissioner}
-                    <div class="commissionerBadge">
-                        <span>C</span>
-                    </div>
-                {/if}
+        
         
         <div class="basicInfo">
             <span class="infoChild"
@@ -225,7 +227,7 @@
             
         </div>
     </div>
-</div>
+
 <div class="managerNav upper">
     <Group variant="outlined">
         {#if manager == 0}
@@ -413,15 +415,35 @@
         margin: 0 auto 4em;
     }
 
-    .managerPhoto {
-        display: block;
-        border-radius: 100%;
-        width: 70%;
-        max-width: 200px;
-        height: auto;
-        margin: 0 auto;
-        box-shadow: 0 0 8px 4px #aaa;
-    }
+.logo-wrap{
+  position: relative;      /* <-- the chip will use THIS as its origin */
+  width: max-content;
+  margin: 0 auto;
+  line-height: 0;
+}
+
+
+.logo-frame{
+  --logo-size: min(42vw, 200px);   /* keep your 200px max on desktop */
+  width: var(--logo-size);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+  background:#0d1016;
+  box-shadow: 0 0 0 3px #1ea0ff, 0 14px 30px rgba(0,0,0,.45);
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* iOS clip fix */
+}
+
+
+/* image has NO shadow or filters */
+.logo-frame img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  box-shadow:none !important;
+  filter:none !important;
+}
 
     h2 {
         text-align: center;
@@ -438,21 +460,31 @@
         font-weight: 200;
     }
 
-    .basicInfo {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-items: center;
-        gap: 1rem;
-        flex-direction: row;
-        align-content: center;
-        padding-top: 14px;
-        margin: 30px 0px -64px 49px;
-    }
-    .basicInfo > * {
-        flex: 0 0 auto; /* prevent children from shrinking */
-        white-space: nowrap; /* keep text on one line */
-    }
+  .basicInfo{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:.35rem 1.1rem;        /* tighter rows/cols */
+  margin: 10px auto 0;      /* remove big side offsets */
+  padding-top: 10px;
+  max-width: 900px;         /* keeps line from stretching forever */
+  line-height: 1.2;       /* slightly smaller text */
+}
+.basicInfo > * + *{
+  position: relative;
+  padding-left: .9rem;      /* space for the bar */
+}
+.basicInfo > * + *::before{
+  content:"";
+  position:absolute;
+  left: .45rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width:1px;
+  height: 0.95em;
+  opacity:.6;
+}
 
     .basicInfo span {
         color: #888;
@@ -488,6 +520,9 @@
 
 }
 
+.infoContact{ height:18px; margin-left:.35rem; vertical-align:middle; }
+.infoTeam{ height:36px; vertical-align:middle; }
+
 .philosophy {
     margin: 2em 1.5em 2em;
     text-align: center;
@@ -515,25 +550,24 @@
         margin-top: 0;
     }
 
-    .commissionerBadge {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 15px;
-        width: 15px;
-        font-weight: 600;
-        border-radius: 15px;
-        background-color: var(--blueTwo);
-        border: 1px solid var(--blueOne);
-        margin: -49px 0 0 532px;
-        font-size: 10px;
-    }
-
-    /* .commissionerBadge span {
-        font-style: normal;
-        color: #fff;
-    } */
-
+.comm-badge{
+  position:absolute;
+  right:-8px;         /* overlap the rim */
+  bottom:-8px;
+  z-index:5;
+  min-width:24px;
+  height:24px;
+  padding:0 .45rem;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  background:#022881;
+  color:#e8ecf2;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 4px 10px rgba(0,0,0,.45);
+  pointer-events:none; /* don’t block clicks */
+}
     .seperator {
         margin: 0 .5rem;
         color: #666;
@@ -546,6 +580,11 @@
         :global(.selectionButtons span) {
             font-size: 0.8em;
         }
+        @media (max-width: 720px){
+  .basicInfo{ gap:.25rem .75rem; font-size:.88em; }
+  .basicInfo > * + *{ padding-left:.7rem; }
+  .basicInfo > * + *::before{ left:.35rem; height:.9em; }
+}
 
         .basicInfo {
             height: 30px;
@@ -582,7 +621,9 @@
             height: 30px;
         }
     }
-
+@media (max-width:480px){
+  .comm-badge{ right:-6px; bottom:-6px; transform:scale(.9); }
+}
     @media (max-width: 370px) {
         .basicInfo {
             height: 18px;
