@@ -1,56 +1,48 @@
 // src/routes/api/nominate/+server.js
 import { json } from '@sveltejs/kit';
-import { RESEND_API_KEY, NOMINATION_TO_EMAIL, NOMINATION_FROM_EMAIL } from '$env/static/private';
+import { env } from '$env/dynamic/private'; // ⬅️ dynamic envs
 
-export const POST = async ({ request, getClientAddress }) => {
+export const POST = async ({ request, getClientAddress, fetch }) => {
   const data = await request.json().catch(() => null);
   if (!data) return json({ error: 'Invalid JSON' }, { status: 400 });
 
-  // Honeypot: if filled, silently succeed
+  // Honeypot
   if ((data.website || '').trim() !== '') return json({ ok: true });
 
-  if (!data.badgeId || !data.badgeName) {
-    return json({ error: 'Missing badge information' }, { status: 400 });
-  }
-  if (!data.submitterEmail) {
-    return json({ error: 'Missing submitter email' }, { status: 400 });
+  const RESEND_API_KEY = env.RESEND_API_KEY;
+  const TO_EMAIL       = env.NOMINATION_TO_EMAIL;
+  const FROM_EMAIL     = env.NOMINATION_FROM_EMAIL || 'Badges Bot <no-reply@yourdomain.com>';
+
+  if (!RESEND_API_KEY || !TO_EMAIL) {
+    return json({ ok: false, error: 'Email service not configured (missing envs).' }, { status: 500 });
   }
 
-  if (!RESEND_API_KEY || !NOMINATION_TO_EMAIL) {
-    return json({ error: 'Email service not configured on server' }, { status: 500 });
-  }
-
-  // Build a simple HTML summary
   const rows = [
-    ['Badge', `${data.badgeName} (#${data.badgeId})`],
-    ['Type', data.badgeType || ''],
-    ['Nominee Team', data.nomineeTeam || ''],
-    ['Nominee Manager', data.nomineeManager || ''],
-    ['Nominee Player', data.nomineePlayer || ''],
-    ['Season', data.season || ''],
-    ['Week', data.week || ''],
-    ['Points', data.points || ''],
-    ['Evidence', data.evidenceUrl || ''],
-    ['Notes', (data.notes || '').replace(/</g, '&lt;')],
-    ['Submitted By', `${data.submitterName || ''} <${data.submitterEmail}>`],
+    ['Badge', `${data.badgeName ?? ''} (#${data.badgeId ?? ''})`],
+    ['Type', data.badgeType ?? ''],
+    ['Nominee Team', data.nomineeTeam ?? ''],
+    ['Evidence', data.evidenceUrl ?? ''],
+    ['Submitter Team', data.submitterTeam ?? ''],
+    ['Submitter Email', data.submitterEmail ?? ''],
     ['IP', getClientAddress()],
-    ['User Agent', data.userAgent || ''],
-    ['Timestamp', data.timestamp || new Date().toISOString()]
+    ['User Agent', data.userAgent ?? ''],
+    ['Timestamp', data.timestamp ?? new Date().toISOString()]
   ];
 
   const table = rows.map(([k, v]) => `
     <tr>
       <td style="padding:6px 10px;border:1px solid #ddd;background:#f7f7f7;"><strong>${k}</strong></td>
       <td style="padding:6px 10px;border:1px solid #ddd;">${v || ''}</td>
-    </tr>`).join('');
+    </tr>
+  `).join('');
 
-  const html = `
-    <div>
-      <h2>New Badge Nomination</h2>
-      <table style="border-collapse:collapse;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;">${table}</table>
-    </div>`;
+  const html = `<div>
+    <h2>New Badge Nomination</h2>
+    <table style="border-collapse:collapse;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;">
+      ${table}
+    </table>
+  </div>`;
 
-  // Send via Resend
   const resp = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -58,17 +50,17 @@ export const POST = async ({ request, getClientAddress }) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      from: NOMINATION_FROM_EMAIL || 'Badges Bot <no-reply@yourdomain.com>',
-      to: [NOMINATION_TO_EMAIL],
+      from: FROM_EMAIL,
+      to: [TO_EMAIL],
       reply_to: data.submitterEmail,
-      subject: `Badge Nomination: ${data.badgeName} (#${data.badgeId})`,
+      subject: `Badge Nomination: ${data.badgeName ?? ''} (#${data.badgeId ?? ''})`,
       html
     })
   });
 
   if (!resp.ok) {
-    const text = await resp.text();
-    return json({ error: 'Email send failed', detail: text }, { status: 502 });
+    const text = await resp.text().catch(() => '');
+    return json({ ok: false, error: 'Email send failed', detail: text }, { status: 502 });
   }
 
   return json({ ok: true });
