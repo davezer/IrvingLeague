@@ -15,7 +15,7 @@
     } from '$lib/utils/helperFunctions/universalFunctions';
     import { fetchPivotData } from '$lib/utils/helperFunctions/fetchPivotData';
     import ManagerDraftMoney from './ManagerDraftMoney.svelte';
-      export let champYears = [];   
+    export let champYears = [];
     export let manager,
         managers,
         rostersData,
@@ -30,25 +30,21 @@
     export let pivotLoading = true;
     export let sections = { personas: [], weekly: [], yearly: [], legacy: [] };
 
-  onMount(async () => {
-    pivotLoading = true;
-    try {
-      // pass the injected fetch in so SSR + client both work
-      pivot = await fetchPivotData(fetch, 'draftMoney');
-      console.log('🚀 pivot raw slice:', pivot);
-    } catch (err) {
-      pivotError = err.message;
-    } finally {
-      pivotLoading = false;
-    }
-  });
-
+    onMount(async () => {
+        pivotLoading = true;
+        try {
+            // pass the injected fetch in so SSR + client both work
+            pivot = await fetchPivotData(fetch, 'draftMoney');
+            console.log('🚀 pivot raw slice:', pivot);
+        } catch (err) {
+            pivotError = err.message;
+        } finally {
+            pivotLoading = false;
+        }
+    });
 
     export let viewManager;
     export let managerIndex;
-    
-
-
 
     let transactions = transactionsData.transactions;
 
@@ -56,7 +52,7 @@
 
     $: datesActive = getDatesActive(leagueTeamManagers, viewManager.managerID);
 
-     $: commissioner = viewManager.managerID
+    $: commissioner = viewManager.managerID
         ? leagueTeamManagers.users[viewManager.managerID].is_owner
         : false;
 
@@ -67,7 +63,11 @@
         ? getRosterIDFromManagerID(leagueTeamManagers, viewManager.managerID)
         : { rosterID: viewManager.roster, year: null });
 
-    $: teamName = getTeamNameFromTeamManagers(leagueTeamManagers, rosterID, year);
+    $: teamName = getTeamNameFromTeamManagers(
+        leagueTeamManagers,
+        rosterID,
+        year
+    );
 
     $: teamTransactions = transactions.filter((t) =>
         t.rosters.includes(parseInt(rosterID))
@@ -83,21 +83,21 @@
 
     export let byManager = {};
     const emptyBadges = { personas: [], weekly: [], yearly: [], legacy: [] };
-    
-   $: badgesForManager =
-  viewManager?.managerID && byManager
-    ? (byManager[viewManager.managerID] || emptyBadges)
-    : emptyBadges;
+
+    $: badgesForManager =
+        viewManager?.managerID && byManager
+            ? byManager[viewManager.managerID] || emptyBadges
+            : emptyBadges;
 
     $: console.debug('[badges] managerID', viewManager?.managerID, {
-  fromApi: !!byManager && !!byManager[viewManager?.managerID],
-  counts: {
-    personas: badgesForManager.personas?.length ?? 0,
-    weekly:   badgesForManager.weekly?.length ?? 0,
-    yearly:   badgesForManager.yearly?.length ?? 0,
-    legacy:   badgesForManager.legacy?.length ?? 0
-  }
-});
+        fromApi: !!byManager && !!byManager[viewManager?.managerID],
+        counts: {
+            personas: badgesForManager.personas?.length ?? 0,
+            weekly: badgesForManager.weekly?.length ?? 0,
+            yearly: badgesForManager.yearly?.length ?? 0,
+            legacy: badgesForManager.legacy?.length ?? 0,
+        },
+    });
 
     let players, playersInfo;
     let loading = true;
@@ -125,15 +125,14 @@
     });
 
     // NEW: fetch the pivot data on mount
- 
-    const changeManager = (newManager, noscroll = false) => {
-    if (!newManager) {
-      goto(`/managers`);
-    }
-    manager = newManager;
-    goto(`/manager?manager=${newManager}`, { noscroll });
-  };
 
+    const changeManager = (newManager, noscroll = false) => {
+        if (!newManager) {
+            goto(`/managers`);
+        }
+        manager = newManager;
+        goto(`/manager?manager=${newManager}`, { noscroll });
+    };
 </script>
 
 <div class="managerContainer">
@@ -145,53 +144,21 @@
             <span class="comm-badge">C</span>
         {/if}
     </div>
-        <h2>
-            {viewManager.name}
-    
-            <div class="teamSub">
-                {coOwners ? 'Co-' : ''}Manager of
-                <i
-                    >{getTeamNameFromTeamManagers(
-                        leagueTeamManagers,
-                        rosterID,
-                        year
-                    )}</i
-                >
-            </div>
-            
-        </h2>
-        
-        
-        <div class="basicInfo">
-            <span class="infoChild"
-                >{viewManager.location || 'Undisclosed Location'}</span
+    <h2>
+        {viewManager.name}
+        <div class="teamSub">
+            {coOwners ? 'Co-' : ''}Manager of
+            <i
+                >{getTeamNameFromTeamManagers(
+                    leagueTeamManagers,
+                    rosterID,
+                    year
+                )}</i
             >
-            {#if viewManager.managerID && datesActive.start}
-                <span class="seperator">|</span>
-                {#if datesActive.end}
-                    <span class="infoChild"
-                        >In the league from '{datesActive.start
-                            .toString()
-                            .substr(2)} to '{datesActive.end
-                            .toString()
-                            .substr(2)}</span
-                    >
-                {:else}
-                    <span class="infoChild"
-                        >Since '{datesActive.start.toString().substr(2)}</span
-                    >
-                {/if}
-            {:else if viewManager.fantasyStart}
-                <!-- fantasyStart is an optional field -->
-                <span class="seperator">|</span>
-                <span class="infoChild"
-                    >Playing ff since '{viewManager.fantasyStart
-                        .toString()
-                        .substr(2)}</span
-                >
-            {/if}
-            <span class="seperator">|</span>
-            {#if pivotLoading}
+        </div>
+    </h2>
+    <div class="money-block">
+      {#if pivotLoading}
                 <span>Loading draft money…</span>
             {:else if pivotError}
                 <p class="error">Pivot error: {pivotError}</p>
@@ -202,31 +169,60 @@
                 {teamName}
                 />
             {/if}
+    </div>   
 
-            {#if viewManager.preferredContact}
-                <!-- preferredContact is an optional field -->
-                <span class="seperator">|</span>
+    <div class="basicInfo">
+        <span class="infoChild"
+            >{viewManager.location || 'Undisclosed Location'}</span
+        >
+        {#if viewManager.managerID && datesActive.start}
+            <span class="seperator">|</span>
+            {#if datesActive.end}
                 <span class="infoChild"
-                    >{viewManager.preferredContact}<img
-                        class="infoChild infoContact"
-                        src="/{viewManager.preferredContact}.png"
-                        alt="favorite team"
-                    /></span
+                    >In the league from '{datesActive.start
+                        .toString()
+                        .substr(2)} to '{datesActive.end
+                        .toString()
+                        .substr(2)}</span
+                >
+            {:else}
+                <span class="infoChild"
+                    >Since '{datesActive.start.toString().substr(2)}</span
                 >
             {/if}
-            <!-- <span class="infoChild">{viewManager.preferredContact}</span> -->
-            {#if viewManager.favoriteTeam}
-                <!-- favoriteTeam is an optional field -->
-                <span class="seperator">|</span>
-                <img
-                    class="infoChild infoTeam"
-                    src="https://sleepercdn.com/images/team_logos/nfl/{viewManager.favoriteTeam}.png"
+        {:else if viewManager.fantasyStart}
+            <!-- fantasyStart is an optional field -->
+            <span class="seperator">|</span>
+            <span class="infoChild"
+                >Playing ff since '{viewManager.fantasyStart
+                    .toString()
+                    .substr(2)}</span
+            >
+        {/if}
+
+        {#if viewManager.preferredContact}
+            <!-- preferredContact is an optional field -->
+            <span class="seperator">|</span>
+            <span class="infoChild"
+                >{viewManager.preferredContact}<img
+                    class="infoChild infoContact"
+                    src="/{viewManager.preferredContact}.png"
                     alt="favorite team"
-                />
-            {/if}
-            
-        </div>
+                /></span
+            >
+        {/if}
+        <!-- <span class="infoChild">{viewManager.preferredContact}</span> -->
+        {#if viewManager.favoriteTeam}
+            <!-- favoriteTeam is an optional field -->
+            <span class="seperator">|</span>
+            <img
+                class="infoChild infoTeam"
+                src="https://sleepercdn.com/images/team_logos/nfl/{viewManager.favoriteTeam}.png"
+                alt="favorite team"
+            />
+        {/if}
     </div>
+</div>
 
 <div class="managerNav upper">
     <Group variant="outlined">
@@ -275,37 +271,34 @@
         {/if}
     </Group>
 </div>
-
-{#if viewManager.bio}
-    <!-- bio is an optional field -->
-    <h3>Bio</h3>
-    <p class="bio">{@html viewManager.bio}</p>
-{/if}
-
-{#if viewManager.tookOver}
-    <!-- tookOver is an optional field -->
-    <h3>Took Over</h3>
-    <p class="bio">{viewManager.tookOver}</p>
-{/if}
-
-<!-- <p class="bio">{@html viewManager.bio}</p> -->
-
-{#if viewManager.philosophy}
-    <!-- philosophy is an optional field -->
-    <h3>Team Philosophy</h3>
-    <p class="philosophy">{@html viewManager.philosophy}</p>
-{/if}
+<div class="about-grid">
+    <section class="about-col">
+        {#if viewManager.bio}
+            <!-- bio is an optional field -->
+            <h2 class="section-title center">Bio</h2>
+            <p class="about-text">{@html viewManager.bio}</p>
+        {/if}
+    </section>
+    <div class="about-divider" aria-hidden="true"></div>
+    <section class="about-col">
+        {#if viewManager.philosophy}
+            <!-- philosophy is an optional field -->
+            <h2 class="section-title center">Team Philosophy</h2>
+            <p class="about-text">{@html viewManager.philosophy}</p>
+        {/if}
+    </section>
+</div>
 <ManagerFantasyInfo
     {pivot}
     {viewManager}
-    managerIndex={manager}  
+    managerIndex={manager}
     {players}
     {changeManager}
-     badges={badgesForManager}
-    byManager={byManager} 
-    champYears={champYears}
-    sections={sections}  
-  />
+    badges={badgesForManager}
+    {byManager}
+    {champYears}
+    {sections}
+/>
 
 <ManagerAwards
     {leagueTeamManagers}
@@ -355,59 +348,15 @@
     {/if}
 </div>
 
-<div class="managerNav">
-    <Group variant="outlined">
-        {#if manager == 0}
-            <Button
-                disabled
-                class="selectionButtons"
-                onclick={() => changeManager(parseInt(manager) - 1)}
-                variant="outlined"
-            >
-                <Label>Previous Manager</Label>
-            </Button>
-        {:else}
-            <Button
-                class="selectionButtons"
-                onclick={() => changeManager(parseInt(manager) - 1)}
-                variant="outlined"
-            >
-                <Label>Previous Manager</Label>
-            </Button>
-        {/if}
-        <Button
-            class="selectionButtons"
-            onclick={() => goto('/managers')}
-            variant="outlined"
-        >
-            <Label>All Managers</Label>
-        </Button>
-        {#if manager == managers.length - 1}
-            <Button
-                disabled
-                class="selectionButtons"
-                onclick={() => changeManager(parseInt(manager) + 1)}
-                variant="outlined"
-            >
-                <Label>Next Manager</Label>
-            </Button>
-        {:else}
-            <Button
-                class="selectionButtons"
-                onclick={() => changeManager(parseInt(manager) + 1)}
-                variant="outlined"
-            >
-                <Label>Next Manager</Label>
-            </Button>
-        {/if}
-    </Group>
-</div>
+<div class="managerNav"></div>
 
 <style>
-    :global(html, body){ overflow-x: hidden; }
+    :global(html, body) {
+        overflow-x: hidden;
+    }
     .managerContainer {
         width: 100%;
-        margin: 2em 0 5em;
+        margin: 2em 0 2em;
     }
 
     .managerConstrained {
@@ -416,41 +365,44 @@
         margin: 0 auto 4em;
     }
 
-.logo-wrap{
-  position: relative;      /* <-- the chip will use THIS as its origin */
-  width: max-content;
-  margin: 0 auto;
-  line-height: 0;
-}
+    .logo-wrap {
+        position: relative; /* <-- the chip will use THIS as its origin */
+        width: max-content;
+        margin: 0 auto;
+        line-height: 0;
+    }
 
+    .logo-frame {
+        --logo-size: min(42vw, 200px); /* keep your 200px max on desktop */
+        width: var(--logo-size);
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #0d1016;
+        box-shadow:
+            0 0 0 3px #1ea0ff,
+            0 14px 30px rgba(0, 0, 0, 0.45);
+        -webkit-mask-image: -webkit-radial-gradient(
+            white,
+            black
+        ); /* iOS clip fix */
+    }
 
-.logo-frame{
-  --logo-size: min(42vw, 200px);   /* keep your 200px max on desktop */
-  width: var(--logo-size);
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  overflow: hidden;
-  background:#0d1016;
-  box-shadow: 0 0 0 3px #1ea0ff, 0 14px 30px rgba(0,0,0,.45);
-  -webkit-mask-image: -webkit-radial-gradient(white, black); /* iOS clip fix */
-}
-
-
-/* image has NO shadow or filters */
-.logo-frame img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  box-shadow:none !important;
-  filter:none !important;
-}
+    /* image has NO shadow or filters */
+    .logo-frame img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        box-shadow: none !important;
+        filter: none !important;
+    }
 
     h2 {
         text-align: center;
         font-size: 2.8em;
-        margin: 1em 0 0em;
-        line-height: 1em;
+        margin: .6em 0 0em;
+        line-height: .7em;
     }
 
     h3 {
@@ -461,30 +413,50 @@
         font-weight: 200;
     }
 
-  .basicInfo{
+    .money-block{
   display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  align-items:center;      /* tighter rows/cols */
-  margin: 10px auto 0;      /* remove big side offsets */
-  padding-top: 10px;
-  max-width: 600px;         /* keeps line from stretching forever */
-  line-height: 1.2;       /* slightly smaller text */
+  flex-direction:column;
+  align-items:center;      /* horizontal center */
+  justify-content:center;  /* vertical center */
+  text-align:center;
+  width:100%;
+  min-height:72px;  
 }
-.basicInfo > * + *{
-  position: relative;
-  padding-left: .9rem;      /* space for the bar */
-}
-.basicInfo > * + *::before{
-  content:"";
-  position:absolute;
-  left: .45rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width:1px;
-  height: 0.95em;
-  opacity:.6;
-}
+.money-loading{ color: var(--muted); }
+
+
+    .basicInfo {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 16px;
+        width: fit-content; /* shrink-wrap */
+        margin: 0 auto 0; /*
+        max-width: 600px;
+        line-height: 1.2;
+    }
+    .basicInfo > * {
+        flex: 0 0 auto;
+    }
+    .basicInfo > * + * {
+        position: relative;
+        padding-left: 0.9rem; /* space for the bar */
+    }
+    .basicInfo > * + *::before {
+        content: '';
+        position: absolute;
+        left: 0.45rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 0.95em;
+        opacity: 0.6;
+    }
+    .basicInfo .money {
+        min-width: 6ch;
+        text-align: center;
+    }
 
     .basicInfo span {
         color: #888;
@@ -506,26 +478,152 @@
     .infoTeam {
         height: 48px;
     }
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 3px 1fr; /* thin divider */
+        column-gap: clamp(24px, 4vw, 56px);
+        align-items: start;
+        width: min(1100px, 100% - 48px);
+        margin: 0.75rem auto 1.25rem;
+        padding-inline: clamp(8px, 1vw, 16px);
+    }
 
-  .bio {
-  display: block;          /* make it take full width up to max-width */
-  max-width: 500px;        /* constrain its width */
-  margin: 2em auto;        /* 2em top/bottom, auto left/right ⇒ centered */
-  text-align: center;
-}
+    /* Divider that looks intentional (shorter, with soft glow) */
+    .about-divider {
+        align-self: stretch;
+        width: 3px;
+        margin-block: 0.35rem; /* pulls it toward the headings */
+        background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(255, 255, 255, 0.06) 8%,
+            var(--border, #2a2f3a) 20%,
+            var(--border, #2a2f3a) 80%,
+            rgba(255, 255, 255, 0.06) 92%,
+            transparent 100%
+        );
+        border-radius: 2px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+    }
 
- h3 {
-    font-weight: 600;
-    text-shadow: 1px 0px 0px gray, 0 0 1em darkgrey;
+    /* Columns centered text */
+    .about-col {
+        text-align: center;
+    }
 
-}
+    /* Smaller, matched headings with underline */
+    .about-col .section-title {
+        --underline: var(--ring, #3b82f6);
+        font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+        font-weight: 700;
+        margin: 0.25rem 0 0.6rem;
+        line-height: 1.2;
+        position: relative;
+        display: inline-block; /* so underline centers under text */
+        padding-bottom: 0.35rem;
+    }
+    .about-col .section-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 64px;
+        height: 2px; /* underline size */
+        background: var(--underline);
+        border-radius: 2px;
+        /* subtle glow to match your theme */
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+    }
 
-.infoContact{ height:18px; margin-left:.35rem; vertical-align:middle; }
-.infoTeam{ height:36px; vertical-align:middle; }
+    /* Body text */
+    .about-text {
+        margin: 0 auto;
+        max-width: 56ch;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 0.98rem;
+    }
 
-.philosophy {
-    margin: 2em 1.5em 2em;
-    text-align: center;
+    /* Stack on phones and hide divider */
+    @media (max-width: 720px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+        .about-divider {
+            display: none;
+        }
+    }
+    /* stack on phones and hide divider */
+    @media (max-width: 720px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+        .about-grid::after {
+            display: none;
+        }
+    }
+
+    /* optional subtle divider between the two on wide screens */
+    @media (min-width: 721px) {
+        .about-col + .about-col {
+            border-left: 1px solid var(--border);
+            padding-left: clamp(12px, 2vw, 24px);
+        }
+    }
+    @media (max-width: 720px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+        .about-divider {
+            display: none;
+        }
+    }
+    .about-text {
+        margin: 0.4rem auto 0;
+        max-width: 56ch;
+        color: var(--muted);
+        line-height: 1.5;
+    }
+
+    /* stack on phones */
+    @media (max-width: 720px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+        .about-col + .about-col {
+            border-left: 0;
+            padding-left: 0;
+        }
+    }
+
+    .bio {
+        display: block; /* make it take full width up to max-width */
+        max-width: 500px; /* constrain its width */
+        margin: 2em auto; /* 2em top/bottom, auto left/right ⇒ centered */
+        text-align: center;
+    }
+
+    h3 {
+        font-weight: 600;
+        text-shadow:
+            1px 0px 0px gray,
+            0 0 1em darkgrey;
+    }
+
+    .infoContact {
+        height: 18px;
+        margin-left: 0.35rem;
+        vertical-align: middle;
+    }
+    .infoTeam {
+        height: 36px;
+        vertical-align: middle;
+    }
+
+    .philosophy {
+        margin: 2em 1.5em 2em;
+        text-align: center;
     }
 
     .loading {
@@ -547,43 +645,51 @@
     }
 
     .upper {
-        margin-top: 0;
+        margin-top: -25px;
     }
 
-.comm-badge{
-  position:absolute;
-  right:-8px;         /* overlap the rim */
-  bottom:-8px;
-  z-index:5;
-  min-width:24px;
-  height:24px;
-  padding:0 .45rem;
-  border-radius:999px;
-  display:grid;
-  place-items:center;
-  font-weight:800;
-  background:#022881;
-  color:#e8ecf2;
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 4px 10px rgba(0,0,0,.45);
-  pointer-events:none; /* don’t block clicks */
-}
+    .comm-badge {
+        position: absolute;
+        right: -8px; /* overlap the rim */
+        bottom: -8px;
+        z-index: 5;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 0.45rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        background: #022881;
+        color: #e8ecf2;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+        pointer-events: none; /* don’t block clicks */
+    }
     .seperator {
-        margin: 0 .5rem;
+        margin: 0 0.5rem;
         color: #666;
         user-select: none;
         font-size: 1.2em;
     }
 
     /* media queries */
-    @media (max-width:935px) {
+    @media (max-width: 935px) {
         :global(.selectionButtons span) {
             font-size: 0.8em;
         }
-        @media (max-width: 720px){
-  .basicInfo{ gap:.25rem .75rem; font-size:.88em; }
-  .basicInfo > * + *{ padding-left:.7rem; }
-  .basicInfo > * + *::before{ left:.35rem; height:.9em; }
+        @media (max-width: 720px) {
+            .basicInfo {
+                gap: 0.25rem 0.75rem;
+                font-size: 0.88em;
+            }
+            .basicInfo > * + * {
+                padding-left: 0.7rem;
+            }
+            .basicInfo > * + *::before {
+                left: 0.35rem;
+                height: 0.9em;
+            }
         }
 
         .basicInfo {
@@ -606,18 +712,17 @@
             line-height: 1.2em;
             font-size: 0.8em;
         }
-          .basicInfo{
-            display:flex;
-            flex-wrap:wrap;
-            justify-content:center;
-            align-items:center;      /* tighter rows/cols */
-            margin: 15px auto 0;      /* remove big side offsets */
+        .basicInfo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center; /* tighter rows/cols */
+            margin: 15px auto 0; /* remove big side offsets */
             padding-top: 10px;
-            max-width: 450px;         /* keeps line from stretching forever */
-            line-height: 1.2;       /* slightly smaller text */
-            }
+            max-width: 450px; /* keeps line from stretching forever */
+            line-height: 1.2; /* slightly smaller text */
         }
-           
+    }
 
     @media (max-width: 450px) {
         .basicInfo {
@@ -632,27 +737,28 @@
             height: 30px;
         }
     }
-/* Mobile: 2-up and truly centered */
-@media (max-width: 480px){
-  .managerConstrained .fantasyInfos{
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(140px, 1fr)) !important;
-    gap: 14px 12px;
-    justify-content: center !important;   /* center the tracks */
-    justify-items: center !important;     /* center the cards */
-    width: fit-content;                   /* shrink-wrap to columns */
-    margin-inline: auto;                  /* center the grid block */
-    padding-left: 0;                      /* avoid extra left padding */
-    padding-right: 0;
-  }
+    /* Mobile: 2-up and truly centered */
+    @media (max-width: 480px) {
+        .managerConstrained .fantasyInfos {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(140px, 1fr)) !important;
+            gap: 14px 12px;
+            justify-content: center !important; /* center the tracks */
+            justify-items: center !important; /* center the cards */
+            width: fit-content; /* shrink-wrap to columns */
+            margin-inline: auto; /* center the grid block */
+            padding-left: 0; /* avoid extra left padding */
+            padding-right: 0;
+        }
 
-  /* let each card shrink; removes the fixed 110px width */
-  .managerConstrained .badgesRow .badge-card{
-    width: auto !important;
-  }
+        /* let each card shrink; removes the fixed 110px width */
+        .managerConstrained .badgesRow .badge-card {
+            width: auto !important;
+        }
 
-  /* labels shouldn’t cap the cell width */
-  .managerConstrained .infoSlot{ max-width: none !important; }
-}
-
+        /* labels shouldn’t cap the cell width */
+        .managerConstrained .infoSlot {
+            max-width: none !important;
+        }
+    }
 </style>

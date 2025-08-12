@@ -1,54 +1,44 @@
 <script>
+  /* ===== Props ===== */
   export let viewManager = {};
-  export let changeManager;
-  export let badges = { personas: [], weekly: [], yearly: [], legacy: [] };
-  export let byManager = {};
-  export let sections = { personas: [], weekly: [], yearly: [], legacy: [] }; // for definitions lookup
-  export let champYears = []; // optional: already computed in parent; else we’ll derive below
+  export let changeManager; // (idOrLink) => void
+  export let byManager = {}; // { [managerID]: { personas, weekly, yearly, legacy } }
+  export let sections = { personas: [], weekly: [], yearly: [], legacy: [] };
+  export let champYears = []; // optional override
 
-  /* ===== Data shaping ===== */
-  const mine = byManager?.[viewManager?.managerID] ?? {
-    personas: [], weekly: [], yearly: [], legacy: []
-  };
+  /* ===== Helpers ===== */
+  const idOf = (m) => String(m?.managerID ?? m?.managerId ?? m?.id ?? '').trim();
+  const personaTitle = (t) => String(t || '').replace(/^persona:\s*/i, '').trim();
+  const normId = (id) => String(id ?? '').replace(/^#/, '');
 
-  const personaItems = (mine.personas || []).map(p => ({
-    icon: p.icon,
-    title: p.badgeName
-  }));
-
-  // Years of Service tiles from API (Ten/Twenty icons)
-  const yearsItems = (badges.yearly ?? []).map(y => {
-    const yrs = Number(y.years ?? 0);
-    const threshold = yrs >= 20 ? 20 : 10;
-    const icon = threshold === 20 ? '/Twenty.png' : '/Ten.png';
-    return { icon, title: `${threshold} Years`, years: yrs, badgeId: y.badgeId, badgeName: y.badgeName };
-  });
-
-  // Championship years: prefer prop; else derive from viewManager
-  if (!Array.isArray(champYears) || champYears.length === 0) {
-    const champYearsStr = viewManager?.championship?.years || '';
-    champYears = champYearsStr.split(',').map(s => s.trim()).filter(Boolean);
+  // prefer exact map key; accept numeric-string alternate (e.g., "7" vs 7)
+  function pickMine(map, id) {
+    if (!map || !id) return null;
+    if (map[id]) return map[id];
+    const alt = String(Number(id));
+    if (map[alt]) return map[alt];
+    return null;
   }
 
-  /* ===== Helpers for titles/subtitles ===== */
-  const weeklySubtitle = (b) =>
-    [b.season, b.week != null ? `Wk ${b.week}` : ''].filter(Boolean).join(' • ');
+  const extractPoints = (b) => {
+    for (const k of ['points','pts','score','totalPoints','pointsFor','pf','weeklyPoints','weekPoints','week_total','total']) {
+      const v = b?.[k];
+      if (v != null && v !== '') return Number(v);
+    }
+    return null;
+  };
+  const fmtPts   = (p) => p == null || Number.isNaN(p) ? '' : `${Number(p).toFixed(2)} pts`;
+  const occLabel = (o) => [o.season, o.week != null ? `Wk ${o.week}` : '', o.points != null ? fmtPts(o.points) : ''].filter(Boolean).join(' • ');
+  const sortOcc  = (a, b) => (b.season ?? 0) - (a.season ?? 0) || (b.week ?? 0) - (a.week ?? 0);
 
-  const personaTitle = (t) => String(t || '').replace(/^persona:\s*/i, '').trim();
-
-  const legacySubtitle = (b) =>
-    (b.year && String(b.year)) ||
-    (Array.isArray(champYears) && champYears.length ? champYears.join(', ') : '');
-
-  /* ===== Group weekly duplicates ===== */
   const groupWeekly = (arr = []) => {
     const map = new Map();
     for (const b of arr) {
-      const key = b.badgeId ?? `${b.badgeName || b.title}|${b.icon}`;
+      const key = (b.badgeId && String(b.badgeId)) || `${b.badgeName || b.title}|${b.icon || ''}`;
       if (!map.has(key)) {
         map.set(key, {
-          id: b.badgeId,
-          icon: b.icon,
+          id: b.badgeId ? String(b.badgeId) : null,
+          icon: b.icon || null,
           title: b.badgeName || b.title || 'Weekly Badge',
           occurrences: []
         });
@@ -61,179 +51,236 @@
     }
     return [...map.values()];
   };
-  $: weeklyGrouped = groupWeekly(badges.weekly);
 
-  const pts = (p) => p == null ? '' : `${Number(p).toFixed(2)} pts`;
+  const parseYears = (val) =>
+    Array.isArray(val) ? val.map(String)
+    : String(val ?? '').split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
 
-  const extractPoints = (b) => {
-  for (const k of [
-    'points','pts','score','totalPoints','pointsFor','pf','weeklyPoints','weekPoints','week_total','total'
-  ]) {
-    const v = b?.[k];
-    if (v != null && v !== '') return Number(v);
-  }
-  return null;
-};
-const fmtPts = (p) => p == null || Number.isNaN(p) ? '' : `${p.toFixed(2)} pts`;
+  const otherLegacyLabel = (b) => {
+    if (Array.isArray(b?.years) && b.years.length) return b.years.map(String).join(', ');
+    if (b?.year != null) return String(b.year);
+    return '';
+  };
 
+  /* ===== Reactive shaping ===== */
+  // derive the manager id we want to show
+  $: currentId = idOf(viewManager);
 
-const occLabel = (o) =>
-  [o.season, o.week != null ? `Wk ${o.week}` : '', o.points != null ? fmtPts(o.points) : '']
-    .filter(Boolean)
-    .join(' • ');
+  // pull this manager’s record by map key only
+  const empty = { personas: [], weekly: [], yearly: [], legacy: [] };
+  $: mineRaw     = pickMine(byManager, currentId);
+  $: loadingMine = !currentId || !mineRaw;
 
-const sortOcc = (a, b) => (b.season ?? 0) - (a.season ?? 0) || (b.week ?? 0) - (a.week ?? 0);
+  $: mine = loadingMine ? empty : {
+    personas: Array.isArray(mineRaw.personas) ? mineRaw.personas : [],
+    weekly:   Array.isArray(mineRaw.weekly)   ? mineRaw.weekly   : [],
+    yearly:   Array.isArray(mineRaw.yearly)   ? mineRaw.yearly   : [],
+    legacy:   Array.isArray(mineRaw.legacy)   ? mineRaw.legacy   : []
+  };
 
-  /* ===== Definitions lookup (from sections) ===== */
-  const allDefs = [
+  /* Definitions (for icon/definition lookups) */
+  $: allDefs = [
     ...(sections.personas ?? []),
     ...(sections.weekly ?? []),
     ...(sections.yearly ?? []),
     ...(sections.legacy ?? [])
   ];
-  const defById = new Map(allDefs.map(b => [b.id, { name: b.name, definition: b.definition, icon: b.icon }]));
+  $: defById = new Map(allDefs.map((b) => [normId(b.id), { name: b.name, definition: b.definition, icon: b.icon }]));
 
-  /* ===== Modal state & open helpers ===== */
+  /* Years of Service tiles (10/20) */
+  $: yearsItems = (mine.yearly ?? []).map((y) => {
+    const yrs = Number(y.years ?? 0);
+    const threshold = yrs >= 20 ? 20 : 10;
+    const icon = threshold === 20 ? '/Twenty.png' : '/Ten.png';
+    return { icon, title: `${threshold} Years`, years: yrs, badgeId: y.badgeId, badgeName: y.badgeName };
+  });
+
+  /* Weekly (grouped) */
+  $: weeklyGrouped = groupWeekly(mine.weekly ?? []);
+
+  /* Championships (legacy) */
+  const isChampionLegacy = (b) => {
+    const nm  = (b?.badgeName || b?.title || '').toLowerCase();
+    const id  = String(b?.badgeId ?? '').toLowerCase();
+    const def = b?.badgeId ? defById.get(normId(b.badgeId)) : null;
+    const dn  = (def?.name || '').toLowerCase();
+    return /champ|title|trophy/.test(nm) || /champ/.test(id) || /champ|title|trophy/.test(dn);
+  };
+  $: legacyChampion = (mine.legacy ?? []).filter(isChampionLegacy);
+  $: legacyOther    = (mine.legacy ?? []).filter((b) => !isChampionLegacy(b));
+
+
+/* ✅ Only use current manager data; never the external prop */
+let champYearsEff = [];
+$: {
+  if (loadingMine) {
+    champYearsEff = [];
+  } else {
+    const fromView = parseYears(viewManager?.championship?.years);
+    const fromLegacy = [...new Set(
+      legacyChampion.flatMap(b => {
+        const acc = [];
+        if (Array.isArray(b.years)) acc.push(...b.years);
+        if (b.year != null) acc.push(b.year);
+        return acc;
+      }).map(String)
+    )].sort((a,b) => Number(a) - Number(b));
+
+    champYearsEff = fromView.length ? fromView : fromLegacy;
+  }
+}
+
+/* Build the tile only when we actually have a champion badge */
+$: champTile = (() => {
+  if (!legacyChampion.length) return null;
+  const first = legacyChampion[0];
+  const meta = first.badgeId ? defById.get(normId(first.badgeId)) : null;
+  return {
+    icon: first.icon || meta?.icon,
+    title: first.badgeName || first.title || meta?.name || 'Champion',
+    years: champYearsEff
+  };
+})();
+
+  /* Modal state */
   let showModal = false;
-  let active = null; // { id, title, icon, definition, rows: [{ label }] }
+  let active = null;
 
   const openFromPersona = (p) => {
-    const id = p.badgeId;
+    const id = p.badgeId ? normId(p.badgeId) : null;
     const meta = id ? defById.get(id) : null;
-    active = {
-      id,
-      title: personaTitle(p.badgeName || p.title || meta?.name || 'Persona'),
-      icon: p.icon || meta?.icon,
-      definition: meta?.definition || '',
-      rows: []
-    };
+    active = { id, title: personaTitle(p.badgeName || p.title || meta?.name || 'Persona'), icon: p.icon || meta?.icon, definition: meta?.definition || '', rows: [] };
     showModal = true;
   };
-
   const openFromYearly = (y) => {
-    const id = y.badgeId;
+    const id = y.badgeId ? normId(y.badgeId) : null;
     const meta = id ? defById.get(id) : null;
-    active = {
-      id,
-      title: y.badgeName || meta?.name || 'Years of Service',
-      icon: (y.years >= 20 ? '/Twenty.png' : '/Ten.png'),
-      definition: meta?.definition || '',
-      rows: y.years ? [{ label: `${y.years} Years` }] : []
-    };
+    active = { id, title: y.badgeName || meta?.name || 'Years of Service', icon: y.years >= 20 ? '/Twenty.png' : '/Ten.png', definition: meta?.definition || '', rows: y.years ? [{ label: `${y.years} Years` }] : [] };
     showModal = true;
   };
-
-const openFromWeeklyGroup = (g) => {
-  const meta = g.id ? defById.get(g.id) : null;
-  active = {
-    id: g.id,
-    title: g.title || meta?.name || 'Weekly Badge',
-    icon: g.icon || meta?.icon,
-    definition: meta?.definition || '',
-    rows: [...g.occurrences].sort(sortOcc).map(o => ({ label: occLabel(o) })) // all
+  const openFromWeeklyGroup = (g) => {
+    const id = g.id ? normId(g.id) : null;
+    const meta = id ? defById.get(id) : null;
+    const occs = [...g.occurrences].sort(sortOcc);
+    active = { id, title: g.title || meta?.name || 'Weekly Badge', icon: g.icon || meta?.icon, definition: meta?.definition || '', rows: occs.map((o) => ({ label: occLabel(o) })) };
+    showModal = true;
   };
-  showModal = true;
-};
-
   const openFromLegacy = (b) => {
-    const id = b.badgeId;
+    const id = b.badgeId ? normId(b.badgeId) : null;
     const meta = id ? defById.get(id) : null;
-    const label = legacySubtitle(b);
-    active = {
-      id,
-      title: b.badgeName || b.title || meta?.name || 'Legacy',
-      icon: b.icon || meta?.icon,
-      definition: meta?.definition || '',
-      rows: label ? [{ label }] : []
-    };
+    const label = otherLegacyLabel(b);
+    active = { id, title: b.badgeName || b.title || meta?.name || 'Legacy', icon: b.icon || meta?.icon, definition: meta?.definition || '', rows: label ? [{ label }] : [] };
     showModal = true;
   };
-
   const closeModal = () => { showModal = false; active = null; };
+
+  // close modal on manager switch
+  $: if (currentId) { showModal = false; active = null; }
+
+  // rival data
+  $: rivalInfo = ({ name: viewManager?.rival?.name, image: viewManager?.rival?.image, link: viewManager?.rival?.link });
 </script>
 
-<div class="fantasyInfos">
-  <!-- Persona -->
-  <div class="infoSlot">
-    <div class="infoLabel">Persona</div>
-    <div class="badgesRow">
-      {#each mine.personas as p}
-        <div class="badge-card clickable" on:click={() => openFromPersona(p)}>
-          <div class="badge-ring"><img src={p.icon} alt={personaTitle(p.badgeName || p.title)} /></div>
-          <div class="badge-title">{personaTitle(p.badgeName || p.title)}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
-
-  <!-- Years of Service -->
-  <div class="infoSlot">
-    <div class="infoLabel">Years of Service</div>
-    <div class="badgesRow">
-      {#each yearsItems as y}
-        <div class="badge-card clickable" on:click={() => openFromYearly(y)}>
-          <div class="badge-ring"><img src={y.icon} alt={y.title} /></div>
-          <div class="badge-title">{y.title}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
-
-  <!-- Weekly (each grouped badge becomes its own slot) -->
-  {#each weeklyGrouped as g, i}
-    <div class="infoSlot">
-      {#if i === 0}
-        <div class="infoLabel">Weekly Badges</div>
-      {:else}
-        <div class="infoLabel label-spacer" aria-hidden="true"></div>
-      {/if}
-      <div class="badgesRow">
-        <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
-          <div class="badge-ring has-counter">
-            <img src={g.icon} alt={g.title} />
-            {#if g.occurrences.length > 1}
-              <span class="badge-counter">{g.occurrences.length}</span>
-            {/if}
+{#key currentId}
+  {#if loadingMine}
+    <div class="fantasyInfos" style="min-height:120px"></div>
+  {:else}
+    <div class="fantasyInfos">
+      {#if mine.personas.length}
+        <div class="infoSlot">
+          <div class="infoLabel">Persona</div>
+          <div class="badgesRow">
+            {#each mine.personas as p}
+              <div class="badge-card clickable" on:click={() => openFromPersona(p)}>
+                <div class="badge-ring"><img src={p.icon} alt={personaTitle(p.badgeName || p.title)} /></div>
+                <div class="badge-title">{personaTitle(p.badgeName || p.title)}</div>
+              </div>
+            {/each}
           </div>
-          <div class="badge-title">{g.title}</div>
-          {#if g.occurrences.length}
-            {#if g.occurrences.length}
-  {#await Promise.resolve([...g.occurrences].sort(sortOcc)[0]) then latest}
-    <div class="occ-latest">{occLabel(latest)}</div>
-  {/await}
-{/if}
-          {/if}
         </div>
-      </div>
-    </div>
-  {/each}
+      {/if}
 
-  <!-- Legacy -->
-  <div class="infoSlot">
-    <div class="infoLabel">Championships (Legacy)</div>
-    <div class="badgesRow">
-      {#each mine.legacy as b}
-        <div class="badge-card clickable" on:click={() => openFromLegacy(b)}>
-          <div class="badge-ring"><img src={b.icon} alt={b.title} /></div>
-          <div class="badge-title">{b.title}</div>
-          {#if legacySubtitle(b)}
-            <div class="badge-subtitle">{legacySubtitle(b)}</div>
-          {/if}
+      {#if yearsItems.length}
+        <div class="infoSlot">
+          <div class="infoLabel">Years of Service</div>
+          <div class="badgesRow">
+            {#each yearsItems as y}
+              <div class="badge-card clickable" on:click={() => openFromYearly(y)}>
+                <div class="badge-ring"><img src={y.icon} alt={y.title} /></div>
+                <div class="badge-title">{y.title}</div>
+              </div>
+            {/each}
+          </div>
         </div>
-      {/each}
-    </div>
-  </div>
+      {/if}
 
-  <!-- Rival -->
-  <button type="button" class="infoSlot infoRival clickable" on:click={() => changeManager(viewManager.rival.link)}>
-    <div class="infoLabel">Rival</div>
-    <div class="infoIcon"><img class="rival" src={viewManager.rival.image} alt="rival" /></div>
-    <div class="badge-title">{viewManager.rival.name}</div>
-  </button>
-</div>
+      {#if weeklyGrouped.length}
+        {#each weeklyGrouped as g, i}
+          <div class="infoSlot">
+            {#if i === 0}
+              <div class="infoLabel">Weekly Badges</div>
+            {:else}
+              <div class="infoLabel label-spacer" aria-hidden="true"></div>
+            {/if}
+            <div class="badgesRow">
+              <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
+                <div class="badge-ring has-counter">
+                  <img src={g.icon} alt={g.title} />
+                  {#if g.occurrences.length > 1}
+                    <span class="badge-counter">{g.occurrences.length}</span>
+                  {/if}
+                </div>
+                <div class="badge-title">{g.title}</div>
+                {#if g.occurrences.length}
+                  <div class="occ-latest">{occLabel([...g.occurrences].sort(sortOcc)[0])}</div>
+                {/if}
+              </div>
+            </div>
+          </div>
+        {/each}
+      {/if}
+
+     {#if champTile && champTile.years?.length}
+        <div class="infoSlot">
+          <div class="infoLabel">Championships (Legacy)</div>
+          <div class="badgesRow">
+            <div class="badge-card">
+              <div class="badge-ring"><img src={champTile.icon} alt={champTile.title} /></div>
+              <div class="badge-title">{champTile.title}</div>
+              <div class="badge-subtitle">{champTile.years.join(', ')}</div>
+            </div>
+          </div>
+        </div>
+    {/if}
+
+      {#if legacyOther.length}
+        <div class="infoSlot">
+          <div class="infoLabel">Legacy</div>
+          <div class="badgesRow">
+            {#each legacyOther as b}
+              <div class="badge-card clickable" on:click={() => openFromLegacy(b)}>
+                <div class="badge-ring"><img src={b.icon} alt={b.title} /></div>
+                <div class="badge-title">{b.title}</div>
+                {#if otherLegacyLabel(b)}
+                  <div class="badge-subtitle">{otherLegacyLabel(b)}</div>
+                {/if}
+              </div>
+            {/each}
+          </div>
+        </div>
+      {/if}
+
+      <button type="button" class="infoSlot infoRival clickable" on:click={() => changeManager(rivalInfo.link)}>
+        <div class="infoLabel">Rival</div>
+        <div class="infoIcon"><img class="rival" src={rivalInfo.image} alt="rival" /></div>
+        <div class="badge-title">{rivalInfo.name}</div>
+      </button>
+    </div>
+  {/if}
+{/key}
 
 {#if showModal && active}
-  <div class="modal-backdrop" on:click={closeModal}></div>
+  <div class="modal-backdrop" on:click={closeModal} />
   <div class="modal" role="dialog" aria-modal="true" aria-label="Badge details">
     <button class="modal-close" aria-label="Close" on:click={closeModal}>×</button>
     <div class="modal-head">
@@ -253,16 +300,16 @@ const openFromWeeklyGroup = (g) => {
     {/if}
   </div>
 {/if}
-<svelte:window on:keydown={(e)=> e.key === 'Escape' && closeModal()} />
 
+<svelte:window on:keydown={(e)=> e.key === 'Escape' && closeModal()} />
 <style>
 /* ===== Outer layout ===== */
 .fantasyInfos{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 2.5rem;
-  align-items: start; 
-  justify-content: center;       /* centers the grid as a block */
+  align-items: start;
+  justify-content: center;
   justify-items: center;
   padding: 1.5rem 0 2rem;
   margin: 3em 0 4em;
@@ -280,7 +327,7 @@ const openFromWeeklyGroup = (g) => {
 }
 .label-spacer{ visibility: hidden; }
 
-/* ===== Rows of badges: slot layout (no horizontal scroll) ===== */
+/* ===== Rows of badges ===== */
 .infoSlot .badgesRow{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -315,12 +362,9 @@ const openFromWeeklyGroup = (g) => {
   box-shadow:0 4px 10px rgba(0,0,0,.45);
 }
 
-/* Occurrence list (season/week) */
-.occ-list{ margin:.25rem 0 0; padding:0; list-style:none; display:grid; gap:2px; color:var(--muted,#b6c2d0); font-size:.92rem; }
-.occ-list li{ white-space:nowrap; }
 .occ-latest { margin-top:.25rem; color:var(--muted,#b6c2d0); }
 
-/* Rival aligned as a grid item */
+/* Rival as a grid item */
 .clickable{ cursor:pointer; }
 .infoRival{
   all:unset;
@@ -359,66 +403,17 @@ const openFromWeeklyGroup = (g) => {
 /* Responsive columns */
 @media (max-width: 1100px){ .fantasyInfos{ grid-template-columns: repeat(3, minmax(140px, 1fr)); } }
 @media (max-width: 780px){  .fantasyInfos{ grid-template-columns: repeat(2, minmax(140px, 1fr)); } }
-@media (max-width: 480px){  .fantasyInfos{ grid-template-columns: 1fr; } }
 @media (max-width: 480px){
   .fantasyInfos{
-    display: grid;
-    /* use fixed columns instead of fr so the grid can shrink */
-    grid-template-columns: repeat(2, 160px);   /* tweak 150–170px as you like */
+    grid-template-columns: repeat(2, 160px);
     gap: 14px 12px;
-
-    /* center the whole grid block */
     width: max-content;
-    margin-left: auto;
-    margin-right: auto;
-
-    /* tidy alignment */
-    justify-items: center;
-    align-items: start;
+    margin-left: auto; margin-right: auto;
+    justify-items: center; align-items: start;
+    box-shadow: none !important; border: none !important; background: transparent !important;
   }
-
-  /* let slots/cards size to their cell */
   .infoSlot{ max-width: none; }
   .badgesRow .badge-card{ width: auto; }
-
-   .fantasyInfos {
-    box-shadow: none !important;
-    border: none !important;
-    background: transparent !important; /* optional, removes any bg color */
-  }
 }
-
-@media (max-width: 430px){
-.fantasyInfos{
-    display: grid;
-    /* use fixed columns instead of fr so the grid can shrink */
-    grid-template-columns: repeat(2, 160px);   /* tweak 150–170px as you like */
-    gap: 14px 12px;
-
-    /* center the whole grid block */
-    width: max-content;
-    margin-left: auto;
-    margin-right: auto;
-
-    /* tidy alignment */
-    justify-items: center;
-    align-items: start;
-  }
-
-  /* let slots/cards size to their cell */
-  .infoSlot{ max-width: none; }
-  .badgesRow .badge-card{ width: auto; }
-
-   .fantasyInfos {
-    box-shadow: none !important;
-    border: none !important;
-    background: transparent !important; /* optional, removes any bg color */
-  }
-}
-
-@media (max-width: 360px) {
-  .fantasyInfos {
-    grid-template-columns: 1fr;
-  }
-}
+@media (max-width: 360px) { .fantasyInfos { grid-template-columns: 1fr; } }
 </style>
