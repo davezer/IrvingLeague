@@ -1,5 +1,14 @@
 <script>
+  import NominateModal from '$lib/Nominate/NominateModal.svelte';
   export let data;
+
+  let nominateOpen = false;
+  let nominateBadge = null;
+
+   function openNominate(badge) {
+    nominateBadge = badge;
+    nominateOpen = true;
+  }
 
   let q = '';
   let showOnlyEarned = false;
@@ -56,10 +65,27 @@
     return '';
   };
 </script>
-<div class="page-wrapper">     <!-- ✅ ADD THIS WRAPPER -->
-
+<div class="page-wrapper">   
+<div class="actions-row actions-center">
+  <button
+    class="nominate-btn hero"
+    on:click={() => { nominateBadge = null; nominateOpen = true; }}
+  >
+    
+    <span>Nominate Player</span>
+    
+    <img class="shield" src="/nominate-player-shield.png" alt="" /> 
+  </button>
+</div>
+  
+<NominateModal
+  open={nominateOpen}
+  badge={nominateBadge}
+  on:close={() => (nominateOpen = false)}
+  on:submitted={() => (nominateOpen = false)}
+/>
 <!-- Controls: Search and Filters -->
-<div class="controls">
+<!-- <div class="controls">
   <div class="search-wrap">
     <input
       class="search"
@@ -85,7 +111,7 @@
       </select>
     </label>
   </div>
-</div>
+</div> -->
 
 <!-- Section: Personas -->
 <section class="badge-section" id="personas">
@@ -331,66 +357,6 @@
   margin-inline:auto;
 }
 
-
-/* ===== Controls: centered small search + inline filters ===== */
-.controls{
-  display:flex; flex-direction:column; align-items:center;
-  gap:.5rem; margin:1rem 0 1.25rem; width:100%;
-}
-
-.controls,
-.section-title {
-  width:100%;
-  margin-inline:auto;
-}
-.search-wrap{ position:relative; width:260px; }
-.search{
-  width:100%; padding:.55rem 2.4rem .55rem 2rem;
-  border:1px solid var(--border); border-radius:999px;
-  background:linear-gradient(180deg, var(--panel), #12161d);
-  color:var(--text);
-  box-shadow:0 4px 10px rgba(0,0,0,.25) inset, 0 1px 0 rgba(255,255,255,.03);
-  outline:none; transition:border-color .15s, box-shadow .15s, background .15s;
-}
-.search::placeholder{ color:var(--muted); opacity:.85; }
-.search:hover{ border-color:#3a4557; }
-.search:focus{
-  border-color:var(--ring);
-  box-shadow:0 0 0 3px rgba(59,130,246,.22), 0 4px 10px rgba(0,0,0,.25) inset;
-}
-/* magnifier */
-.search-wrap::before{
-  content:""; position:absolute; left:12px; top:50%; transform:translateY(-50%);
-  width:14px; height:14px; opacity:.9;
-  filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));
-  background:radial-gradient(circle at 50% 50%, #cfd6e3 45%, transparent 46%) no-repeat;
-}
-.search-wrap::after{
-  content:""; position:absolute; left:22px; top:calc(50% + 6px);
-  width:8px; height:2px; transform:rotate(45deg);
-  background:#cfd6e3; border-radius:2px; opacity:.9;
-}
-/* clear button */
-.clear{
-  position:absolute; right:8px; top:50%; transform:translateY(-50%);
-  width:24px; height:24px; line-height:22px; border-radius:999px;
-  border:1px solid var(--border); background:var(--chip); color:var(--text);
-  font-size:14px; cursor:pointer; display:grid; place-items:center;
-}
-.clear:hover{ border-color:#46556d; }
-.clear:focus{ outline:none; box-shadow:0 0 0 3px rgba(59,130,246,.22); }
-
-/* Inline filters */
-.filters{
-  display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap;
-}
-.checkbox,.select{ display:inline-flex; align-items:center; gap:.5rem; color:var(--muted); white-space:nowrap; }
-.select select{
-  padding:.4rem .6rem; border:1px solid var(--border); border-radius:999px;
-  background:linear-gradient(180deg, var(--panel), #12161d); color:var(--text);
-}
-.select select:focus{ border-color:var(--ring); box-shadow:0 0 0 3px rgba(59,130,246,.22); }
-
 /* ===== Section headings ===== */
 .badge-section{ width:100%; margin:1.25rem 0 .75rem; }
 .section-title{
@@ -480,11 +446,57 @@
 .row-title{ font-weight:600; }
 .row-sub{ font-size:.9rem; }
 
-.search-wrap{ width:260px; margin-inline:auto; }
+.actions-row{
+  width:100%;
+  display:flex;
+  margin: 1rem 0 1.25rem;
+}
+.actions-row.actions-center{ justify-content:center; }
 
-/* ===== Small screens ===== */
-@media (max-width:700px){
-  .controls{ gap:.6rem; }
+/* Big, centered pill button */
+.nominate-btn{
+  --btn-grad: linear-gradient(180deg, var(--panel), #12161d);
+  display:inline-flex; align-items:center; justify-content:center; gap:.7rem;
+  padding:.95rem 1.6rem;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--btn-grad);
+  color:var(--text);
+  font-weight:550; letter-spacing:.2px;
+  text-shadow:0 1px 0 rgba(0,0,0,.25);
+  cursor:pointer; user-select:none;
+  box-shadow: var(--shadow), 0 0 0 rgba(59,130,246,0);
+  transition: border-color .15s ease, box-shadow .15s ease, transform .06s ease, background .2s ease;
+  /* make it feel substantial */
+  min-width: clamp(260px, 38vw, 420px);
+  height: 56px;
 }
 
+.nominate-btn.hero{
+  font-size: 2.1rem;
+}
+
+/* hover/focus states */
+.nominate-btn:hover{
+  border-color:#3a4557;
+  box-shadow: var(--shadow), 0 0 0 4px rgba(59,130,246,.14);
+  transform: translateY(-1px);
+}
+.nominate-btn:active{ transform: translateY(0); }
+.nominate-btn:focus-visible{
+  outline:none;
+  border-color:var(--ring);
+  box-shadow: var(--shadow), 0 0 0 4px rgba(59,130,246,.22);
+}
+
+/* If you prefer the shield image instead of the icon */
+.nominate-btn .shield{
+  width:42px; height:42px; object-fit:cover; border-radius:6px;
+  box-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+
+/* Smaller tweak on mobile */
+@media (max-width:600px){
+  .nominate-btn{ min-width: 80%; height: 52px; font-size:1.05rem; }
+}
 </style>

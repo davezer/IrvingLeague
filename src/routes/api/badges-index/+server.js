@@ -32,7 +32,7 @@ export async function GET() {
   const personaBadges = [...personaMap.entries()].map(([p, ms]) => ({
     id: `persona-${slugify(p)}`,
     type: 'persona',
-    name: `Persona: ${p}`,
+    name: `${p}`,
     definition: personaDefs[p] || `Managers with the “${p}” persona.`,
     icon: `/${p}.png`,
     earned: ms.map((m) => ({
@@ -47,7 +47,8 @@ export async function GET() {
   const weeklyBadges = [
     { id: 'ides',  type: 'weekly', name: 'The Ides',  definition: 'Beware the Ides — awarded for being the highest scoring loser of the week. You loser.', icon: '/ides.png',  earned: [] },
     { id: 'doyle', type: 'weekly', name: 'The Doyle', definition: "He can't keep getting away with it!",  icon: '/doyle.png', earned: [] },
-    { id: 'bde',   type: 'weekly', name: 'BDE',       definition: 'Awarded to the highest scoring team of the week.', icon: '/bde.png',   earned: [] }
+    { id: 'bde',   type: 'weekly', name: 'BDE',       definition: 'Awarded to the highest scoring team of the week.', icon: '/bde.png',   earned: [] },
+    { id: 'suck',   type: 'weekly', name: 'The You Suck',       definition: 'Awarded to the lowest scoring team of the week.', icon: '/suck.png',   earned: [] }
   ];
 
   // Helper: add a weekly winner row using managerID
@@ -125,7 +126,7 @@ const tenureFromStart = (start, now = THIS_YEAR) =>
   awardWeekly({ badgeId: 'doyle', managerId: '857309838424809472', season: 2025, week: 9, points: null });
   awardWeekly({ badgeId: 'ides', managerId: '1253515645044133888', season: 2025, week: 9, points: 142 });
   awardWeekly({ badgeId: 'doyle', managerId: '1253772062900621312', season: 2025, week: 9, points: null });
-  awardWeekly({ badgeId: 'ides', managerId: '1253515645044133888', season: 2025, week: 20, points: 5 });
+  awardWeekly({ badgeId: 'ides', managerId: '1253515645044133888', season: 2025, week: 10, points: 5 });
 
 
   // -------- Championships → Legacy
