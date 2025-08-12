@@ -713,14 +713,16 @@
             font-size: 0.8em;
         }
         .basicInfo {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center; /* tighter rows/cols */
-            margin: 15px auto 0; /* remove big side offsets */
-            padding-top: 10px;
-            max-width: 450px; /* keeps line from stretching forever */
-            line-height: 1.2; /* slightly smaller text */
+              display: grid;
+  grid-auto-flow: column;        /* lay items left→right */
+  grid-auto-columns: max-content;
+  justify-content: center;       /* <- hard center */
+  align-items: center;
+  gap: 14px;                     /* space between items */
+  width: 100%;
+  max-width: 480px;              /* keeps things tight on phones */
+  margin: 8px auto 0;            /* centers the block itself */
+  text-align: center;
         }
     }
 
