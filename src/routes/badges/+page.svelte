@@ -72,9 +72,9 @@
     on:click={() => { nominateBadge = null; nominateOpen = true; }}
   >
     
-    <span>Nominate Player</span>
+    <span>Slap A Stain On Someone</span>
     
-    <img class="shield" src="/nominate-player-shield.png" alt="" /> 
+    <img class="shield" src="/stains.png" alt="" /> 
   </button>
 </div>
   

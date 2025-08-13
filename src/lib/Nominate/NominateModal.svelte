@@ -21,7 +21,8 @@
       ...pushType(s.personas, 'personas'),
       ...pushType(s.weekly, 'weekly'),
       ...pushType(s.yearly, 'yearly'),
-      ...pushType(s.legacy, 'legacy')
+      ...pushType(s.legacy, 'legacy'),
+      ...pushType(s.stains, 'stains'),
     ];
   };
 
@@ -34,7 +35,7 @@
       const json = await res.json();
       const flat = flattenBadges(json).filter(Boolean);
       badgeOptions = flat
-        .filter((b) => b?.type === 'weekly')
+        .filter((b) => b?.type === 'stains')
         .sort((a, b) => (a?.name ?? '').localeCompare(b?.name ?? ''));
       selectedBadgeId ||= String(badgeOptions[0]?.id ?? '');
     } catch (e) {
@@ -90,7 +91,7 @@
     if (sending) return;
     error = '';
 
-    if (!selectedBadgeId) { error = 'Please select a weekly badge.'; return; }
+    if (!selectedBadgeId) { error = 'Please select a stain.'; return; }
     if (!selectedTeam)    { error = 'Please select a team.'; return; }
     if (!submitterEmail)  { error = 'Your email is required.'; return; }
     if (!submitterTeam) { error = 'Please choose your team.'; return; }
@@ -127,7 +128,7 @@
 </script>
 
 {#if open}
-  <div class="modal-backdrop" on:click={close} />
+  <div class="modal-backdrop" />
 
   <form class="modal" role="dialog" aria-modal="true" aria-label="Nominate player"
         on:click={stop} on:submit|preventDefault={submit}>
@@ -138,16 +139,16 @@
    <div class="modal-header">
   <img
     class="nominate-shield"
-    src="/nominate-player-shield.png"
+    src="/stains.png"
     alt="Nominate Player"
     width="56"
     height="56"
     on:error={(e) => (e.target.style.display = 'none')}
   />
-  <h3 class="modal-title-text">Player Nomination for Badge or Stain</h3>
+  <h3 class="modal-title-text">Slap a Stain on {selectedTeam}</h3>
 </div>
     <p class="blurb">
-  Nominate a <b>weekly</b> badge (or stain) for any team. We’ll review and announce winners (or losers?) on Tuesdays. 
+  Nominate a <b><i>Stain</i></b> for any team. We’ll review and announce winners (or losers?) on Tuesdays. 
   Please include a link or note if you have one.<br> <br>
   <i>Please note that this is meant to be a fun way to celebrate our season. Lets not abuse it. The honor system is in place. <br> <br>
   (Also note that I, Dave, can see who is actually submitting these on the backend, so please use your actual team name and email address and not someone elses to stir up shit.)</i>
@@ -172,13 +173,24 @@
       <div class="form-grid" aria-busy={badgesLoading}>
         <!-- Weekly badge (name only) -->
         <label class="row wide">
-          <span class="lab">Weekly badge</span>
+          <span class="lab">Stains</span>
           <select class="input select" bind:value={selectedBadgeId} required disabled={badgesLoading || !!badgesError}>
             <option value="" disabled selected={!selectedBadgeId}>Select a weekly badge…</option>
             {#each badgeOptions as b}
-              <option value={idOf(b)}>{b?.name}</option>
+               <option value={idOf(b)} title={b?.definition || ''}>{b?.name}</option>
             {/each}
           </select>
+          {#if selectedBadge}
+  <div class="badge-preview" aria-live="polite">
+    <img class="bp-icon" src={selectedBadge.icon} alt="" on:error={(e)=> e.target.style.display='none'} />
+    <div class="bp-body">
+      <div class="bp-name">{selectedBadge.name}</div>
+      {#if selectedBadge.definition}
+        <div class="bp-def">{selectedBadge.definition}</div>
+      {/if}
+    </div>
+  </div>
+{/if}
         </label>
 
         <!-- Team -->
@@ -358,6 +370,17 @@
   margin: .25rem 0 .9rem;
 }
 .blurb b{ color: var(--text); opacity:.95; }
+
+.badge-preview{
+  display:flex; gap:.6rem; align-items:flex-start;
+  margin:.35rem 0 .5rem; padding:.55rem .6rem;
+  border:1px solid var(--border); border-radius:.6rem;
+  background:linear-gradient(180deg, var(--panel), #12161d);
+}
+.bp-icon{ width:36px; height:36px; border-radius:8px; object-fit:cover; border:1px solid var(--border); }
+.bp-body{ display:flex; flex-direction:column; gap:.15rem; }
+.bp-name{ font-weight:700; line-height:1.1; }
+.bp-def{ color:var(--muted); line-height:1.25; }
 
 /* Small screens */
 @media (max-width:560px){
