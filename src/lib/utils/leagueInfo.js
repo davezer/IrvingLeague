@@ -223,9 +223,9 @@ export const managers = [
    { // array 12
     managerID: "1258962574360182785",
     name: "Adam Lopiano",
-    teamName: "Skeskatchew Mounties",
+    teamName: "Saskatchewan Mounties",
     location: "CT",
-    bio: "The Skeskatchew Mounties embody resilience and determination, ready to conquer the fantasy landscape.",
+    bio: "The Saskatchewan Mounties embody resilience and determination, ready to conquer the fantasy landscape.",
     photo: "/managers/mounties.png",
     fantasyStart: 2004,
     favoriteTeam: "nyg",
