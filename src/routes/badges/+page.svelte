@@ -13,7 +13,7 @@
   let q = '';
   let showOnlyEarned = false;
   let sortBy = 'name'; // 'name' | 'count'
-  const sections = data?.sections || { personas: [], weekly: [], yearly: [], legacy: [] };
+  const sections = data?.sections || { personas: [], weekly: [], stains: [], yearly: [], legacy: [] };
 
   const norm = (s) => (s || '').toString().toLowerCase().trim();
   const hasEarned = (b) => Array.isArray(b.earned) && b.earned.length > 0;
@@ -54,7 +54,7 @@
     if (badge.type === 'legacy') {
       return e.years?.length ? `Years: ${e.years.join(', ')}` : '';
     }
-    if (badge.type === 'weekly') {
+    if (badge.type === 'weekly' || badge.type === 'stains') {
       const parts = [];
       if (e.season) parts.push(`${e.season}`);
       if (e.week != null) parts.push(`Week ${e.week}`);
@@ -162,6 +162,8 @@
   <h2 class="section-title">Weekly Badges</h2>
   <div class="grid">
     {#each filterBadges(sections.weekly) as badge}
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+      <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
       <article
         class="card clickable"
         data-earned={hasEarned(badge) ? 'yes' : 'no'}
@@ -200,6 +202,49 @@
     {/if}
   </div>
 </section>
+
+<section class="badge-section" id="stains">
+  <h2 class="section-title">Stains</h2>
+  <div class="grid">
+    {#each filterBadges(sections.stains) as badge}
+      <article
+        class="card clickable"
+        data-earned={hasEarned(badge) ? 'yes' : 'no'}
+        on:click={() => openBadge(badge)}
+        tabindex="0"
+        on:keydown={(e)=> (e.key==='Enter'||e.key===' ') && openBadge(badge)}
+      >
+        <header class="card-head">
+          <div class="badge-avatar">
+            <img src={badge.icon} alt="" on:error={(e) => e.target.style.display = 'none'}/>
+          </div>
+          <div class="title-wrap">
+            <h3 class="badge-name">{badge.name}</h3>
+            <div class="badge-id">#{badge.id}</div>
+          </div>
+          <div class="earned-chip" title="Times earned">{badge.count || badge.earned?.length || 0}</div>
+        </header>
+        <p class="definition">{badge.definition}</p>
+        <div class="earned-wrap">
+          {#if hasEarned(badge)}
+            <div class="logo-row" role="list">
+              {#each badge.earned as t}
+                <div role="listitem" class="logo-item" title={`${t.teamName} — ${t.managerName}`}>
+                  <img class="team-logo" src={t.teamLogo} alt={`${t.teamName} logo`} />
+                </div>
+              {/each}
+            </div>
+          {:else}
+            <div class="empty">No teams have earned this yet.</div>
+          {/if}
+        </div>
+      </article>
+    {/each}
+    {#if !filterBadges(sections.stains).length}
+      <div class="empty-wide">No stains badges match your filters.</div>
+    {/if}
+  </div>
+
 
 <!-- Section: Yearly Badges -->
 <section class="badge-section" id="yearly">

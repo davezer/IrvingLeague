@@ -3,7 +3,7 @@
   export let viewManager = {};
   export let changeManager; // (idOrLink) => void
   export let byManager = {}; // { [managerID]: { personas, weekly, yearly, legacy } }
-  export let sections = { personas: [], weekly: [], yearly: [], legacy: [] };
+  export let sections = { personas: [], weekly: [], stains: [], yearly: [], legacy: [] };
   export let champYears = []; // optional override
 
   /* ===== Helpers ===== */
@@ -71,21 +71,31 @@
   $: mineRaw     = pickMine(byManager, currentId);
   $: loadingMine = !currentId || !mineRaw;
 
-  $: mine = loadingMine ? empty : {
-    personas: Array.isArray(mineRaw.personas) ? mineRaw.personas : [],
-    weekly:   Array.isArray(mineRaw.weekly)   ? mineRaw.weekly   : [],
-    yearly:   Array.isArray(mineRaw.yearly)   ? mineRaw.yearly   : [],
-    legacy:   Array.isArray(mineRaw.legacy)   ? mineRaw.legacy   : []
-  };
+$: mine = loadingMine ? empty : {
+  personas: Array.isArray(mineRaw.personas) ? mineRaw.personas : [],
+  weekly:   Array.isArray(mineRaw.weekly)   ? mineRaw.weekly   : [],
+  yearly:   Array.isArray(mineRaw.yearly)   ? mineRaw.yearly   : [],
+  legacy:   Array.isArray(mineRaw.legacy)   ? mineRaw.legacy   : [],
+  stains:   Array.isArray(mineRaw.stains)   ? mineRaw.stains   : []
+};
 
   /* Definitions (for icon/definition lookups) */
   $: allDefs = [
     ...(sections.personas ?? []),
     ...(sections.weekly ?? []),
     ...(sections.yearly ?? []),
-    ...(sections.legacy ?? [])
+    ...(sections.legacy ?? []),
+    ...(sections.stains ?? [])
   ];
   $: defById = new Map(allDefs.map((b) => [normId(b.id), { name: b.name, definition: b.definition, icon: b.icon }]));
+
+  // IDs coming from API sections.stains → use these as the ground truth
+$: stainIdSet = new Set((sections?.stains ?? []).map((b) => normId(b.id)));
+const isStainBadge = (b) => {
+  if (b?.isStain === true) return true; // manual override support
+  const id = normId(b?.badgeId);
+  return stainIdSet.has(id);
+};
 
   /* Years of Service tiles (10/20) */
   $: yearsItems = (mine.yearly ?? []).map((y) => {
@@ -98,6 +108,37 @@
   /* Weekly (grouped) */
   $: weeklyGrouped = groupWeekly(mine.weekly ?? []);
 
+
+
+/* ===== Stains (prefer the stains bucket; fallback to detection) ===== */
+// Base raw list directly from API bucket
+$: stainsRaw = Array.isArray(mine.stains) ? mine.stains : [];
+
+// Fallback: also include any weekly/legacy/yearly items whose badgeId matches a known stain id
+$: fallbackWeekly = (mine.weekly ?? []).filter(isStainBadge);
+$: fallbackLegacy = (mine.legacy ?? []).filter(isStainBadge);
+$: fallbackYearly = (mine.yearly ?? []).filter(isStainBadge);
+
+// Merge + de-dupe by badgeId/season/week
+const keyOcc = (x) => `${normId(x.badgeId)}|${x.season ?? ''}|${x.week ?? ''}|${x.points ?? ''}`;
+$: stainsMerged = (() => {
+  const map = new Map();
+  for (const s of [...stainsRaw, ...fallbackWeekly, ...fallbackLegacy, ...fallbackYearly]) {
+    map.set(keyOcc(s), s);
+  }
+  return [...map.values()];
+})();
+
+// Split into weekly-like (has season/week/points) vs non-weekly
+$: stainsWeeklyRaw = stainsMerged.filter((b) => b.season != null || b.week != null || b.points != null);
+$: stainsGrouped   = groupWeekly(stainsWeeklyRaw);
+
+$: stainsLegacy = stainsMerged.filter((b) => b.season == null && b.week == null && b.points == null && (Array.isArray(b.years) || b.year != null));
+$: stainsYearly = stainsMerged.filter((b) => b.season == null && b.week == null && b.points == null && !Array.isArray(b.years) && b.year == null);
+
+
+// Helper for label on non-weekly stains (reuse your otherLegacyLabel)
+const stainOtherLabel = otherLegacyLabel;
   /* Championships (legacy) */
   const isChampionLegacy = (b) => {
     const nm  = (b?.badgeName || b?.title || '').toLowerCase();
@@ -214,32 +255,59 @@ $: champTile = (() => {
         </div>
       {/if}
 
-      {#if weeklyGrouped.length}
-        {#each weeklyGrouped as g, i}
-          <div class="infoSlot">
-            {#if i === 0}
-              <div class="infoLabel">Weekly Badges</div>
-            {:else}
-              <div class="infoLabel label-spacer" aria-hidden="true"></div>
+{#if weeklyGrouped.length}
+  <div class="infoSlot infoColumn">
+    <div class="infoLabel">Weekly Badges</div>
+    <div class="badgesCol">
+      {#each weeklyGrouped as g}
+        <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
+          <div class="badge-ring has-counter">
+            <img src={g.icon} alt={g.title} />
+            {#if g.occurrences.length > 1}
+              <span class="badge-counter">{g.occurrences.length}</span>
             {/if}
-            <div class="badgesRow">
-              <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
-                <div class="badge-ring has-counter">
-                  <img src={g.icon} alt={g.title} />
-                  {#if g.occurrences.length > 1}
-                    <span class="badge-counter">{g.occurrences.length}</span>
-                  {/if}
-                </div>
-                <div class="badge-title">{g.title}</div>
-                {#if g.occurrences.length}
-                  <div class="occ-latest">{occLabel([...g.occurrences].sort(sortOcc)[0])}</div>
-                {/if}
-              </div>
-            </div>
           </div>
-        {/each}
-      {/if}
+          <div class="badge-title">{g.title}</div>
+          {#if g.occurrences.length}
+            <div class="occ-latest">{occLabel([...g.occurrences].sort(sortOcc)[0])}</div>
+          {/if}
+        </div>
+      {/each}
+    </div>
+  </div>
+{/if}
 
+{#if stainsGrouped.length || stainsLegacy.length || stainsYearly.length}
+  <div class="infoSlot infoWide">  <!-- add infoWide -->
+    <div class="infoLabel">Stains</div>
+    <div class="badgesRow">
+      {#each stainsGrouped as g}
+        <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
+          <div class="badge-ring has-counter">
+            <img src={g.icon} alt={g.title || g.badgeName} />
+            {#if g.occurrences.length > 1}
+              <span class="badge-counter">{g.occurrences.length}</span>
+            {/if}
+          </div>
+          <div class="badge-title">{g.title || g.badgeName}</div>
+          {#if g.occurrences.length}
+            <div class="occ-latest">{occLabel([...g.occurrences].sort(sortOcc)[0])}</div>
+          {/if}
+        </div>
+      {/each}
+
+      {#each [...stainsLegacy, ...stainsYearly] as b}
+        <div class="badge-card clickable" on:click={() => openFromLegacy(b)}>
+          <div class="badge-ring"><img src={b.icon} alt={b.title || b.badgeName} /></div>
+          <div class="badge-title">{b.title || b.badgeName}</div>
+          {#if stainOtherLabel(b)}
+            <div class="badge-subtitle">{stainOtherLabel(b)}</div>
+          {/if}
+        </div>
+      {/each}
+    </div>
+  </div>
+{/if}
      {#if champTile && champTile.years?.length}
         <div class="infoSlot">
           <div class="infoLabel">Championships (Legacy)</div>
@@ -328,13 +396,15 @@ $: champTile = (() => {
 .label-spacer{ visibility: hidden; }
 
 /* ===== Rows of badges ===== */
-.infoSlot .badgesRow{
+/* .infoSlot .badgesRow{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: 1rem 1.25rem;
   justify-items: center;
   overflow: visible;
-}
+} */
+
+
 .badgesRow .badge-card{ width:110px; }
 
 /* ===== Cards & ring ===== */
@@ -400,6 +470,31 @@ $: champTile = (() => {
 .earned-list{ display:flex; flex-direction:column; gap:.4rem; max-height:50vh; overflow:auto; }
 .earned-row{ display:block; }
 
+
+/* .infoSlot.infoWide{
+  grid-column: 1 / -1;     
+  width: auto !important;  
+  max-width: none;
+  justify-self: center;   
+} */
+
+/* .infoSlot.infoWide .infoLabel{
+  width: 100%;
+  text-align: center;
+  margin-bottom: .75em;
+} */
+
+/* .infoSlot.infoWide .badgesRow{
+  display: flex;          
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  justify-content: center; 
+  align-items: flex-start;
+} */
+/* 
+.infoSlot.infoWide .badgesRow .badge-card{
+  width: 110px;           
+} */
 /* Responsive columns */
 @media (max-width: 1100px){ .fantasyInfos{ grid-template-columns: repeat(3, minmax(140px, 1fr)); } }
 @media (max-width: 780px){  .fantasyInfos{ grid-template-columns: repeat(2, minmax(140px, 1fr)); } }

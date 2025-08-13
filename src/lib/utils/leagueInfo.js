@@ -38,7 +38,7 @@ export const managers = [
     name: "Jeff Cohn",
     teamName: "Ultimate City Warriors",
     location: "FL",
-    bio: "Heat, hustle, and havoc — Westlake Warriors bring the smack talk",
+    bio: "Channeling the legend’s face paint and rope-shaking fury, the Ultimate City Warriors blitz opponents with high-octane offense and unbreakable grit. Tassels flying, colors blazing, they press-slam deficits, sprint sidelines, and leave rivals gasping—because intensity is everything, and victory runs wild.",
     photo: "/managers/warriors.png",
     fantasyStart: 2004,
     favoriteTeam: "mia",
@@ -46,7 +46,7 @@ export const managers = [
     rival: { name: "Jamie", link: 2, image: "/managers/lightsabres.png" },
     yearsOfService: "Twenty",
     persona: "The Littlefinger",
-    philosophy: "Analyze, Analyze, Analyze.",
+    philosophy: "If they refuse to understand that the power of the Ultimate City Warriors has spread like a virus amongst the ICL, then let them continue to walk as normal as they seem.",
     championship: { league: "Irving", years: "2009, 2011, 2019, 2021" },
     preferredContact: "Text"
   },
@@ -236,5 +236,22 @@ export const managers = [
     philosophy: "Ride tall, charge hard, guard victory like a charging moose.",
     championship: { league: "Irving", years: "2006" },
     preferredContact: "Text"
-  }
+  },
+  { // array 13
+    managerID: "1260985941263126528",
+    name: "Brad Thornton",
+    teamName: "HenryPussyCats",
+    location: "FL",
+    bio: "From Crescent Lake, the Henry Pussy Cats prowl like Berryman’s Henry—restless, sly, and sudden. They mutter to Mr. Bones, then pounce: nine lives on fourth down, nine leaps through coverages. Melancholy when trailing, ecstatic at victory, dreaming the next score.",
+    photo: "/managers/henry.png",
+    fantasyStart: 2010,
+    favoriteTeam: "mia",
+    mode: "Rebuild",
+    rival: { name: "James Barmore", link: 9, image: "/managers/homers.png" },
+    yearsOfService: null,
+    persona: "The Kornacki",
+    philosophy: "Dream, prowl, confide in Mr. Bones, then pounce on fourth.",
+    championship: { league: "Irving", years: "2010, 2014" },
+    preferredContact: "Text"
+  },
 ];
