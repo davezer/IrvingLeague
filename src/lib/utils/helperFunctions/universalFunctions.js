@@ -99,12 +99,30 @@ export const getAvatar = (leagueTeamManagers, author) => {
     return QUESTION;
 }
 
-export const parseDate = (rawDate) => {
-    const ts = Date.parse(rawDate);
-    const d = new Date(ts);
-    return stringDate(d);
+export function parseDate(input) {
+  // accept Date, ISO string, "YYYY-MM-DD", or numeric epoch (sec/ms)
+  const s = (input ?? '').toString().trim();
+  if (!s) return null;
+
+  // numeric epoch?
+  if (/^\d+$/.test(s)) {
+    const n = Number(s);
+    const ms = n > 1e12 ? n : n * 1000; // treat 10-digit as seconds
+    const d = new Date(ms);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  const d = new Date(s);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
+export function formatDate(input, opts = {}) {
+  const d = input instanceof Date ? input : parseDate(input);
+  if (!d) return '';
+  const locale  = opts.locale ?? undefined;
+  const options = opts.options ?? { year: 'numeric', month: 'short', day: 'numeric' };
+  return d.toLocaleDateString(locale, options);
+}
 export const generateGraph = ({stats, x, stat, header, field, short, secondField = null}, year, roundOverride = 10, xMinOverride = null) => {
     if(!stats) {
         return null;
