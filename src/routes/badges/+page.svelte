@@ -71,10 +71,10 @@
     class="nominate-btn hero"
     on:click={() => { nominateBadge = null; nominateOpen = true; }}
   >
-    
-    <span>Slap A Stain On Someone</span>
-    
-    <img class="shield" src="/stains.png" alt="" /> 
+
+    <span class="stain-label">Slap A Stain On Someone</span>
+
+    <img class="shield" src="/stains.png" alt="" />
   </button>
 </div>
   
@@ -391,6 +391,11 @@
   --shadow:0 6px 16px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.02) inset;
   --ring:#3b82f6;
 }
+
+html.light .section-title {
+  color: #111;
+  border-left-color: #2563eb;
+}
 :global(body){ background:var(--bg); color:var(--text); }
 
 /* ===== Page layout ===== */
@@ -404,9 +409,23 @@
 
 /* ===== Section headings ===== */
 .badge-section{ width:100%; margin:1.25rem 0 .75rem; }
-.section-title{
-  font-size:1.15rem; font-weight:600; margin:0 0 .6rem; color:var(--text);
-  letter-spacing:.2px; border-left:3px solid var(--ring); padding-left:.5rem; opacity:.95;
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 .6rem;
+  color: var(--text);
+  letter-spacing: .2px;
+  border-left: 3px solid var(--ring);
+  padding-left: .5rem;
+  opacity: .95;
+}
+
+/* Light mode only */
+@media (prefers-color-scheme: light) {
+  .section-title {
+    color: #111; /* darker text for contrast */
+    border-left-color: #2563eb; /* optional: adjust to your light theme blue */
+  }
 }
 
 /* ===== Grid & cards ===== */
@@ -543,5 +562,9 @@
 /* Smaller tweak on mobile */
 @media (max-width:600px){
   .nominate-btn{ min-width: 80%; height: 52px; font-size:1.05rem; }
+}
+
+@media (max-width:430px){
+  .nominate-btn.hero{ min-width: 80%; height: 52px; font-size:1.2em; }
 }
 </style>
