@@ -381,12 +381,11 @@
 <style>
 
 :root {
-    -bg:#0f1115;
+  -bg:#0f1115;
   --panel:#171a21;
   --panel-2:#1e232d;
   --border:#2a2f3a;
-  --muted:#a3adbc;
-  --text:#e8ecf2;
+  --muted:hsl(214, 14%, 90%);
   --chip:#232935;
   --shadow:0 6px 16px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.02) inset;
   --ring:#3b82f6;
@@ -413,7 +412,6 @@ html.light .section-title {
   font-size: 1.15rem;
   font-weight: 600;
   margin: 0 0 .6rem;
-  color: var(--text);
   letter-spacing: .2px;
   border-left: 3px solid var(--ring);
   padding-left: .5rem;
@@ -457,12 +455,13 @@ html.light .section-title {
 }
 .badge-avatar img{ width:85%; height:85%; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(0,0,0,.35)); }
 .title-wrap{ min-width:0; }
-.badge-name{ font-size:1.05rem; margin:0; line-height:1.15; }
+.badge-name{ font-size:1.05rem; margin:0; line-height:1.15; color:var(--muted); }
 .badge-id{ font-size:.78rem; color:var(--muted); }
 .earned-chip{
   font-size:.85rem; padding:.2rem .55rem; border-radius:999px;
   background:var(--chip); border:1px solid var(--border); color:var(--text);
   min-width:2ch; text-align:center;
+  color: hsl(214, 14%, 90%);
 }
 .definition{ margin:.2rem 0 .4rem; color:#ced6e3; line-height:1.35; }
 
@@ -492,6 +491,7 @@ html.light .section-title {
   width:min(680px, 92vw); background:var(--panel-2);
   border:1px solid var(--border); border-radius:1rem;
   box-shadow:0 20px 48px rgba(0,0,0,.6); padding:1rem; z-index:50;
+  color: hsl(214, 14%, 90%);
 }
 .modal-close{
   position:absolute; right:.6rem; top:.6rem; width:32px; height:32px; border-radius:999px;
@@ -525,7 +525,7 @@ html.light .section-title {
   border:1px solid var(--border);
   border-radius:999px;
   background:var(--btn-grad);
-  color:var(--text);
+  color:hsl(214, 14%, 90%);
   font-weight:550; letter-spacing:.2px;
   text-shadow:0 1px 0 rgba(0,0,0,.25);
   cursor:pointer; user-select:none;

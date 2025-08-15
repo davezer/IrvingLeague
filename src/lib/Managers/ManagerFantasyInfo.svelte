@@ -390,7 +390,7 @@ $: champTile = (() => {
   margin:0; width:100%; max-width:220px;
 }
 .infoLabel{
-  font-size: 15px; color: var(--blueOne); font-weight: 700;
+  font-size: 15px; font-weight: 700;
   margin-bottom: .75em; line-height: 1.2;
 }
 .label-spacer{ visibility: hidden; }
@@ -418,8 +418,8 @@ $: champTile = (() => {
   width:70px; height:70px; border-radius:50%; object-fit:cover; background:#0a0a0a;
   box-shadow:0 0 0 2px #1ea0ff, 0 6px 16px rgba(0,0,0,.45);
 }
-.badge-title{ margin-top:.5rem; color: var(--text, #e8ecf2); line-height:1.15; font-weight:700; }
-.badge-subtitle{ margin-top:.15rem; color: var(--muted, #b6c2d0); }
+.badge-title{ margin-top:.5rem; line-height:1.15; font-weight:700; }
+.badge-subtitle{ margin-top:.15rem; }
 
 /* Weekly counter chip */
 .badge-ring.has-counter{ position:relative; }
@@ -432,7 +432,7 @@ $: champTile = (() => {
   box-shadow:0 4px 10px rgba(0,0,0,.45);
 }
 
-.occ-latest { margin-top:.25rem; color:var(--muted,#b6c2d0); }
+.occ-latest { margin-top:.25rem; }
 
 /* Rival as a grid item */
 .clickable{ cursor:pointer; }
@@ -459,7 +459,7 @@ $: champTile = (() => {
 }
 .modal-close{
   position:absolute; right:.6rem; top:.6rem; width:32px; height:32px; border-radius:999px;
-  border:1px solid var(--border); background:var(--chip,#232935); color:var(--text,#e8ecf2); cursor:pointer;
+  border:1px solid var(--border); background:var(--chip,#232935);  cursor:pointer;
 }
 .modal-head{ display:grid; grid-template-columns:64px 1fr; gap:.75rem; align-items:center; margin-bottom:.25rem; }
 .badge-avatar.lg{ width:64px; height:64px; border-radius:50%; overflow:hidden; }
@@ -471,30 +471,6 @@ $: champTile = (() => {
 .earned-row{ display:block; }
 
 
-/* .infoSlot.infoWide{
-  grid-column: 1 / -1;     
-  width: auto !important;  
-  max-width: none;
-  justify-self: center;   
-} */
-
-/* .infoSlot.infoWide .infoLabel{
-  width: 100%;
-  text-align: center;
-  margin-bottom: .75em;
-} */
-
-/* .infoSlot.infoWide .badgesRow{
-  display: flex;          
-  flex-wrap: wrap;
-  gap: 1rem 1.25rem;
-  justify-content: center; 
-  align-items: flex-start;
-} */
-/* 
-.infoSlot.infoWide .badgesRow .badge-card{
-  width: 110px;           
-} */
 /* Responsive columns */
 @media (max-width: 1100px){ .fantasyInfos{ grid-template-columns: repeat(3, minmax(140px, 1fr)); } }
 @media (max-width: 780px){  .fantasyInfos{ grid-template-columns: repeat(2, minmax(140px, 1fr)); } }

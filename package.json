@@ -11,7 +11,6 @@
     "email": "daveoliverio@gmail.com",
     "url": "http://www.daveoliverio.dev/"
   },
-  
   "license": "MIT",
   "engines": {
     "node": ">=v20.0.0",
@@ -33,6 +32,7 @@
   "type": "module",
   "dependencies": {
     "@vercel/analytics": "^1.4.1",
+    "analytics": "github:vercel/analytics",
     "contentful": "^10.6.7",
     "contentful-management": "^10.46.4",
     "cookie": "^0.7.0",

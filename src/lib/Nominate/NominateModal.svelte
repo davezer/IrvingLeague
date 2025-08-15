@@ -248,12 +248,14 @@
 {/if}
   <svelte:window on:keydown={(e)=> e.key === 'Escape' && close()} />
 <style>
-  .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); z-index:40; }
+
+  :global(.modal-backdrop){ position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); z-index:40; }
   .modal{
     position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
     width:min(680px,92vw); background:var(--panel-2);
     border:1px solid var(--border); border-radius:1rem; box-shadow:0 20px 48px rgba(0,0,0,.6);
     padding:1rem; z-index:50;
+    color: hsl(214, 14%, 90%);
   }
   .modal-close{
     position:absolute; right:.6rem; top:.6rem; width:32px; height:32px; border-radius:999px;
