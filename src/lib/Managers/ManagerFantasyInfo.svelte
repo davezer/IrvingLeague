@@ -310,7 +310,7 @@ $: champTile = (() => {
 {/if}
      {#if champTile && champTile.years?.length}
         <div class="infoSlot">
-          <div class="infoLabel">Championships (Legacy)</div>
+          <div class="infoLabel">Legacy</div>
           <div class="badgesRow">
             <div class="badge-card">
               <div class="badge-ring"><img src={champTile.icon} alt={champTile.title} /></div>

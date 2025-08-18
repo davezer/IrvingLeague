@@ -116,17 +116,15 @@
                 <h5 style="margin: 0;">1.2.1 Trade Collusion</h5>
             </button>
             <button type="button" class="noUnderscore clickable" on:click={() => goToSection(oneTwoTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-                <h5 style="margin: 0;">1.2.2 Lending Players Prohibition</h5>
+                <h5 style="margin: 0;">1.2.2 Trade Deadline</h5>
             </button>
             <button type="button" class="noUnderscore clickable" on:click={() => goToSection(oneTwoThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-                <h5 style="margin: 0;">1.2.3 Trade Deadline</h5>
+                <h5 style="margin: 0;">1.2.3 Trade Futures</h5>
             </button>
             <button type="button" class="noUnderscore clickable" on:click={() => goToSection(oneTwoFour)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-                <h5 style="margin: 0;">1.2.4 Trade Restrictions</h5>
+                <h5 style="margin: 0;">1.2.4 Veto/Trade Process</h5>
             </button>
-            <button type="button" class="noUnderscore clickable" on:click={() => goToSection(oneTwoFive)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-                <h5 style="margin: 0;">1.2.5 Veto/Trade Process</h5>
-            </button>
+            
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(oneThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
             <h4 style="margin: 0;">1.3 Waiver Wire</h4>
         </button>
@@ -139,10 +137,16 @@
             <h4 style="margin: 0;">2.1 Draft Order</h4>
         </button>
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(twoTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">2.2 Rookie Drafts</h4>
+            <h4 style="margin: 0;">2.2 Surplus Budget Rollover</h4>
         </button>
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(twoThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">2.3 Draft Day Trades</h4>
+            <h4 style="margin: 0;">2.3 Keeper Rules</h4>
+        </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(twoFour)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">2.4 Draft Day Trades</h4>
+        </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(twoFive)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">2.5 Franchise Sale & Bankruptcy</h4>
         </button>
     
     <button type="button" class="noUnderscore clickable" on:click={() => goToSection(three)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
@@ -150,7 +154,13 @@
     </button>
     
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(threeOne)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">3.1 Voting on Scoring System</h4>
+            <h4 style="margin: 0;">3.1 Scoring Breakdown</h4>
+        </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(threeTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">3.2 Win/Loss Format</h4>
+        </button>
+         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(threeThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">3.3 Voting on Scoring System</h4>
         </button>
     
     <button type="button" class="noUnderscore clickable" on:click={() => goToSection(four)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
@@ -163,43 +173,43 @@
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(fourTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
             <h4 style="margin: 0;">4.2 Playoff Tiebreakers</h4>
         </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(fourThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">4.3 Championship Round Format</h4>
+        </button>
 
     <button type="button" class="noUnderscore clickable" on:click={() => goToSection(five)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-        <h3 style="margin: 0;">Section 5: Tanking Policy</h3>
+        <h3 style="margin: 0;">Section 5: Replacing Managers</h3>
     </button>
     
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(fiveOne)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">5.1 League Tanking Policy</h4>
+            <h4 style="margin: 0;">5.1 Removing Managers</h4>
+        </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(fiveTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">5.2 Replacing Managers</h4>
+        </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(fiveThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">5.3 Replacement Incentive</h4>
+        </button>
+        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(fiveFour)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
+            <h4 style="margin: 0;">5.4 Replacement Process</h4>
         </button>
 
+
     <button type="button" class="noUnderscore clickable" on:click={() => goToSection(six)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-        <h3 style="margin: 0;">Section 6: Replacing Managers</h3>
+        <h3 style="margin: 0;">Section 6: League Finances</h3>
     </button>
     
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(sixOne)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">6.1 Removing Managers</h4>
+            <h4 style="margin: 0;">6.1 League dues</h4>
         </button>
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(sixTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">6.2 Replacing Managers</h4>
+            <h4 style="margin: 0;">6.2 Payouts</h4>
         </button>
         <button type="button" class="noUnderscore clickable" on:click={() => goToSection(sixThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">6.3 Replacement Incentive</h4>
+            <h4 style="margin: 0;">6.3 Auction Futures</h4>
         </button>
 
-    <button type="button" class="noUnderscore clickable" on:click={() => goToSection(seven)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-        <h3 style="margin: 0;">Section 7: League Finances</h3>
-    </button>
-    
-        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(sevenOne)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">7.1 League Dues</h4>
-        </button>
-        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(sevenTwo)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">7.2 Payout</h4>
-        </button>
-        <button type="button" class="noUnderscore clickable" on:click={() => goToSection(sixThree)} style="all: unset; cursor: pointer; display: block; width: 100%; text-align: left;">
-            <h4 style="margin: 0;">7.3 Raising Dues</h4>
-        </button>
-    
+       
     
     <hr />
     
@@ -226,8 +236,8 @@
 
     <p>2 IR spots (Player must be labeled as IR or Out)</p>
 
-        <h4 bind:this={oneOneOne}>1.1.1 Position Maximums</h4>
-        
+        <h4 bind:this={oneOneOne}>1.1.1 Position Maximums & IR Eligibility</h4>
+
         <div class="subBlock">
             <table class="positionMaximums">
                 <tbody>
@@ -239,8 +249,9 @@
                 <tr><td>K</td><td class="right">3</td></tr>
                 </tbody>
             </table>
+            <p> Players on IR must be labeled as COVID-19, OUT, SUSPENDED, NA, DNR, HOLDOUT, OPT-OUT and DOUBTFUL</p>
         </div>
-
+        
 
     <h3 class="subSectionHeading" bind:this={oneTwo}>1.2 Trading</h3>
     
@@ -248,108 +259,153 @@
     
     <h4 bind:this={oneTwoOne}>1.2.1 Trade Collusion</h4>
     <div class="subBlock">
-        <p>If any owners are suspected of accepting bribes/offering bribes to enhance their/another owners team via trade, trading any assets other than fantasy players or future draft money, or otherwise found guilty of engaging in any form of collusion*, all parties involved in the trade will be susceptible to punishment. The punishments will go as followed:</p>
-        
+        <p>League officials reserve the right to investigate any and all allegations of trade collusion. Confirmed offenses may result in financial penalties or removal from the league. Collusion of any kind will not be tolerated.</p>
+
+    </div>
+
+    <h4 bind:this={oneTwoThree}>1.2.2 Trade Deadline</h4>
+    <div class="subBlock">
+        <p>The deadline is the start of NFL Week 11 games.</p>
+    </div>
+
+    <h4 bind:this={oneTwoFour}>1.2.3 Trade Futures</h4>
+    <div class="subBlock">
         <ul>
-            <li>First Offense – Immediate reduction of FAAB budget by 80%</li>
-            <li>Second Offense – Immediate freeze on all transaction types for the next 18 weeks of regular season and playoff fantasy football games, including trades and waiver wire bids</li>
-            <li>Third Offense – A league meeting of all members not involved in any of the improper trades/activity in question will take place to discuss next steps.</li>
+        <li>Futures auction dollars are tradeable in-season only, up to one year forward.</li>
+        <li>All GMs must maintain a minimum of $15 auction budget for the following season.</li>
+        <li>Maximum draft budget is $300.</li>
+        
+    </ul>
+    </div>
+    
+    <h4 bind:this={oneTwoFive}>1.2.4 Veto/Trade Process</h4>
+    <div class="subBlock">
+        <ul>
+            <li>Trades are subject to a 1-day review for financial compliance.</li>
+            <li>Vetoes are only appropriate in cases of clear collusion.</li>
+            <li>Trades failing to meet financial compliance will be automatically denied.</li>
         </ul>
-
-        <p>All trades that are found guilty of collusion, will be reversed/denied. If the trade had affected the outcome of previous games, the results of those games will be revised.  </p>
-
-        <p>*Collusion includes the organizing of veto votes against an acceptable trade.</p>
-
-        <p>The commissioner will err on the side of letting owners manage their teams the way they see fit. Any collusion will need to be clear. The commissioner reserves the right to step in and at the very least assess the thinking of any team involved in a heavily lop-sided trade. </p>
-    </div>
-
-    <h4 bind:this={oneTwoTwo}>1.2.2 Lending Players Prohibition</h4>
-    <div class="subBlock">
-        <p>Any player traded from a team may not be re-acquired via trade within 6 weeks of the original trade. Any teams involved in this behavior will be subject to the aforementioned collusion punishments.</p>
-    </div>
-    
-    <h4 bind:this={oneTwoThree}>1.2.3 Trade Deadline</h4>
-    <div class="subBlock">
-        <p>The trade deadline will be set for the Saturday of the week 11 games of the NFL season.</p>
-    </div>
-    
-    <h4 bind:this={oneTwoFour}>1.2.4 Trade Restrictions</h4>
-    <div class="subBlock">
-        <p>Trading of future draft money is allowed. Maximum amount allowed to carry over to the next draft is $300. If you exceed $300, it will be flattened to $300.</p>
-    </div>
-    
-    <h4 bind:this={oneTwoFive}>1.2.5 Veto/Trade Process</h4>
-    <div class="subBlock">
-        <p>A total of 8 veto votes are required to veto a trade. Vetoes are only appropriate in instances of collusion or an egregious mismatch of value (i.e. CMC for a backup kicker). Not liking a trade does not warrant a veto.</p>
     </div>
     
     
     
     <h3 bind:this={oneThree}>1.3 Waiver Wire</h3>
     
-    <p>FAAB Waiver wire system. Each team will begin the season with $100.</p>
+    <p>System: FAAB blind bid</p>
 
-    <p>FAAB budgets will reset each season in January.</p>
-    
-    
+    <p>Budget: $200 per season (resets annually; not real cash)</p>
+
+    <p>Non-Tradeable</p>
+
+
     <h2 class="sectionHeading" bind:this={two}>Section 2 Drafting</h2>
     
     <h3 bind:this={twoOne}>2.1 Draft Order</h3>
-    <p>Auction Draft. No order needed.</p>
-    
+    <ul>
+        <li>Auction format</li>
+        <li>Standard budget: $200</li>
+        <li>Max: $300</li>
+        <li>Min: $15</li>
+    </ul>
+
+    <h3 bind:this={twoTwo}>2.2 Surplus Budget Rollover</h3>
+    <p>Unused auction funds roll into the next season.</p>
+
+    <p>Surplus is tradeable during the season.</p>
+
+    <h3 bind:this={twoThree}>2.3 Keeper Rules</h3>
+        <p>Maximum of 2 keepers per GM</p>
+
+    <p>Deadline: 2 days before draft</p>
+
+    <p>Cost basis:</p>
+    <ul>
+        <li>Drafted player = last auction price + tax</li>
+        <li>Waiver player = FAAB cost + tax</li>
+        <li>Trade acquisition = original draft cost + tax</li>
+        <li>Free Agent = $10 + tax</li>
+    </ul>
+
+    <p>Keeper Tax:</p>
+    <ul>
+        <li>Year 1: +10%</li>
+        <li>Year 2: +20%</li>
+        <li>Year 3: +30%</li>
+    </ul>
+
+    <h4 bind:this={twoFour}>2.4 Draft Day Trades</h4>
+    <p>Draft-day trades allowed, subject to compliance checks.</p>
+
+    <p>No futures trades during draft.</p>
+
+    <h4 bind:this={twoFive}>2.5 Franchise Sale & Bankruptcy</h4>
+    <p>Sale: New owner assumes roster + budget (requires approval).</p>
+
+    <p>Bankruptcy: If abandoned, franchise is reset to $200 fresh budget, no keepers.</p>
+
     <h2 class="sectionHeading" bind:this={three}>Section 3 Scoring System</h2>
 
     <h3 bind:this={threeOne}>3.1 Scoring System</h3>
-    <p>The league scoring system breakdown is listed on the Sleeper fantasy app (for the most part, it follows typical .5PPR Scoring). The scoring system will never change without a majority league vote.</p>
+    <p>Standard Half-Point PPR scoring. For complete and up-to-date scoring details—including any adopted changes—please refer directly to the league settings within the Sleeper app. Always rely on the scoring information currently listed there!</p>
     
+    <h3 bind:this={threeTwo}>Win/Loss Format</h3>
+    <p>Hybrid: Head-to-Head + Top-Half scoring</p>
+    <p>Possible weekly results: 2-0, 1-1, or 0-2.</p>
+
+    <h3 bind:this={threeThree}>Voting on Scoring system</h3>
+    <p>Any changes to the scoring system must be approved by a majority vote of the league managers.</p>
+
     <h2 class="sectionHeading" bind:this={four}>Section 4 Postseason</h2>
     
     <h3 bind:this={fourOne}>4.1 Playoffs</h3>
-    <p>At the end of the season 6 teams will make the playoffs.</p>
+    <p>Top 6 teams will qualify. Top 2 seeds will have a week 14 bye</p>
     
-    <h3 bind:this={fourTwo}>4.2 Seeding Tiebreakers</h3>
+    <h3 bind:this={fourTwo}>4.2 Playoff Tiebreakers</h3>
     <p>If two teams finish with the same record the tiebreakers will go as followed:</p>
 
     <ol>
-        <li>Head 2 Head Record</li>
-        <li>Points For</li>
-        <li>Division Record</li>
-        <li>Total Points Against</li>
-        <li>Coin Flip</li>
+        <li>Points For (PF)</li>
+        <li>Points Against (PA)</li>
+        <li>Coin Flip (if necessary)</li>
         <li>Fight to the death</li>
     </ol>
+    <h3 bind:this={fourThree}>4.3 Championship Round Format</h3>
+    <p>Two week final matchup. Combined score for weeks 16 and 17</p>
 
-    <h2 class="sectionHeading" bind:this={five}>Section 5 Tanking Policy</h2>
+    <h2 class="sectionHeading" bind:this={five}>Section 5 Replacing Managers</h2>
     
-    <h3 bind:this={fiveOne}>5.1 League Tanking Policy</h3>
-    <p>No team may intentionally leave starting roster spots empty. Any evidence of intentionally leaving roster spots empty in order to improve your draft position may be subject to punishment, including but not limited to the forfeiture of draft money.</p>
+    <h3 bind:this={fiveOne}>5.1 Removing Managers</h3>
+    <p>Grounds: repeated collusion or failing to set lineups</p>
 
-    <h2 class="sectionHeading" bind:this={six}>Section 6 Replacing Managers</h2>
-    
-    <h3 bind:this={sixOne}>6.1 Removing Managers</h3>
-    <p>Short of continuously failing to set a valid lineup, or confirmed collusion, no manager can be removed against their will.</p>
-    
-    <h3 bind:this={sixTwo}>6.2 Replacing Managers</h3>
-    <p>When a manager needs to be replaced, the commissioners will try to find a suitable candidate with some connection to at least a portion of the existing managers. Priority will be placed on managers who are eager to take on the commitment and will be very active within the league.</p>
+    <h3 bind:this={fiveTwo}>5.2 Replacing Managers</h3>
+    <p>Commissioner recruits replacements with ties to current GMs.</p>
 
-    <h3 bind:this={sixThree}>6.3 Replacement Incentive</h3>
-    <p>In the event that a manager chooses to quit the league or is removed by a commissioner, an incoming manager will be offered a spot in the league with approval from all existing managers.</p>
+    <h3 bind:this={fiveThree}>5.3 Replacement Incentive</h3>
+    <p>New managers require league approval.</p>
 
-    <h2 class="sectionHeading" bind:this={seven}>Section 7 League Finances</h2>
+    <h3 bind:this={fiveFour}>5.4 Franchise Transition</h3>
+    <p>Sale → roster and assets transfer.</p>
+    <p>Bankruptcy → fresh $200 budget, no keepers, new team identity.</p>
+
+
+    <h2 class="sectionHeading" bind:this={six}>Section 6 League Finances</h2>
     
-    <h3 bind:this={sevenOne}>7.1 League Dues</h3>
+    <h3 bind:this={sixOne}>6.1 League dues</h3>
     <p>League dues are set at {dues}$.</p>
-    
-    <h3 bind:this={sevenTwo}>7.2 Payout</h3>
+
+    <h3 bind:this={sixTwo}>6.2 Payout Structure</h3>
     <p>League payout is structured as follows:</p>
     <ul>
-        <li>1st place: {dues * 8}$</li>
-        <li>2nd place: {dues * 3}$</li>
-        <li>3rd place: {dues}$</li>
+        <li>Prize Pool: $1,400</li>
+        <li>1st place: $1,000$</li>
+        <li>2nd place: $335$</li>
+        <li>Parlay Pool: $65</li>
     </ul>
-    
-    
-    <h3 bind:this={sevenThree}>7.3 Raising Dues</h3>
-    <p>A ⅔ majority vote is required in order to raise league dues. In the event that a manager is no longer financially comfortable with the buyin, finding a co-manager to split the cost is reccomended.</p>
+
+    <h3 bind:this={sixThree}>6.3 Auction Futures</h3>
+    <p>Futures tradable <strong>one year forward only</strong>.</p>
+    <p>In-season trading only.</p>
+    <p>Must maintain $15 draft minimum.</p>
+
 
 </div>

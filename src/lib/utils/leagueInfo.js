@@ -29,7 +29,7 @@ export const managers = [
     rival: { name: "Kevin", link: 5, image: "/managers/nakatomi.png" },
     yearsOfService: "Twenty",
     persona: "The Wolf",
-    philosophy: "Spend it all on 4 players and hope for the best",
+    philosophy: "Never leave without setting something on fire.",
     championship: { league: "Irving", years: "2004" },
     preferredContact: "Text"
   },
@@ -46,7 +46,7 @@ export const managers = [
     rival: { name: "Jamie", link: 2, image: "/managers/lightsabres.png" },
     yearsOfService: "Twenty",
     persona: "The Littlefinger",
-    philosophy: "If they refuse to understand that the power of the Ultimate City Warriors has spread like a virus amongst the ICL, then let them continue to walk as normal as they seem.",
+    philosophy: "Feel the power!",
     championship: { league: "Irving", years: "2009, 2011, 2019, 2021" },
     preferredContact: "Text"
   },
@@ -63,7 +63,7 @@ export const managers = [
     rival: { name: "Jeff", link: 1, image: "/managers/warriors.png" },
     yearsOfService: "Twenty",
     persona: "The Kornacki",
-    philosophy: "Trust the Force. Draft wisely. Strike fast. Dominate every matchup.",
+    philosophy: " True champions are forged in the swamp.",
     championship: { league: "Irving", years: "2008, 2018" },
     preferredContact: "Text"
   },
@@ -80,7 +80,7 @@ export const managers = [
     rival: { name: "James Barmore", link: 9, image: "/managers/homers.png" },
     yearsOfService: "Ten",
     persona: "The Flacco",
-    philosophy: "If it's too loud, you're too old.",
+    philosophy: "This league is a frequency to be hijacked!",
     championship: { league: "Irving", years: "2013, 2017" },
     preferredContact: "Text"
   },
@@ -97,7 +97,7 @@ export const managers = [
     rival: { name: "Brian James", link: 10, image: "/managers/kodachromes.png" },
     yearsOfService: "Ten",
     persona: "The Wolf",
-    philosophy: "Unpredictable, unconventional, and unbothered",
+    philosophy: "Measure twice, cut deep, and win big.",
     championship: { league: "DTSP", years: "2023" },
     preferredContact: "Text"
   },
@@ -114,7 +114,7 @@ export const managers = [
     rival: { name: "Dave", link: 0, image: "/managers/crucible.png" },
     yearsOfService: "Twenty",
     persona: "The Littlefinger",
-    philosophy: "Every week’s a hostage situation, and I’m the negotiator",
+    philosophy: "Yippee-ki-yay, motherfuckers!",
     championship: { league: "Irving", years: "2016, 2023, 2024" },
     preferredContact: "Text"
   },
@@ -131,7 +131,7 @@ export const managers = [
     rival: { name: "Romano DeSimone", link: 8, image: "/managers/vincitori.png" },
     yearsOfService: null,
     persona: "The Littlefinger",
-    philosophy: "Solidarity over strategy, chaos with a cause.",
+    philosophy: "Outwork the opposition and STAND UNITED!",
     championship: { league: "DTSP", years: "2024" },
     preferredContact: "Text"
   },
@@ -148,7 +148,7 @@ export const managers = [
     rival: { name: "Adam Lopiano", link: 12, image: "/managers/mounties.png" },
     yearsOfService: "Twenty",
     persona: "The Flacco",
-    philosophy: "Fly straight, hit hard, never back down",
+    philosophy: "On point, all the time",
     championship: { league: "Irving", years: "2005" },
     preferredContact: "Text"
   },
@@ -165,7 +165,7 @@ export const managers = [
     rival: { name: "Brian Marx", link: 11, image: "/managers/tribe.png" },
     yearsOfService: "Ten",
     persona: "The Flacco",
-    philosophy: "Victory is earned through preparation, discipline, and fearless ambition.",
+    philosophy: "One team to rule them all, Duval forever!",
     championship: { league: "DTSP", years: "2016, 2017, 2018" },
     preferredContact: "Text"
   },
@@ -182,7 +182,7 @@ export const managers = [
     rival: { name: "Jamie Cohn", link: 2, image: "/managers/lightsabres.png" },
     yearsOfService: "Ten",
     persona: "The Kornacki",
-    philosophy: "Trust the data. Execute the plan. Win with precision.",
+    philosophy: "Brewed strong, loyal to the last drop, fire the cannons!",
     championship: { league: "Irving", years: "2020" },
     preferredContact: "Text"
   },
@@ -199,7 +199,7 @@ export const managers = [
     rival: { name: "James Barmore", link: 9, image: "/managers/homers.png" },
     yearsOfService: null,
     persona: "The Wolf",
-    philosophy: "Draft bold. Trust instincts. Play smart. Chase color. Win with style.",
+    philosophy: "In focus, in frame, never fading.",
     championship: { league: null, years: null },
     preferredContact: "Text"
   },
@@ -216,7 +216,7 @@ export const managers = [
     rival: { name: "Drew Goodwin", link: 6, image: "/managers/union.png" },
     yearsOfService: null,
     persona: "The Littlefinger",
-    philosophy: "Loyal to the core. Draft tough. Compete harder. Win together.",
+    philosophy: "One people. One team. One Destiny.",
     championship: { league: "DTSP", years: "2022" },
     preferredContact: "Text"
   },
@@ -233,7 +233,7 @@ export const managers = [
     rival: { name: "Jason Gray", link: 7, image: "/managers/jayhawks.png" },
     yearsOfService: null,
     persona: "The Flacco",
-    philosophy: "Ride tall, charge hard, guard victory like a charging moose.",
+    philosophy: "The Mounties always get their man!",
     championship: { league: "Irving", years: "2006" },
     preferredContact: "Text"
   },
@@ -250,7 +250,7 @@ export const managers = [
     rival: { name: "James Barmore", link: 9, image: "/managers/homers.png" },
     yearsOfService: null,
     persona: "The Kornacki",
-    philosophy: "Dream, prowl, confide in Mr. Bones, then pounce on fourth.",
+    philosophy: "We strike on time, certified and signed.",
     championship: { league: "Irving", years: "2010, 2014" },
     preferredContact: "Text"
   },

@@ -73,25 +73,22 @@ export async function GET() {
 
   // -------- Weekly (base list)
   const weeklyBadges = [
-    { id: 'ides',  type: 'weekly', name: 'The Ides',  definition: 'Beware the Ides — awarded for being the highest scoring loser of the week. You loser.', icon: '/ides.png',  earned: [] },
-    { id: 'doyle', type: 'weekly', name: 'The Doyle', definition: "He can't keep getting away with it!", icon: '/doyle.png', earned: [] },
+    { id: 'ides',  type: 'weekly', name: 'The Ides',  definition: 'Awarded for being the highest scoring loser of the week. You loser.', icon: '/ides.png',  earned: [] },
+    { id: 'doyle', type: 'weekly', name: 'The Doyle', definition: "Luckiest Week (includes Parlays)", icon: '/doyle.png', earned: [] },
     { id: 'bde',   type: 'weekly', name: 'BDE',       definition: 'Awarded to the highest scoring team of the week.', icon: '/bde.png', earned: [] },
-    { id: 'heartbreaker', type: 'weekly', name: 'The Heartbreaker', definition: 'You lost by one point or less.', icon: '/heartbreaker.png', earned: [] }
+    { id: 'hbk', type: 'weekly', name: 'The HBK', definition: 'You lost by 1.0 or less.', icon: '/heartbreaker.png', earned: [] },
+    { id: 'lowblow', type: 'weekly', name: 'The Low Blow', definition: 'Your opponent won with a kicker who scored 15+ pts', icon: '/stains.png', earned: [] },
   ];
 
   // -------- Stains (separate bucket; awarded on demand via awardWeekly)
   const stainsBadges = [
     // examples; feel free to edit/remove or start empty
-    { id: 'suck', type: 'stains', name: 'The You Suck',        definition: 'Awarded to the lowest scoring team of the week.', icon: '/stains.png', earned: [] },
+    { id: 'suck', type: 'stains', name: 'The Sucko',        definition: 'Awarded to the lowest scoring team of the week.', icon: '/stains.png', earned: [] },
     { id: 'byebye', type: 'stains', name: 'The Bye Bye Bye',        definition: 'You left a bye week player in your starting lineup.', icon: '/stains.png', earned: [] },
     { id: 'zerohour', type: 'stains', name: 'The Zero Hour',        definition: 'You started a player a player who scored Zero Points.', icon: '/stains.png', earned: [] },
-    { id: 'lowblow', type: 'stains', name: 'The Low Blow',        definition: 'Your opponent won with a kicker who scored 15+ pts', icon: '/stains.png', earned: [] },
-    { id: 'karma', type: 'stains', name: 'The Karma is a Bitch',        definition: 'You talked all the shit, and lost.', icon: '/stains.png', earned: [] },
-    { id: 'captain', type: 'stains', name: 'The Captain Hindsight',        definition: 'You left the game winning player on your bench.', icon: '/stains.png', earned: [] },
+    { id: 'captain', type: 'stains', name: 'The Cap\'n Hindsight',        definition: 'You left the game winning player on your bench.', icon: '/stains.png', earned: [] },
     { id: 'traderape', type: 'stains', name: 'The Trade Rape',        definition: 'You transacted a TERRIBLE trade.', icon: '/stains.png', earned: [] },
-    { id: 'cashburner', type: 'stains', name: 'The Cash Burner',        definition: 'You overspent on a FAAB acquisition.', icon: '/stains.png', earned: [] },
     { id: 'badbeat', type: 'stains', name: 'The Bad Beat',        definition: 'GM explains why his Opponents victory is tarnished and stain-worthy', icon: '/stains.png', earned: [] },
-    { id: 'draftbust', type: 'stains', name: 'The Draft Bust',        definition: 'You drafted a bust.', icon: '/stains.png', earned: [] },
   ];
   // -------- Shared award helper (works for weekly + stains)
   const byId = Object.fromEntries(list.map((m) => [m.managerID, m]));
@@ -126,7 +123,7 @@ export async function GET() {
   awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
   awardWeekly({ badgeId: 'bde', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
   awardWeekly({ badgeId: 'doyle', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  awardWeekly({ badgeId: 'karma', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
+  
 
   // -------- Championships → Legacy
   const byLeague = new Map();
