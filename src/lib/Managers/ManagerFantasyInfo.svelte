@@ -3,7 +3,7 @@
   export let viewManager = {};
   export let changeManager; // (idOrLink) => void
   export let byManager = {}; // { [managerID]: { personas, weekly, yearly, legacy } }
-  export let sections = { personas: [], weekly: [], stains: [], yearly: [], legacy: [] };
+  export let sections = { personas: [], weekly: [], stains: [], yearly: [], legacy: [], luck: [] };
   export let champYears = []; // optional override
 
   /* ===== Helpers ===== */
@@ -76,7 +76,8 @@ $: mine = loadingMine ? empty : {
   weekly:   Array.isArray(mineRaw.weekly)   ? mineRaw.weekly   : [],
   yearly:   Array.isArray(mineRaw.yearly)   ? mineRaw.yearly   : [],
   legacy:   Array.isArray(mineRaw.legacy)   ? mineRaw.legacy   : [],
-  stains:   Array.isArray(mineRaw.stains)   ? mineRaw.stains   : []
+  stains:   Array.isArray(mineRaw.stains)   ? mineRaw.stains   : [],
+  luck:     Array.isArray(mineRaw.luck)     ? mineRaw.luck     : []
 };
 
   /* Definitions (for icon/definition lookups) */
@@ -85,7 +86,8 @@ $: mine = loadingMine ? empty : {
     ...(sections.weekly ?? []),
     ...(sections.yearly ?? []),
     ...(sections.legacy ?? []),
-    ...(sections.stains ?? [])
+    ...(sections.stains ?? []),
+    ...(sections.luck ?? [])
   ];
   $: defById = new Map(allDefs.map((b) => [normId(b.id), { name: b.name, definition: b.definition, icon: b.icon }]));
 
@@ -107,6 +109,7 @@ const isStainBadge = (b) => {
 
   /* Weekly (grouped) */
   $: weeklyGrouped = groupWeekly(mine.weekly ?? []);
+  $: luckGrouped = groupWeekly(mine.luck ?? []);
 
 
 
@@ -277,10 +280,32 @@ $: champTile = (() => {
   </div>
 {/if}
 
+{#if luckGrouped.length}
+  <div class="infoSlot infoColumn">
+    <div class="infoLabel">Luck Badges</div>
+    <div class="badgesCol">
+      {#each luckGrouped as g}
+        <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
+          <div class="badge-ring has-counter">
+            <img src={g.icon} alt={g.title} />
+            {#if g.occurrences.length > 1}
+              <span class="badge-counter">{g.occurrences.length}</span>
+            {/if}
+          </div>
+          <div class="badge-title">{g.title}</div>
+          {#if g.occurrences.length}
+            <div class="occ-latest">{occLabel([...g.occurrences].sort(sortOcc)[0])}</div>
+          {/if}
+        </div>
+      {/each}
+    </div>
+  </div>
+{/if}
+
 {#if stainsGrouped.length || stainsLegacy.length || stainsYearly.length}
-  <div class="infoSlot infoWide">  <!-- add infoWide -->
+  <div class="infoSlot infoColumn"> <!-- remove infoWide -->
     <div class="infoLabel">Stains</div>
-    <div class="badgesRow">
+    <div class="badgesCol">
       {#each stainsGrouped as g}
         <div class="badge-card clickable" on:click={() => openFromWeeklyGroup(g)}>
           <div class="badge-ring has-counter">
@@ -308,6 +333,8 @@ $: champTile = (() => {
     </div>
   </div>
 {/if}
+
+
      {#if champTile && champTile.years?.length}
         <div class="infoSlot">
           <div class="infoLabel">Legacy</div>
@@ -392,19 +419,29 @@ $: champTile = (() => {
 .infoLabel{
   font-size: 15px; font-weight: 700;
   margin-bottom: .75em; line-height: 1.2;
+      color: dodgerblue;
 }
 .label-spacer{ visibility: hidden; }
 
 /* ===== Rows of badges ===== */
-/* .infoSlot .badgesRow{
+.slotRow {
+  grid-column: 1 / -1;              /* span the whole .fantasyInfos grid */
+  width: 100%;
+}
+
+
+.threeCols {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+.badgesCol{
+  display: grid;
+  grid-template-columns: 1fr;  /* one card per row */
   gap: 1rem 1.25rem;
   justify-items: center;
-  overflow: visible;
-} */
-
-
+}
 .badgesRow .badge-card{ width:110px; }
 
 /* ===== Cards & ring ===== */
@@ -441,6 +478,7 @@ $: champTile = (() => {
   display:flex; flex-direction:column; align-items:center;
   justify-self:center; width:100%; max-width:220px; cursor:pointer;
 }
+.infoColumn { width: 100%; max-width: 220px; }
 .infoIcon{
   display:inline-flex; height:70px; width:70px; justify-content:center; align-items:center;
   border-radius:50%; border:1px solid var(--ccc); overflow:hidden; background:var(--fff);
@@ -487,4 +525,11 @@ $: champTile = (() => {
   .badgesRow .badge-card{ width: auto; }
 }
 @media (max-width: 360px) { .fantasyInfos { grid-template-columns: 1fr; } }
+
+@media (max-width: 1100px){
+  .threeCols { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+}
+@media (max-width: 780px){
+  .threeCols { grid-template-columns: 1fr; }
+}
 </style>

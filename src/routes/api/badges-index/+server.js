@@ -74,10 +74,13 @@ export async function GET() {
   // -------- Weekly (base list)
   const weeklyBadges = [
     { id: 'ides',  type: 'weekly', name: 'The Ides',  definition: 'Awarded for being the highest scoring loser of the week. You loser.', icon: '/ides.png',  earned: [] },
-    { id: 'doyle', type: 'weekly', name: 'The Doyle', definition: "Luckiest Week (includes Parlays)", icon: '/doyle.png', earned: [] },
     { id: 'bde',   type: 'weekly', name: 'BDE',       definition: 'Awarded to the highest scoring team of the week.', icon: '/bde.png', earned: [] },
     { id: 'hbk', type: 'weekly', name: 'The HBK', definition: 'You lost by 1.0 or less.', icon: '/heartbreaker.png', earned: [] },
-    { id: 'lowblow', type: 'weekly', name: 'The Low Blow', definition: 'Your opponent won with a kicker who scored 15+ pts', icon: '/stains.png', earned: [] },
+  ];
+
+  const luckBadges = [
+    { id: 'doyle', type: 'luck', name: 'The Doyle', definition: "Luckiest Week (includes Parlays)", icon: '/doyle.png', earned: [] },
+    { id: 'lowblow', type: 'luck', name: 'The Low Blow', definition: 'Unluckiest Week (includes Parlays)', icon: '/stains.png', earned: [] },
   ];
 
   // -------- Stains (separate bucket; awarded on demand via awardWeekly)
@@ -95,7 +98,8 @@ export async function GET() {
   function awardWeekly({ badgeId, managerId, season, week, points, opponent, opponentPoints }) {
     const badge =
       weeklyBadges.find((b) => b.id === badgeId) ||
-      stainsBadges.find((b) => b.id === badgeId);
+      stainsBadges.find((b) => b.id === badgeId) ||
+      luckBadges.find((b) => b.id === badgeId);
 
     const m = byId[managerId];
     if (!badge || !m) return;
@@ -114,15 +118,15 @@ export async function GET() {
   }
 
   // -------- Example awards (weekly + stains). Edit as needed.
-  awardWeekly({ badgeId: 'bde', managerId: '857309838424809472', season: 2024, week: 3, points: 172 });
-  awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  awardWeekly({ badgeId: 'draftbust', managerId: '1253772062900621312', season: 2025 }); // stains example
-  awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 6 });
-  awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 7 });
-  awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 8 });
-  awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  awardWeekly({ badgeId: 'bde', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  awardWeekly({ badgeId: 'doyle', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
+  // awardWeekly({ badgeId: 'bde', managerId: '1253772062900621312', season: 2024, week: 3, points: 172 });
+  // awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
+  // awardWeekly({ badgeId: 'byebye', managerId: '1253772062900621312', season: 2025 }); // stains example
+  // awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 6 });
+  // awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 7 });
+  // awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 8 });
+  // awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
+  // awardWeekly({ badgeId: 'bde', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
+  // awardWeekly({ badgeId: 'doyle', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
   
 
   // -------- Championships → Legacy
@@ -228,6 +232,7 @@ export async function GET() {
   const yearly   = addCount(yearlyBadges);
   const legacy   = sortByName(addCount(legacyBadges));
   const stains   = sortByName(addCount(stainsBadges)); // NEW
+  const luck     = sortByName(addCount(luckBadges));   // NEW
 
   // -------- byManager index (now includes stains)
   const byManager = {};
@@ -235,12 +240,12 @@ export async function GET() {
     const bucket =
       badge.type === 'persona'      ? 'personas' :
       badge.type === 'championship' ? 'legacy'   :
-      badge.type; // weekly | yearly | legacy | stains
+      badge.type; // weekly | yearly | legacy | stains | luck
 
     for (const e of badge.earned || []) {
       const id = e.managerId;
       if (!id) continue;
-      if (!byManager[id]) byManager[id] = { personas: [], weekly: [], yearly: [], legacy: [], stains: [] };
+      if (!byManager[id]) byManager[id] = { personas: [], weekly: [], yearly: [], legacy: [], stains: [], luck: [] };
       byManager[id][bucket].push({
         badgeId: badge.id,
         badgeName: badge.name,
@@ -255,11 +260,11 @@ export async function GET() {
     }
   };
 
-  [...personas, ...weekly, ...yearly, ...legacy, ...stains].forEach(addToIndex);
+  [...personas, ...weekly, ...yearly, ...legacy, ...stains, ...luck].forEach(addToIndex);
 
   // -------- Response
   return json(
-    { sections: { personas, weekly, yearly, legacy, stains }, byManager },
+    { sections: { personas, weekly, yearly, legacy, stains, luck }, byManager },
     { headers: { 'cache-control': 'no-store' } }
   );
 }
