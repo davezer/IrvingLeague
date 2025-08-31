@@ -540,7 +540,6 @@
     .about-text {
         margin: 0 auto;
         max-width: 56ch;
-        color: var(--muted);
         line-height: 1.5;
         font-size: 0.98rem;
     }

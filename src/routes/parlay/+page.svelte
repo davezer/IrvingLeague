@@ -37,28 +37,29 @@
     return isNaN(d) ? null : d;
   };
 
-  function getComparator(col) {
+  function getComparator(col, dir) {
     const isDateCol = looksLikeDateHeader(col);
     return (a, b) => {
       const av = a?.[col], bv = b?.[col];
       if (isBlank(av) && isBlank(bv)) return 0;
-      if (isBlank(av)) return sortDir === 'asc' ? 1 : -1;
-      if (isBlank(bv)) return sortDir === 'asc' ? -1 : 1;
+      if (isBlank(av)) return dir === 'asc' ? 1 : -1;
+      if (isBlank(bv)) return dir === 'asc' ? -1 : 1;
 
       if (isDateCol) {
         const ad = parseMaybeDate(av), bd = parseMaybeDate(bv);
         if (ad && bd) {
           const diff = ad.getTime() - bd.getTime();
-          return sortDir === 'asc' ? diff : -diff;
+          return dir === 'asc' ? diff : -diff;
+
         }
       }
       const an = Number(av), bn = Number(bv);
       const nums = !Number.isNaN(an) && !Number.isNaN(bn) && String(av).trim() !== '' && String(bv).trim() !== '';
-      if (nums) return sortDir === 'asc' ? an - bn : bn - an;
+      if (nums) return dir === 'asc' ? an - bn : bn - an;
 
       const as = String(av), bs = String(bv);
-      if (as < bs) return sortDir === 'asc' ? -1 : 1;
-      if (as > bs) return sortDir === 'asc' ? 1 : -1;
+      if (as < bs) return dir === 'asc' ? -1 : 1;
+      if (as > bs) return dir === 'asc' ? 1 : -1;
       return 0;
     };
   }
@@ -75,31 +76,30 @@
     const hay = colKeys.map(k => String(r?.[k] ?? '')).join(' \u0001 ').toLowerCase();
     return tokens.every(t => hay.includes(t));
   });
-  $: sorted = sortCol ? [...filtered].sort(getComparator(sortCol)) : filtered;
+  $: sorted = sortCol ? [...filtered].sort(getComparator(sortCol, sortDir)) : filtered;
   $: pageSize = String(perPage) === 'ALL' ? Infinity : Number(perPage);
   $: visible = sorted.slice(0, pageSize);
 </script>
 
 <style>
-  :global(body){background:#111;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 
   .parlay-page{padding:0 1rem}
   .parlay-header{padding:.75rem 0}
-  h4{color:#fff;text-align:center;margin:1rem 0;font-weight:600}
+  h4{text-align:center;margin:1rem 0;font-weight:600}
 
-  .controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1rem 2rem;margin:.5rem 0 1rem;color:#fff}
+  .controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1rem 2rem;margin:.5rem 0 1rem;}
   .controls label{display:flex;align-items:center;gap:.5rem}
-  .controls input,.controls select{background:#222;border:1px solid #555;color:#fff;padding:.45rem .6rem;border-radius:6px;font-size:.95rem;min-width:10rem}
+  .controls input,.controls select{border:1px solid #555;padding:.45rem .6rem;border-radius:6px;font-size:.95rem;min-width:10rem}
 
-  .table-wrapper{max-width:1500px;margin:0 auto 2rem;padding:.5rem;background:#000;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.6)}
+  .table-wrapper{max-width:1500px;margin:0 auto 2rem;padding:.5rem;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.6)}
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
-  table{width:100%;border-collapse:collapse;color:#fff;font-size:.98rem;min-width:720px}
+  table{width:100%;border-collapse:collapse;font-size:.98rem;min-width:720px}
   th,td{padding:.7rem .9rem;border-bottom:1px solid #222;text-align:left;white-space:nowrap}
-  thead th{position:sticky;top:0;background:#121212;z-index:2;cursor:pointer;user-select:none}
+  thead th{position:sticky;top:0;z-index:2;cursor:pointer;user-select:none}
   th.sorted-asc::after{content:' ▲'} th.sorted-desc::after{content:' ▼'}
   tbody tr:hover td{background:rgba(255,255,255,.04)}
-  .no-results{text-align:center;color:#999}
+  .no-results{text-align:center;}
 
   @media (max-width:768px){
     .parlay-page{padding:0 .75rem}
