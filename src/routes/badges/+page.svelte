@@ -427,7 +427,7 @@
 <style>
 
 :root {
-  -bg:#0f1115;
+  --bg:#0f1115;
   --panel:#171a21;
   --panel-2:#1e232d;
   --border:#2a2f3a;
