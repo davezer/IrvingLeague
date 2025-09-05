@@ -22,8 +22,7 @@
     function moneyColor(v) {
         if (v == null || isNaN(v)) return 'inherit';
         if (v < 100) return 'red';
-        if (v <= 200) return 'green';
-        return 'gold';
+        return 'green';
     }
 
     // whenever pivot or viewManager change, recompute if we have both
