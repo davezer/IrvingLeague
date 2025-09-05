@@ -240,9 +240,9 @@ export const managers = [
   { // array 13
     managerID: "1260985941263126528",
     name: "Brad Thornton",
-    teamName: "HenryPussyCats",
+    teamName: "Clearwater HenryPussycats",
     location: "FL",
-    bio: "The Crescent Lake Henry Pussycats prowl the league waiting for the moment to strike. The cats are sharp-eyed and never fooled by the noise of the crowd. With postal efficiency and data analytics driving the way, Crescent Lake deliver victories like a perfectly addressed letter arriving at the opponents door on time, certified and signed, yours truly Henry Pussycat, purrrr!",
+    bio: "The Clearwater Henry Pussycats prowl the league waiting for the moment to strike. The cats are sharp-eyed and never fooled by the noise of the crowd. With postal efficiency and data analytics driving the way, Clearwater deliver victories like a perfectly addressed letter arriving at the opponents door on time, certified and signed, yours truly Henry Pussycat, purrrr!",
     photo: "/managers/henry.png",
     fantasyStart: 2010,
     favoriteTeam: "mia",
