@@ -95,7 +95,7 @@ export async function GET() {
   ];
   // -------- Shared award helper (works for weekly + stains)
   const byId = Object.fromEntries(list.map((m) => [m.managerID, m]));
-  function awardWeekly({ badgeId, managerId, season, week, points, opponent, opponentPoints }) {
+  function awardWeekly({ badgeId, managerId, season, week, points, opponent, opponentPoints, explanation, nominatedBy }) {
     const badge =
       weeklyBadges.find((b) => b.id === badgeId) ||
       stainsBadges.find((b) => b.id === badgeId) ||
@@ -113,21 +113,22 @@ export async function GET() {
       week: week ?? null,
       points: points ?? null,
       opponent: opponent ?? null,
-      opponentPoints: opponentPoints ?? null
+      opponentPoints: opponentPoints ?? null,
+      explanation: explanation ?? null,
+      nominatedBy: nominatedBy ?? null
     });
   }
 
   // -------- Example awards (weekly + stains). Edit as needed.
-  // awardWeekly({ badgeId: 'bde', managerId: '1253772062900621312', season: 2024, week: 3, points: 172 });
-  // awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  // awardWeekly({ badgeId: 'byebye', managerId: '1253772062900621312', season: 2025 }); // stains example
-  // awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 6 });
-  // awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 7 });
-  // awardWeekly({ badgeId: 'lowblow', managerId: '1253772062900621312', season: 2025, week: 8 });
-  // awardWeekly({ badgeId: 'ides', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  // awardWeekly({ badgeId: 'bde', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  // awardWeekly({ badgeId: 'doyle', managerId: '1253772062900621312', season: 2024, week: 5, points: 142 });
-  
+  awardWeekly({ badgeId: 'captain', managerId: '1254577895943192576', season: 2025, week: 1, explanation: 'Coleman / Nico +17 & Sampson / Mason +5 = +22', nominatedBy: '76521957268799488'});
+  awardWeekly({ badgeId: 'captain',    managerId: '1254577682394386432', season: 2025, week: 1, explanation: 'Jakobi Myers / RJ Harvey = +6.4 , also your QB decisions were ridic', nominatedBy: '76521957268799488' });
+  awardWeekly({ badgeId: 'suck',       managerId: '1256320322135674880', season: 2025, week: 1, points: 68.78 });
+  awardWeekly({ badgeId: 'zerohour',     managerId: '857309838424809472', season: 2025, week: 1, explanation: 'DET DEF scored zero points', nominatedBy: '76521957268799488' });
+  awardWeekly({ badgeId: 'zerohour',     managerId: '1260985941263126528', season: 2025, week: 1, explanation: 'Xavier Worth (got injured in game)', nominatedBy: '76521957268799488' });
+  awardWeekly({ badgeId: 'zerohour',     managerId: '1253772062900621312', season: 2025, week: 1, explanation: 'BAL RAVENs DEF -2 (NEGATIVE!)', nominatedBy: '76521957268799488' });
+  awardWeekly({ badgeId: 'bde',        managerId: '1254578120531390464', season: 2025, week: 1, points: 124.66, opponent: '1256320322135674880', opponentPoints: 68.78 });
+  awardWeekly({ badgeId: 'ides',       managerId: '1254577895943192576', season: 2025, week: 1, points: 97.38, opponent: '1253515645044133888', opponentPoints: 110.66});  
+
 
   // -------- Championships → Legacy
   const byLeague = new Map();
@@ -236,29 +237,54 @@ export async function GET() {
 
   // -------- byManager index (now includes stains)
   const byManager = {};
-  const addToIndex = (badge) => {
-    const bucket =
-      badge.type === 'persona'      ? 'personas' :
-      badge.type === 'championship' ? 'legacy'   :
-      badge.type; // weekly | yearly | legacy | stains | luck
+const addToIndex = (badge) => {
+  const bucket =
+    badge.type === 'persona'      ? 'personas' :
+    badge.type === 'championship' ? 'legacy'   :
+    badge.type; // weekly | yearly | legacy | stains | luck
 
-    for (const e of badge.earned || []) {
-      const id = e.managerId;
-      if (!id) continue;
-      if (!byManager[id]) byManager[id] = { personas: [], weekly: [], yearly: [], legacy: [], stains: [], luck: [] };
-      byManager[id][bucket].push({
-        badgeId: badge.id,
-        badgeName: badge.name,
-        icon: badge.icon,
-        years: e.years || null,
-        season: e.season || null,
-        week: e.week || null,
-        points: e.points ?? null,
-        opponent: e.opponent ?? null,
-        opponentPoints: e.opponentPoints ?? null
-      });
-    }
-  };
+  for (const e of badge.earned || []) {
+    const id = e.managerId;
+    if (!id) continue;
+    if (!byManager[id]) byManager[id] = { personas: [], weekly: [], yearly: [], legacy: [], stains: [], luck: [] };
+
+    // nominator
+    const nomId   = e.nominatedBy ?? null;
+    const nomMeta = nomId ? byId[nomId] : null;
+
+    // ✅ opponent
+    const oppId   = e.opponent ?? null;
+    const oppMeta = oppId ? byId[oppId] : null;
+
+    byManager[id][bucket].push({
+      badgeId: badge.id,
+      badgeName: badge.name,
+      icon: badge.icon,
+      years: e.years || null,
+      season: e.season ?? null,
+      week: e.week ?? null,
+
+      // points (this manager)
+      points: e.points ?? null,
+
+      // ✅ opponent payload
+      opponent: oppId ?? null,
+      opponentPoints: e.opponentPoints ?? null,
+      opponentName: oppMeta?.name ?? null,
+      opponentTeamName: oppMeta?.teamName ?? null,
+      opponentTeamLogo: oppMeta?.photo ?? null,
+
+      // explanation / nominator
+      explanation: e.explanation ?? null,
+      nominatedBy: nomId ?? null,
+      nominatedByName: nomMeta?.name ?? null,
+      nominatedByTeamName: nomMeta?.teamName ?? null,
+      nominatedByTeamLogo: nomMeta?.photo ?? null
+    });
+  }
+};
+
+
 
   [...personas, ...weekly, ...yearly, ...legacy, ...stains, ...luck].forEach(addToIndex);
 
