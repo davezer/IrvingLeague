@@ -313,19 +313,17 @@
             icon: g.icon || meta?.icon,
             definition: meta?.definition || '',
             rows: occs.map((o) => ({
-                label: occLabel(o),
-                explanation: o.explanation ?? null,
-                nominatedBy: o.nominatedBy ?? null,
-                nominatedByName: o.nominatedByName ?? null,
-                nominatedByTeamLogo: o.nominatedByTeamLogo ?? null,
-
-                // ✅ pass opponent through
-                opponent: o.opponent ?? null,
-                opponentPoints: o.opponentPoints ?? null,
-                opponentName: o.opponentName ?? null,
-                opponentTeamName: o.opponentTeamName ?? null,
-                opponentTeamLogo: o.opponentTeamLogo ?? null,
-            })),
+  label: occLabel(o),
+  explanation: o.explanation ?? null,
+  nominatedBy: o.nominatedBy ?? null,
+  nominatedByName: o.nominatedByName ?? null,
+  nominatedByTeamLogo: o.nominatedByTeamLogo ?? null, // ← keep this
+  opponent: o.opponent ?? null,
+  opponentPoints: o.opponentPoints ?? null,
+  opponentName: o.opponentName ?? null,
+  opponentTeamName: o.opponentTeamName ?? null,
+  opponentTeamLogo: o.opponentTeamLogo ?? null
+}))
         };
         showModal = true;
     };
@@ -604,39 +602,43 @@
             </div>
         </div>
         {#if active.definition}<p class="modal-def">{active.definition}</p>{/if}
-        {#if active.rows?.length}
-            <div class="earned-list">
-                {#each active.rows as r}
-                    <div class="earned-row">
-                        <span class="row-sub muted">{r.label}</span>
+        {#each active.rows as r}
+  <div class="earned-row">
+    <!-- TOP LINE: label + explanation + opponent (inline) -->
+    <div class="row-top">
+      <span class="row-sub muted">{r.label}</span>
 
-                        {#if r.opponentTeamLogo || r.opponentPoints != null}
-                            <span class="sep"> • </span>
-                            <span class="row-opp">
-                                {#if r.opponentTeamLogo}
-                                    <img
-                                        src={r.opponentTeamLogo}
-                                        alt={r.opponentTeamName ||
-                                            r.opponentName ||
-                                            'Opponent'}
-                                        class="opp-logo"
-                                    />
-                                {/if}
-                                {#if r.opponentPoints != null}
-                                    <span class="opp-points">
-                                        {Number(r.opponentPoints).toFixed(2)} pts</span
-                                    >
-                                {/if}
-                            </span>
-                        {/if}
+      {#if r.explanation}
+        <span class="sep">•</span>
+        <span class="row-expl-inline"> {r.explanation}</span>
+      {/if}
 
-                        {#if r.explanation}
-                            <div class="row-expl"> {r.explanation}</div>
-                        {/if}
-                    </div>
-                {/each}
-            </div>
+      {#if r.opponentTeamLogo || r.opponentPoints != null}
+        <span class="sep">•</span>
+        <span class="row-opp">
+          {#if r.opponentTeamLogo}
+            <img src={r.opponentTeamLogo} alt={r.opponentTeamName || r.opponentName || 'Opponent'} class="opp-logo" />
+          {/if}
+          {#if r.opponentPoints != null}
+            <span class="opp-points">Opp: {Number(r.opponentPoints).toFixed(2)} pts</span>
+          {/if}
+        </span>
+      {/if}
+    </div>
+
+    <!-- SECOND LINE: nominated by (own line) -->
+    {#if r.nominatedByTeamLogo || r.nominatedByName}
+      <div class="row-nom muted">
+        Nominated by
+        {#if r.nominatedByTeamLogo}
+          <img src={r.nominatedByTeamLogo} alt="Nominator logo" class="nom-logo" />
         {/if}
+        
+      </div>
+    {/if}
+  </div>
+{/each}
+
     </div>
 {/if}
 
@@ -874,42 +876,41 @@
         max-height: 50vh;
         overflow: auto;
     }
-    .earned-row { display: block; }
+    .earned-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
-    .row-sub { display: inline; }
-
-    .row-nom {
-        margin-top: 2px;
-        font-size: 0.95em;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        opacity: 0.9;
-    }
-    .nom-logo {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .row-opp {
+.row-top {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: inherit;  /* same as the label */
-  color: inherit;      /* same color as the label */
-  vertical-align: middle;
+  flex-wrap: wrap;
+  gap: 6px;               /* spacing between inline chunks */
 }
+
+    .row-sub { display: inline; }
+    .row-expl-inline { font-size: inherit; color: inherit; }
+
+   .row-nom {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85em;      /* subtle secondary tone */
+  opacity: .9;
+  color: var(--muted, #a3adbc);    
+}
+  .nom-logo {
+  width: 22px; height: 22px; border-radius: 50%; object-fit: cover;
+}
+
+.row-opp { display: inline-flex; align-items: center; gap: 6px; }
 
 .sep { opacity: .6; }
 
 .opp-logo {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  object-fit: cover;
-  vertical-align: middle;
+  width: 16px; height: 16px; border-radius: 50%; object-fit: cover; vertical-align: middle;
 }
 
 .row-expl { margin-top: 2px; font-size: 0.95em; color: var(--muted,#a3adbc); }
