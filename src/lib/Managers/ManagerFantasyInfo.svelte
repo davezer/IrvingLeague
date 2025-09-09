@@ -631,7 +631,7 @@
                         {/if}
 
                         {#if r.explanation}
-                            <div class="row-expl">💡 {r.explanation}</div>
+                            <div class="row-expl"> {r.explanation}</div>
                         {/if}
                     </div>
                 {/each}
