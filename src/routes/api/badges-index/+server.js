@@ -129,7 +129,7 @@ export async function GET() {
   awardWeekly({ badgeId: 'bde',        managerId: '1254578120531390464', season: 2025, week: 1, points: 124.66, opponent: '1256320322135674880', opponentPoints: 68.78 });
   awardWeekly({ badgeId: 'ides',       managerId: '1254577895943192576', season: 2025, week: 1, points: 97.38, opponent: '1253515645044133888', opponentPoints: 110.66});
   awardWeekly({ badgeId: 'bde',        managerId: '1253772062900621312', season: 2025, week: 2, points: 146.04, opponent: '1005329348477419520', opponentPoints: 117.94 });  
-  awardWeekly({ badgeId: 'bde',        managerId: '1005329348477419520', season: 2025, week: 2, points: 117.94, opponent: '1253772062900621312', opponentPoints: 146.04 });
+  awardWeekly({ badgeId: 'ides',        managerId: '1005329348477419520', season: 2025, week: 2, points: 117.94, opponent: '1253772062900621312', opponentPoints: 146.04 });
   awardWeekly({ badgeId: 'captain', managerId: '1254577682394386432', season: 2025, week: 2, explanation: 'Stafford or Young over G. Smith', nominatedBy: '1253772062900621312'});
   awardWeekly({ badgeId: 'suck',       managerId: '1256695342544453632', season: 2025, week: 2, points: 72.58, explanation: 'Won Week 2 Sucko Award by 0.02 points', nominatedBy: '1253772062900621312'});
   awardWeekly({ badgeId: 'traderape',     managerId: '1005329348477419520', season: 2025, week: 2, explanation: 'Traded Mathew Golden + $15 for Nick Chubb. Jeff DID NOT like this', nominatedBy: '76521957268799488'});
