@@ -132,7 +132,7 @@ export async function GET() {
   awardWeekly({ badgeId: 'ides',        managerId: '1005329348477419520', season: 2025, week: 2, points: 117.94, opponent: '1253772062900621312', opponentPoints: 146.04 });
   awardWeekly({ badgeId: 'captain', managerId: '1254577682394386432', season: 2025, week: 2, explanation: 'Stafford or Young over G. Smith', nominatedBy: '1253772062900621312'});
   awardWeekly({ badgeId: 'suck',       managerId: '1256695342544453632', season: 2025, week: 2, points: 72.58, explanation: 'Won Week 2 Sucko Award by 0.02 points', nominatedBy: '1253772062900621312'});
-  awardWeekly({ badgeId: 'traderape',     managerId: '1005329348477419520', season: 2025, week: 2, explanation: 'Traded Mathew Golden + $15 for Nick Chubb. Jeff DID NOT like this', nominatedBy: '76521957268799488'});
+  awardWeekly({ badgeId: 'traderape',     managerId: '1253772062900621312', season: 2025, week: 2, explanation: 'Traded Mathew Golden + $15 for Nick Chubb. Jeff DID NOT like this', nominatedBy: '76521957268799488'});
   awardWeekly({ badgeId: 'zerohour',     managerId: '1254584226238447616', season: 2025, week: 2, explanation: 'Reed (injury) and Den DEF', nominatedBy: '1253772062900621312' });
   // -------- Championships → Legacy
   const byLeague = new Map();
