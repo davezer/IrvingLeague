@@ -88,10 +88,10 @@
 		for (const c of newRoster.metadata.record) {
 			switch (c) {
 				case "W":
-					innerRecord.push("green");
+					innerRecord.push("greenW");
 					break;
 				case "L":
-					innerRecord.push("red");
+					innerRecord.push("redL");
 					break;
 			
 				default:
@@ -191,6 +191,7 @@
 
 	.result {
 		width: 11px;
+		
 	}
 
 	h3 {
