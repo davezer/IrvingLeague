@@ -244,7 +244,7 @@
 @media (max-width: 600px) {
   .budgetGrid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);   /* two per row */
+    grid-template-columns: repeat(3, 1fr);   /* two per row */
     gap: 10px;
     padding: 0 8px;                          /* breathing room left/right */
     justify-items: center;                   /* center each card inside its cell */
