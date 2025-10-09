@@ -425,6 +425,14 @@ export async function GET() {
         explanation: 'Started GB DEF who scored NEGATIVE 3 POINTS',
         nominatedBy: '1253772062900621312',
     });
+     awardWeekly({
+        badgeId: 'captain',
+        managerId: '1254577682394386432', //salem
+        season: 2025,
+        week: 4,
+        explanation: 'RJ harvey',
+        nominatedBy: '1253515645044133888', //jamie
+    });
     awardWeekly({
         badgeId: 'zerohour',
         managerId: '1253772062900621312', //dave
@@ -472,14 +480,7 @@ export async function GET() {
         explanation: 'Kareem Hunt over Tyjae Spears',
         nominatedBy: '1253515645044133888', //jamie
     });
-    awardWeekly({
-        badgeId: 'captain',
-        managerId: '1254577682394386432', //salem
-        season: 2025,
-        week: 4,
-        explanation: 'RJ harvey',
-        nominatedBy: '1253515645044133888', //jamie
-    });
+   
     awardWeekly({
         badgeId: 'zerohour',
         managerId: '1254577895943192576', //kevin
