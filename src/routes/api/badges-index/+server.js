@@ -120,7 +120,7 @@ export async function GET() {
             type: 'luck',
             name: 'The Low Blow',
             definition: 'Unluckiest Week (includes Parlays)',
-            icon: '/stains.png',
+            icon: '/lowblow.png',
             earned: [],
         },
     ];
@@ -424,6 +424,77 @@ export async function GET() {
         week: 4,
         explanation: 'Started GB DEF who scored NEGATIVE 3 POINTS',
         nominatedBy: '1253772062900621312',
+    });
+    awardWeekly({
+        badgeId: 'zerohour',
+        managerId: '1253772062900621312', //dave
+        season: 2025,
+        week: 5,
+        explanation: 'Started BAL DEF who scored NEGATIVE 2 POINTS. AGAIN!',
+        nominatedBy: '1253772062900621312',
+    });
+    awardWeekly({
+        badgeId: 'bde',
+        managerId: '1256695342544453632', //barmore
+        season: 2025,
+        week: 5,
+        points: 139.12
+    });
+    awardWeekly({
+        badgeId: 'ides',
+        managerId: '1258962574360182785', //lopiano
+        season: 2025,
+        week: 5,
+        points: 119.76,
+        opponent: '1256695342544453632',
+        opponentPoints: 139.12,
+    });
+    awardWeekly({
+        badgeId: 'suck',
+        managerId: '1256320322135674880', //kodachromes
+        season: 2025,
+        week: 5,
+        points: 83,
+    });
+    awardWeekly({
+        badgeId: 'captain',
+        managerId: '1253772062900621312', //dave
+        season: 2025,
+        week: 5,
+        explanation: 'Darnold or Montgomery or Shaheed or Chubb',
+        nominatedBy: '1253515645044133888', //jamie
+    });
+    awardWeekly({
+        badgeId: 'captain',
+        managerId: '1256320322135674880', //kodachromes
+        season: 2025,
+        week: 5,
+        explanation: 'Kareem Hunt over Tyjae Spears',
+        nominatedBy: '1253515645044133888', //jamie
+    });
+    awardWeekly({
+        badgeId: 'captain',
+        managerId: '1254577682394386432', //salem
+        season: 2025,
+        week: 4,
+        explanation: 'RJ harvey',
+        nominatedBy: '1253515645044133888', //jamie
+    });
+    awardWeekly({
+        badgeId: 'zerohour',
+        managerId: '1254577895943192576', //kevin
+        season: 2025,
+        week: 5,
+        explanation: 'Zach Ertz',
+        nominatedBy: '1253772062900621312', //dave
+    });
+       awardWeekly({
+        badgeId: 'lowblow',
+        managerId: '1254577895943192576', //kevin
+        season: 2025,
+        week: 5,
+        explanation: 'Lost to a team that had a kicker score 18 points. Without this insane performance, a win could have been on the table.',
+        nominatedBy: '76521957268799488', //jeff
     });
 
     // -------- Championships → Legacy
