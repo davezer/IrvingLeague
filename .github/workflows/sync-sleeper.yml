@@ -1,0 +1,38 @@
+name: Sync Sleeper Data
+
+on:
+  workflow_dispatch:         # allows manual trigger
+  schedule:
+    - cron: '0 12 * * *'     # runs every day at 12:00 UTC (8am Eastern)
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run sync:sleeper
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+          SEASON: '2025'
+        run: npm run sync:sleeper
+
+      - name: Commit and push updated exports
+        run: |
+          git config user.name "sleeper-bot"
+          git config user.email "bot@example.com"
+          git add static/api/export/*.json
+          git commit -m "Sync sleeper export on $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
+          git push
