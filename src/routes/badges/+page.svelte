@@ -50,18 +50,35 @@
   }
 
   // Helper label for earned rows
+  const POINTS_BADGES = new Set(['suck', 'bde', 'ides']);
+
   const detailLabel = (badge, e) => {
     if (badge.type === 'legacy') {
       return e.years?.length ? `Years: ${e.years.join(', ')}` : '';
     }
+
     if (badge.type === 'weekly' || badge.type === 'stains' || badge.type === 'luck') {
       const parts = [];
       if (e.season) parts.push(`${e.season}`);
-      if (e.week != null) parts.push(`Week ${e.week}`);
-      if (e.points != null) parts.push(`${Number(e.points).toFixed(2)} pts`);
+      if (e.week != null) parts.push(`Wk ${e.week}`);
+
+      if (POINTS_BADGES.has(badge.id)) {
+        const hasSelf = Number.isFinite(e.points);
+        const hasOpp  = Number.isFinite(e.opponentPoints);
+        const oppName = e.opponentTeamName || e.opponentName || null;
+
+        if (hasSelf && hasOpp && oppName) {
+          parts.push(`${e.points.toFixed(2)}–${e.opponentPoints.toFixed(2)} pts vs ${oppName}`);
+        } else if (hasSelf && hasOpp) {
+          parts.push(`${e.points.toFixed(2)}–${e.opponentPoints.toFixed(2)} pts`);
+        } else if (hasSelf) {
+          parts.push(`${e.points.toFixed(2)} pts`);
+        }
+      }
+
       return parts.join(' • ');
     }
-    // Add more types as needed
+
     return '';
   };
 </script>
@@ -84,35 +101,6 @@
   on:close={() => (nominateOpen = false)}
   on:submitted={() => (nominateOpen = false)}
 />
-<!-- Controls: Search and Filters -->
-<!-- <div class="controls">
-  <div class="search-wrap">
-    <input
-      class="search"
-      type="text"
-      placeholder="Search badges…"
-      bind:value={q}
-      aria-label="Search badges"
-    />
-    {#if q}
-      <button class="clear" on:click={() => (q = '')} aria-label="Clear search">×</button>
-    {/if}
-  </div>
-  <div class="filters">
-    <label class="checkbox">
-      <input type="checkbox" bind:checked={showOnlyEarned} />
-      Only earned
-    </label>
-    <label class="select">
-      Sort by:
-      <select bind:value={sortBy}>
-        <option value="name">Name</option>
-        <option value="count">Times earned</option>
-      </select>
-    </label>
-  </div>
-</div> -->
-
 <!-- Section: Personas -->
 <section class="badge-section" id="personas">
   <h2 class="section-title">Personas</h2>
@@ -290,7 +278,7 @@
       <div class="empty-wide">No stains badges match your filters.</div>
     {/if}
   </div>
-
+</section>
 
 <!-- Section: Yearly Badges -->
 <section class="badge-section" id="yearly">
@@ -409,13 +397,34 @@
           <div class="earned-row">
             <img class="mini-logo" src={e.teamLogo} alt={`${e.teamName} logo`} />
             <div class="row-main">
-              <div class="row-title">{e.teamName} <span class="muted">— {e.managerName}</span></div>
+              <div class="row-title">
+                {e.teamName} <span class="muted">— {e.managerName}</span>
+              </div>
+
               {#if detailLabel(activeBadge, e)}
-  <div class="row-sub muted">{detailLabel(activeBadge, e)}</div>
-{/if}
+                <div class="row-sub muted">{detailLabel(activeBadge, e)}</div>
+              {/if}
+
+              {#if e.opponentName}
+                <div class="row-sub muted">
+                  vs {e.opponentTeamName || e.opponentName}
+                  {#if e.opponentPoints != null} • {Number(e.opponentPoints).toFixed(2)} pts{/if}
+                </div>
+              {/if}
+
+              {#if e.explanation}
+                <div class="row-sub" style="color:#cfd6e3;">{e.explanation}</div>
+              {/if}
+
+              {#if e.nominatedByName}
+                <div class="row-sub muted" style="font-size:0.85rem;">
+                  Nominated by {e.nominatedByTeamName || e.nominatedByName}
+                </div>
+              {/if}
             </div>
           </div>
         {/each}
+
       </div>
     {:else}
       <div class="empty">No awardees yet.</div>

@@ -13,6 +13,9 @@
     };
     export let champYears = []; // optional override
 
+    const POINTS_BADGES = new Set(['suck', 'bde', 'ides']);
+    const showPointsFor = (badgeId) => POINTS_BADGES.has(normId(badgeId));
+
     /* ===== Helpers ===== */
     const idOf = (m) =>
         String(m?.managerID ?? m?.managerId ?? m?.id ?? '').trim();
@@ -49,16 +52,19 @@
         }
         return null;
     };
-    const fmtPts = (p) =>
-        p == null || Number.isNaN(p) ? '' : `${Number(p).toFixed(2)} pts`;
-    const occLabel = (o) =>
-        [
-            o.season,
-            o.week != null ? `Wk ${o.week}` : '',
-            o.points != null ? fmtPts(o.points) : '',
-        ]
-            .filter(Boolean)
-            .join(' • ');
+    const fmtPts = (p) => p == null || Number.isNaN(p) ? '' : `${Number(p).toFixed(2)} pts`;
+
+
+    const occLabel = (o, badgeId) => {
+        const parts = [];
+        if (o.season) parts.push(`${o.season}`);
+        if (o.week != null) parts.push(`Wk ${o.week}`);
+        if (showPointsFor(badgeId) && Number.isFinite(o.points)) {
+            parts.push(fmtPts(o.points));
+        }
+        return parts.join(' • ');
+        };
+
     const sortOcc = (a, b) =>
         (b.season ?? 0) - (a.season ?? 0) || (b.week ?? 0) - (a.week ?? 0);
 
@@ -304,29 +310,34 @@
         showModal = true;
     };
     const openFromWeeklyGroup = (g) => {
-        const id = g.id ? normId(g.id) : null;
-        const meta = id ? defById.get(id) : null;
-        const occs = [...g.occurrences].sort(sortOcc);
-        active = {
-            id,
-            title: g.title || meta?.name || 'Weekly Badge',
-            icon: g.icon || meta?.icon,
-            definition: meta?.definition || '',
-            rows: occs.map((o) => ({
-  label: occLabel(o),
-  explanation: o.explanation ?? null,
-  nominatedBy: o.nominatedBy ?? null,
-  nominatedByName: o.nominatedByName ?? null,
-  nominatedByTeamLogo: o.nominatedByTeamLogo ?? null, // ← keep this
-  opponent: o.opponent ?? null,
-  opponentPoints: o.opponentPoints ?? null,
-  opponentName: o.opponentName ?? null,
-  opponentTeamName: o.opponentTeamName ?? null,
-  opponentTeamLogo: o.opponentTeamLogo ?? null
-}))
-        };
-        showModal = true;
-    };
+  const id = g.id ? normId(g.id) : null;
+  const meta = id ? defById.get(normId(g.id)) : null;
+  const occs = [...g.occurrences].sort(sortOcc);
+  const allowPts = showPointsFor(g.id);
+
+  active = {
+    id,
+    title: g.title || meta?.name || 'Weekly Badge',
+    icon: g.icon || meta?.icon,
+    definition: meta?.definition || '',
+    rows: occs.map((o) => ({
+      label: occLabel(o, g.id),
+      explanation: o.explanation ?? null,
+      nominatedBy: o.nominatedBy ?? null,
+      nominatedByName: o.nominatedByName ?? null,
+      nominatedByTeamLogo: o.nominatedByTeamLogo ?? null,
+
+      // Opponent fields only for suck/bde/ides
+      opponent: allowPts ? (o.opponent ?? null) : null,
+      opponentPoints: allowPts && Number.isFinite(o.opponentPoints) ? o.opponentPoints : null,
+      opponentName: allowPts ? (o.opponentName ?? null) : null,
+      opponentTeamName: allowPts ? (o.opponentTeamName ?? null) : null,
+      opponentTeamLogo: allowPts ? (o.opponentTeamLogo ?? null) : null
+    }))
+  };
+  showModal = true;
+};
+
     const openFromLegacy = (b) => {
         const id = b.badgeId ? normId(b.badgeId) : null;
         const meta = id ? defById.get(id) : null;
@@ -429,7 +440,7 @@
                                 <div class="badge-title">{g.title}</div>
                                 {#if g.occurrences.length}
                                     <div class="occ-latest">
-                                        {occLabel(latestOf(g))}
+                                        {occLabel(latestOf(g), g.id)}
                                     </div>
                                 {/if}
                             </div>
@@ -458,7 +469,7 @@
                                 <div class="badge-title">{g.title}</div>
                                 {#if g.occurrences.length}
                                     <div class="occ-latest">
-                                        {occLabel(latestOf(g))}
+                                        {occLabel(latestOf(g), g.id)}
                                     </div>
                                 {/if}
                             </div>
@@ -493,7 +504,7 @@
                                 </div>
                                 {#if g.occurrences.length}
                                     <div class="occ-latest">
-                                        {occLabel(latestOf(g))}
+                                        {occLabel(latestOf(g), g.id)}
                                     </div>
                                 {/if}
                             </div>

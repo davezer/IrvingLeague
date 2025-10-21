@@ -1,6 +1,7 @@
 <!-- __layout.svelte -->
 <script>
 	import { Nav, Footer } from "$lib/components"
+    import ChatWidget from '$lib/ChatWidget.svelte';
     import { dev } from '$app/environment';
     import { injectAnalytics } from '@vercel/analytics/sveltekit';
     import { page } from '$app/stores';
@@ -21,6 +22,7 @@
     <Nav /> <!-- adds the nav (small and large) -->
   
     <slot />
+    <!-- <ChatWidget /> -->
 
     <Footer /> <!-- adds the footer -->
 </main>

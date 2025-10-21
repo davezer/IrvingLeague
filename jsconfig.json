@@ -5,5 +5,5 @@
 			"$lib/*": ["src/lib/*"]
 		}
 	},
-	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte", "src/routes/parlay/+page.jsx", "src/lib/utils/leagueInfo.js"]
+	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte", "src/routes/parlay/+page.jsx", "src/lib/utils/leagueInfo.js", "src/lib/chat/normalize.ts"]
 }

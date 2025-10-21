@@ -23,7 +23,7 @@
 
   // table state
   let search = '';
-  let perPage = 20;      // 10|20|50|100|'ALL'
+  let perPage = 'ALL';      // 10|20|50|100|'ALL'
   let sortCol = null;
   let sortDir = 'asc';
 
