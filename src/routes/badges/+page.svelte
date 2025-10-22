@@ -9,7 +9,7 @@
     nominateBadge = badge;
     nominateOpen = true;
   }
-  export const prerender = false
+  
   let q = '';
   let showOnlyEarned = false;
   let sortBy = 'name'; // 'name' | 'count'
