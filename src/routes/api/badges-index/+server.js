@@ -3,6 +3,7 @@ import { json } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
 import { managers, leagueName } from '$lib/utils/leagueInfo';
 import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 // -------- Persona definitions
 const personaDefs = {
@@ -44,9 +45,13 @@ function getStartYear(m) {
 const tenureFromStart = (start, now = THIS_YEAR) => (!start ? 0 : Math.max(0, now - start));
 
 // -------- Supabase (create once at module scope)
-const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
+const supabaseAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
 export async function GET({ url }) {
+
+    console.log('badges-index env check', {
+        hasUrl: !!env.SUPABASE_URL,
+        keyLen: env.SUPABASE_SERVICE_ROLE_KEY?.length || 0
+        });
   const list = Array.isArray(managers) ? managers : [];
 
   // -------- Personas
@@ -140,6 +145,42 @@ export async function GET({ url }) {
   if (error) {
     console.error('badges-index supabase read error:', error);
   }
+
+  const debug = url.searchParams.get('debug') === '1';
+
+if (debug) {
+  // quick visibility into what's going on in prod
+  const byId = Object.fromEntries((Array.isArray(managers) ? managers : [])
+    .map((m) => [m.managerID, m]));
+
+  const sample = (rows || []).slice(0, 5).map(r => ({
+    badge_id: r.badge_id,
+    manager_id: r.manager_id,
+    season: r.season,
+    week: r.week,
+    points: r.points,
+    opponent: r.opponent,
+    opponent_points: r.opponent_points
+  }));
+
+  const missingManagerIds = (rows || [])
+    .filter(r => !byId[String(r.manager_id)])
+    .map(r => r.manager_id);
+    
+
+  
+
+    return json({
+        ok: !error,
+        seasonQ,
+        weekQ,
+        rowCount: rows?.length || 0,
+        missingManagerCount: missingManagerIds.length,
+        missingManagerIds: [...new Set(missingManagerIds)].slice(0, 20), // show up to 20
+        sample
+    }, { headers: { 'cache-control': 'no-store' } });
+    }
+
 
   for (const r of rows || []) {
     awardWeekly({

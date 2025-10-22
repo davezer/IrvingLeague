@@ -1,3 +1,4 @@
+export const prerender = false
 export async function load({ fetch, url }) {
   const p = new URLSearchParams(url.searchParams);
   if (!p.get('season')) p.set('season', String(new Date().getFullYear()));
