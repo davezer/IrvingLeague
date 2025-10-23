@@ -9,7 +9,8 @@
     nominateBadge = badge;
     nominateOpen = true;
   }
-  
+
+
   let q = '';
   let showOnlyEarned = false;
   let sortBy = 'name'; // 'name' | 'count'
@@ -82,6 +83,7 @@
     return '';
   };
 </script>
+
 <div class="page-wrapper">   
 <div class="actions-row actions-center">
   <button
@@ -231,7 +233,7 @@
         </div>
       </article>
     {/each}
-    {#if !filterBadges(sections.weekly).length}
+    {#if !filterBadges(sections.luck).length}
       <div class="empty-wide">No weekly badges match your filters.</div>
     {/if}
   </div>
