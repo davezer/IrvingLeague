@@ -135,11 +135,11 @@ export async function GET({ url }) {
 
   // -------- Load awards from Supabase (no GAS here)
   const DEFAULT_SEASON = new Date().getFullYear();
-  const seasonQ = Number(url.searchParams.get('season') ?? DEFAULT_SEASON);
+  const seasonQ = String(url.searchParams.get('season') ?? DEFAULT_SEASON);
   const weekQ = url.searchParams.get('week');
 
   let q = supabaseAdmin.from('awards').select('*').eq('season', seasonQ);
-  if (weekQ) q = q.eq('week', Number(weekQ));
+  if (weekQ) q = q.eq('week', String(weekQ));
 
   const { data: rows, error } = await q;
   if (error) {
