@@ -388,6 +388,46 @@
     "season": "2025"
   },
   {
+    "transaction_id": "1286935569032564736",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      3,
+      5
+    ],
+    "adds": {
+      "9224": 3,
+      "11620": 5,
+      "12514": 3
+    },
+    "drops": {
+      "9224": 5,
+      "11620": 3,
+      "12514": 5
+    },
+    "draft_picks": [],
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1286917701884710912",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      2,
+      5
+    ],
+    "adds": {
+      "7553": 5,
+      "9484": 2
+    },
+    "drops": {
+      "7553": 2,
+      "9484": 5
+    },
+    "draft_picks": [],
+    "season": "2025"
+  },
+  {
     "transaction_id": "1286826780837019648",
     "type": "trade",
     "status": "complete",
