@@ -388,6 +388,25 @@
     "season": "2025"
   },
   {
+    "transaction_id": "1287919084901519360",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      9,
+      12
+    ],
+    "adds": {
+      "4034": 12,
+      "7021": 9
+    },
+    "drops": {
+      "4034": 9,
+      "7021": 12
+    },
+    "draft_picks": [],
+    "season": "2025"
+  },
+  {
     "transaction_id": "1287406641431470080",
     "type": "trade",
     "status": "complete",
