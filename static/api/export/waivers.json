@@ -1142,5 +1142,40 @@
       "PHI": 11
     },
     "season": "2025"
+  },
+  {
+    "transaction_id": "1289582146037514240",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "12499": 4
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289388624109920256",
+    "roster_ids": [
+      6
+    ],
+    "adds": {
+      "KC": 6
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289158861327990785",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "CHI": 8
+    },
+    "drops": {
+      "CLE": 8
+    },
+    "season": "2025"
   }
 ]
