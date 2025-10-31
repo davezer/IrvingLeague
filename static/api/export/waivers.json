@@ -1144,6 +1144,30 @@
     "season": "2025"
   },
   {
+    "transaction_id": "1290091744364343296",
+    "roster_ids": [
+      3
+    ],
+    "adds": {
+      "7567": 3
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289739567426977792",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "CLE": 8
+    },
+    "drops": {
+      "8142": 8
+    },
+    "season": "2025"
+  },
+  {
     "transaction_id": "1289582146037514240",
     "roster_ids": [
       4
