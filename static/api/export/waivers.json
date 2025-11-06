@@ -1284,5 +1284,42 @@
       "CLE": 8
     },
     "season": "2025"
+  },
+  {
+    "transaction_id": "1291958842602577920",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "10213": 4
+    },
+    "drops": {
+      "12469": 4
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291882009785798656",
+    "roster_ids": [
+      3
+    ],
+    "adds": {
+      "JAX": 3
+    },
+    "drops": {
+      "ATL": 3
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291859131195461632",
+    "roster_ids": [
+      5
+    ],
+    "adds": {
+      "11566": 5
+    },
+    "drops": null,
+    "season": "2025"
   }
 ]
