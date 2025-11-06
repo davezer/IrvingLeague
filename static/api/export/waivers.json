@@ -1022,5 +1022,267 @@
     },
     "drops": null,
     "season": "2025"
+  },
+  {
+    "transaction_id": "1289114655834279936",
+    "roster_ids": [
+      5
+    ],
+    "adds": {
+      "9225": 5
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289113303712301056",
+    "roster_ids": [
+      5
+    ],
+    "adds": {
+      "11565": 5
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289063894291079168",
+    "roster_ids": [
+      1
+    ],
+    "adds": {
+      "9511": 1
+    },
+    "drops": {
+      "CHI": 1
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288978525746905088",
+    "roster_ids": [
+      12
+    ],
+    "adds": {
+      "1433": 12
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288978504481775616",
+    "roster_ids": [
+      12
+    ],
+    "adds": {
+      "17": 12
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288953381527785472",
+    "roster_ids": [
+      13
+    ],
+    "adds": {
+      "6130": 13
+    },
+    "drops": {
+      "8111": 13
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288864926575632384",
+    "roster_ids": [
+      2
+    ],
+    "adds": {
+      "4147": 2
+    },
+    "drops": {
+      "7839": 2
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288864582982471680",
+    "roster_ids": [
+      2
+    ],
+    "adds": {
+      "12540": 2
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288734434505273344",
+    "roster_ids": [
+      11
+    ],
+    "adds": {
+      "7002": 11
+    },
+    "drops": {
+      "8131": 11
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1288734099724320768",
+    "roster_ids": [
+      11
+    ],
+    "adds": {
+      "NO": 11
+    },
+    "drops": {
+      "PHI": 11
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291652023757860864",
+    "roster_ids": [
+      13
+    ],
+    "adds": {
+      "9481": 13
+    },
+    "drops": {
+      "8154": 13
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291556630185385984",
+    "roster_ids": [
+      11
+    ],
+    "adds": {
+      "10219": 11
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291515291502649344",
+    "roster_ids": [
+      12
+    ],
+    "adds": {
+      "8183": 12
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291515131171201024",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "12497": 8
+    },
+    "drops": {
+      "12455": 8
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291414088395522048",
+    "roster_ids": [
+      2
+    ],
+    "adds": {
+      "11597": 2
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291406125505191936",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "8142": 4
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1291146958664138752",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "2307": 4
+    },
+    "drops": {
+      "11566": 4
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1290091744364343296",
+    "roster_ids": [
+      3
+    ],
+    "adds": {
+      "7567": 3
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289739567426977792",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "CLE": 8
+    },
+    "drops": {
+      "8142": 8
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289582146037514240",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "12499": 4
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289388624109920256",
+    "roster_ids": [
+      6
+    ],
+    "adds": {
+      "KC": 6
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1289158861327990785",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "CHI": 8
+    },
+    "drops": {
+      "CLE": 8
+    },
+    "season": "2025"
   }
 ]
