@@ -135,13 +135,18 @@ export async function GET({ url }) {
 
   // -------- Load awards from Supabase (no GAS here)
   const DEFAULT_SEASON = new Date().getFullYear();
-  const seasonQ = String(url.searchParams.get('season') ?? DEFAULT_SEASON);
-  const weekQ = url.searchParams.get('week');
+  const seasonQ = Number(url.searchParams.get('season') ?? DEFAULT_SEASON);
+  const weekQ = Number(url.searchParams.get('week'));
 
   let q = supabaseAdmin.from('awards').select('*').eq('season', seasonQ);
-  if (weekQ) q = q.eq('week', String(weekQ));
+  if (weekQ != null && weekQ !== '') q = q.eq('week', weekQ);
 
   const { data: rows, error } = await q;
+
+  if (url.searchParams.get('debug') === '1') {
+  return json({ rowCount: rows?.length ?? 0, seasonQ, sample: (rows||[]).slice(0,3) },
+              { headers: { 'cache-control': 'no-store' } });
+}
   if (error) {
     console.error('badges-index supabase read error:', error);
   }
