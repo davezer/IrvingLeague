@@ -2,7 +2,7 @@
 import { json } from '@sveltejs/kit';
 import { createClient } from '@supabase/supabase-js';
 import { managers, leagueName } from '$lib/utils/leagueInfo';
-import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
+import { SUPABASE_URL as SUPABASE_URL_STATIC, SUPABASE_SERVICE_ROLE_KEY as SUPABASE_SERVICE_ROLE_KEY_STATIC } from '$env/static/private';
 import { env } from '$env/dynamic/private';
 
 // -------- Persona definitions
@@ -24,10 +24,13 @@ const slugify = (s) =>
   String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 const THIS_YEAR = new Date().getFullYear();
-const toInt = (v) => {
-  const n = Number(String(v ?? '').trim());
-  return Number.isFinite(n) ? n : null;
+
+const toInt = (v, fallback = null) => {
+  if (v === undefined || v === null) return fallback;
+  const n = Number(String(v).trim());
+  return Number.isInteger(n) ? n : fallback;
 };
+
 function getStartYear(m) {
   const candidates = [
     toInt(m?.startYear),
@@ -37,21 +40,36 @@ function getStartYear(m) {
   ].filter(Boolean);
   const champYears = String(m?.championship?.years || '')
     .split(',')
-    .map(toInt)
+    .map((y) => toInt(y))
     .filter(Boolean);
   if (champYears.length) candidates.push(Math.min(...champYears));
   return candidates.length ? Math.min(...candidates) : null;
 }
+
 const tenureFromStart = (start, now = THIS_YEAR) => (!start ? 0 : Math.max(0, now - start));
 
 // -------- Supabase (create once at module scope)
-const supabaseAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
-export async function GET({ url }) {
+// Prefer dynamic env at runtime; fall back to static if present (local/dev).
+const SUPABASE_URL =
+  env.SUPABASE_URL || SUPABASE_URL_STATIC || '';
+const SUPABASE_SERVICE_ROLE_KEY =
+  env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_SERVICE_ROLE_KEY_STATIC || '';
 
+const supabaseAdmin = SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+  ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+  : null;
+
+export async function GET({ url }) {
+  const debug = url.searchParams.get('debug') === '1';
+
+  // Quick env visibility
+  if (debug) {
     console.log('badges-index env check', {
-        hasUrl: !!env.SUPABASE_URL,
-        keyLen: env.SUPABASE_SERVICE_ROLE_KEY?.length || 0
-        });
+      hasUrl: !!SUPABASE_URL,
+      keyLen: SUPABASE_SERVICE_ROLE_KEY?.length || 0
+    });
+  }
+
   const list = Array.isArray(managers) ? managers : [];
 
   // -------- Personas
@@ -97,8 +115,10 @@ export async function GET({ url }) {
     { id: 'badbeat',   type: 'stains', name: 'The Bad Beat',      definition: 'GM explains why his Opponent’s victory is stain-worthy', icon: '/stains.png', earned: [] }
   ];
 
-  // -------- award helper
+  // -------- manager index for lookups (used later too)
   const byId = Object.fromEntries(list.map((m) => [m.managerID, m]));
+
+  // -------- award helper
   function awardWeekly({
     badgeId,
     managerId,
@@ -133,60 +153,65 @@ export async function GET({ url }) {
     });
   }
 
-  // -------- Load awards from Supabase (no GAS here)
-  const DEFAULT_SEASON = new Date().getFullYear();
-  const seasonQ = Number(url.searchParams.get('season') ?? DEFAULT_SEASON);
-  const weekQ = Number(url.searchParams.get('week'));
+  // -------- Load awards from Supabase
+  const DEFAULT_SEASON = THIS_YEAR;
+  const seasonParam = url.searchParams.get('season');
+  const weekParam = url.searchParams.get('week');
 
-  let q = supabaseAdmin.from('awards').select('*').eq('season', seasonQ);
-  if (weekQ != null && weekQ !== '') q = q.eq('week', weekQ);
+  const seasonQ = toInt(seasonParam, DEFAULT_SEASON);
+  const weekQ = toInt(weekParam, null);
 
-  const { data: rows, error } = await q;
+  let rows = [];
+  let readError = null;
 
-  if (url.searchParams.get('debug') === '1') {
-  return json({ rowCount: rows?.length ?? 0, seasonQ, sample: (rows||[]).slice(0,3) },
-              { headers: { 'cache-control': 'no-store' } });
-}
-  if (error) {
-    console.error('badges-index supabase read error:', error);
+  if (!supabaseAdmin) {
+    readError = new Error('Supabase admin client not configured (missing URL or SERVICE_ROLE key).');
+  } else {
+    let q = supabaseAdmin.from('awards').select('*').eq('season', seasonQ);
+    if (weekQ !== null) q = q.eq('week', weekQ);
+    const { data, error } = await q;
+    rows = data || [];
+    readError = error || null;
   }
 
-  const debug = url.searchParams.get('debug') === '1';
+  // -------- Optional debug: single consolidated response
+  if (debug) {
+    const sample = (rows || []).slice(0, 5).map(r => ({
+      badge_id: r.badge_id,
+      manager_id: r.manager_id,
+      season: r.season,
+      week: r.week,
+      points: r.points,
+      opponent: r.opponent,
+      opponent_points: r.opponent_points,
+      explanation: r.explanation
+    }));
 
-if (debug) {
-  // quick visibility into what's going on in prod
-  const byId = Object.fromEntries((Array.isArray(managers) ? managers : [])
-    .map((m) => [m.managerID, m]));
-
-  const sample = (rows || []).slice(0, 5).map(r => ({
-    badge_id: r.badge_id,
-    manager_id: r.manager_id,
-    season: r.season,
-    week: r.week,
-    points: r.points,
-    opponent: r.opponent,
-    opponent_points: r.opponent_points
-  }));
-
-  const missingManagerIds = (rows || [])
-    .filter(r => !byId[String(r.manager_id)])
-    .map(r => r.manager_id);
-    
-
-  
+    const missingManagerIds = (rows || [])
+      .filter(r => !byId[String(r.manager_id)])
+      .map(r => r.manager_id);
 
     return json({
-        ok: !error,
-        seasonQ,
-        weekQ,
-        rowCount: rows?.length || 0,
-        missingManagerCount: missingManagerIds.length,
-        missingManagerIds: [...new Set(missingManagerIds)].slice(0, 20), // show up to 20
-        sample
+      ok: !readError,
+      error: readError?.message || null,
+      seasonQ,
+      weekQ,
+      rowCount: rows?.length || 0,
+      missingManagerCount: missingManagerIds.length,
+      missingManagerIds: [...new Set(missingManagerIds)].slice(0, 20),
+      env: {
+        hasSUPABASE_URL: Boolean(SUPABASE_URL),
+        hasSERVICE_ROLE: Boolean(SUPABASE_SERVICE_ROLE_KEY)
+      },
+      sample
     }, { headers: { 'cache-control': 'no-store' } });
-    }
+  }
 
+  if (readError) {
+    console.error('badges-index supabase read error:', readError);
+  }
 
+  // -------- Push DB rows into sections via awardWeekly
   for (const r of rows || []) {
     awardWeekly({
       badgeId: r.badge_id,
