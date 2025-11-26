@@ -1517,6 +1517,71 @@
     "season": "2025"
   },
   {
+    "transaction_id": "1299277475020288000",
+    "roster_ids": [
+      11
+    ],
+    "adds": {
+      "8147": 11
+    },
+    "drops": {
+      "9225": 11
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1299250893702578176",
+    "roster_ids": [
+      11
+    ],
+    "adds": {
+      "9480": 11
+    },
+    "drops": {
+      "11786": 11
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1299229210820247552",
+    "roster_ids": [
+      1
+    ],
+    "adds": {
+      "IND": 1
+    },
+    "drops": {
+      "2020": 1
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1299070578380009472",
+    "roster_ids": [
+      3
+    ],
+    "adds": {
+      "MIA": 3
+    },
+    "drops": {
+      "9479": 3
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1299056630716968960",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "2307": 4
+    },
+    "drops": {
+      "12498": 4
+    },
+    "season": "2025"
+  },
+  {
     "transaction_id": "1297026296546598912",
     "roster_ids": [
       6
