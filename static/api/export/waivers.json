@@ -1593,5 +1593,42 @@
       "6783": 6
     },
     "season": "2025"
+  },
+  {
+    "transaction_id": "1301805484780552192",
+    "roster_ids": [
+      13
+    ],
+    "adds": {
+      "11834": 13
+    },
+    "drops": {
+      "8136": 13
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1301791794014453760",
+    "roster_ids": [
+      1
+    ],
+    "adds": {
+      "NO": 1
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1301738598533439488",
+    "roster_ids": [
+      10
+    ],
+    "adds": {
+      "TEN": 10
+    },
+    "drops": {
+      "NYJ": 10
+    },
+    "season": "2025"
   }
 ]
