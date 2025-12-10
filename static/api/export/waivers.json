@@ -1630,5 +1630,70 @@
       "NYJ": 10
     },
     "season": "2025"
+  },
+  {
+    "transaction_id": "1304267353613172736",
+    "roster_ids": [
+      3
+    ],
+    "adds": {
+      "CAR": 3
+    },
+    "drops": {
+      "BAL": 3
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1304203322890125312",
+    "roster_ids": [
+      7
+    ],
+    "adds": {
+      "11643": 7
+    },
+    "drops": {
+      "19": 7
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1304139281689763840",
+    "roster_ids": [
+      1
+    ],
+    "adds": {
+      "MIN": 1
+    },
+    "drops": {
+      "IND": 1
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1304041378803613696",
+    "roster_ids": [
+      6
+    ],
+    "adds": {
+      "8134": 6
+    },
+    "drops": {
+      "11625": 6
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1304040485928587264",
+    "roster_ids": [
+      6
+    ],
+    "adds": {
+      "8131": 6
+    },
+    "drops": {
+      "11603": 6
+    },
+    "season": "2025"
   }
 ]
