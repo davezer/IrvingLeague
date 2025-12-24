@@ -1719,5 +1719,16 @@
     },
     "drops": null,
     "season": "2025"
+  },
+  {
+    "transaction_id": "1309254527643324416",
+    "roster_ids": [
+      4
+    ],
+    "adds": {
+      "4381": 4
+    },
+    "drops": null,
+    "season": "2025"
   }
 ]
