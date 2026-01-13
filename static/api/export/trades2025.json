@@ -17,5 +17,85 @@
     },
     "draft_picks": [],
     "season": "2025"
+  },
+  {
+    "transaction_id": "1273717953459650560",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      1,
+      4
+    ],
+    "adds": {
+      "6813": 1,
+      "11566": 4,
+      "12517": 4
+    },
+    "drops": {
+      "6813": 4,
+      "11566": 1,
+      "12517": 1
+    },
+    "draft_picks": [],
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1273474167940845568",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      2,
+      9
+    ],
+    "adds": {
+      "2133": 2,
+      "6804": 9,
+      "12529": 9
+    },
+    "drops": {
+      "2133": 9,
+      "6804": 2,
+      "12529": 2
+    },
+    "draft_picks": [],
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1271866742020243456",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      8,
+      11
+    ],
+    "adds": {
+      "11576": 11,
+      "11586": 8
+    },
+    "drops": {
+      "11576": 8,
+      "11586": 11
+    },
+    "draft_picks": [],
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1271479236590338048",
+    "type": "trade",
+    "status": "complete",
+    "roster_ids": [
+      2,
+      3
+    ],
+    "adds": {
+      "4988": 2,
+      "12501": 3
+    },
+    "drops": {
+      "4988": 3,
+      "12501": 2
+    },
+    "draft_picks": [],
+    "season": "2025"
   }
 ]
