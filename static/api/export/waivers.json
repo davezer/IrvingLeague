@@ -311,5 +311,168 @@
       "7567": 13
     },
     "season": "2025"
+  },
+  {
+    "transaction_id": "1276459088355561472",
+    "roster_ids": [
+      12
+    ],
+    "adds": {
+      "3200": 12
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276458993228726272",
+    "roster_ids": [
+      12
+    ],
+    "adds": {
+      "8917": 12
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276424109286260736",
+    "roster_ids": [
+      5
+    ],
+    "adds": {
+      "12519": 5
+    },
+    "drops": {
+      "8121": 5
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276382631151288320",
+    "roster_ids": [
+      9
+    ],
+    "adds": {
+      "8117": 9
+    },
+    "drops": {
+      "11651": 9
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276372674968317952",
+    "roster_ids": [
+      10
+    ],
+    "adds": {
+      "11626": 10
+    },
+    "drops": {
+      "9486": 10
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276355497099788289",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "5001": 8
+    },
+    "drops": {
+      "11600": 8
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276353154283237376",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "8188": 8
+    },
+    "drops": {
+      "4981": 8
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276348034673815552",
+    "roster_ids": [
+      8
+    ],
+    "adds": {
+      "6768": 8
+    },
+    "drops": {
+      "11559": 8
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276337278213455872",
+    "roster_ids": [
+      2
+    ],
+    "adds": {
+      "4943": 2
+    },
+    "drops": null,
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276202965216018432",
+    "roster_ids": [
+      3
+    ],
+    "adds": {
+      "DET": 3
+    },
+    "drops": {
+      "SF": 3
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1276155613008662528",
+    "roster_ids": [
+      1
+    ],
+    "adds": {
+      "12497": 1
+    },
+    "drops": {
+      "7528": 1
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1275676830883385344",
+    "roster_ids": [
+      6
+    ],
+    "adds": {
+      "6130": 6
+    },
+    "drops": {
+      "4137": 6
+    },
+    "season": "2025"
+  },
+  {
+    "transaction_id": "1273994403815395328",
+    "roster_ids": [
+      1
+    ],
+    "adds": {
+      "4066": 1
+    },
+    "drops": {
+      "12535": 1
+    },
+    "season": "2025"
   }
 ]
